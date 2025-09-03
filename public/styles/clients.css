@@ -1,0 +1,25 @@
+.client-inputs {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.form-input {
+  align-self: flex-start;
+}
+
+.row-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.add-row-btn,
+.remove-row-btn {
+  font-size: 1.5rem;
+
+  border-radius: 5px;
+  border: none;
+  height: 1.5rem;
+  line-height: 1.5rem;
+  margin-block-start: 0.5rem;
+}

@@ -1,0 +1,28 @@
+/* data list dl (used in profile/show) */
+/* used in Profile */
+dl {
+  display: grid;
+  grid-template-columns: 0.75fr 1.25fr;
+  row-gap: 0;
+  column-gap: 0;
+  max-width: 500px;
+  line-height: 2;
+}
+
+dl dt {
+  font-weight: 500;
+}
+
+dl dd {
+  display: flex;
+  justify-content: space-between;
+  margin-inline: 0;
+  padding-inline-end: 2rem;
+}
+
+dl dd:nth-of-type(odd),
+dl dt:nth-of-type(odd) {
+  background-color: hsla(0, 0%, 0%, 5%);
+}
+
+/* end data list dl */

@@ -1,0 +1,10 @@
+Hello <?= $name ?>,
+
+Use this code to confirm your update to the email address used with your
+  TaxUpdates Account:
+
+<?= esc($authentication_code) ?>
+
+This code will expire in 15 minutes.
+
+You can input the code at this link: <?= esc($base_url) ?>/profile/enter-code

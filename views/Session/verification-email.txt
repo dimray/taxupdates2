@@ -1,0 +1,9 @@
+Hello <?= $name ?>,
+
+Please enter this code to complete your login at TaxUpdates:
+
+<?= $authentication_code ?>
+
+This code will expire in 15 minutes.
+
+You can input the code at this link: <?= $base_url ?>/session/enter-code?email=<?= urlencode($email) ?>

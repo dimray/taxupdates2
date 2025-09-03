@@ -1,0 +1,9 @@
+Hello <?= $name ?>,
+
+Use this code to reset the password for your account with TaxUpdates:
+
+<?= $authentication_code ?>
+
+This code will expire in 15 minutes.
+
+You can input the code at this link: <?= $base_url ?>/password/new-password?email=<?= urlencode($email) ?>

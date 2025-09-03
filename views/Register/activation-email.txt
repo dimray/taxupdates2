@@ -1,0 +1,9 @@
+Hello <?= $name ?>,
+
+Use this code to activate your TaxUpdates account:
+
+<?= $authentication_code ?>
+
+This code will expire in 15 minutes.
+
+You can input the code at this link: <?= $base_url ?>/register/enter-code?email=<?= urlencode($email) ?>

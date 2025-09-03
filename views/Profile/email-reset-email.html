@@ -1,0 +1,11 @@
+<p>
+  Hello
+  <?= $name ?>
+</p>
+<p>Use this code to confirm your update to the email address used with your TaxUpdates Account:</p>
+<h2><?= esc($authentication_code) ?></h2>
+<p>The code expires in 15 minutes.</p>
+<p>
+  You can input the code
+  <a href="<?= esc($base_url) ?>/profile/enter-code">at this link</a>
+</p>

@@ -1,0 +1,8 @@
+RewriteEngine On
+Options -Indexes
+Header set X-Content-Type-Options "nosniff"
+Header set Referrer-Policy "no-referrer-when-downgrade"
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-l
+RewriteRule ^ index.php [QSA,L]

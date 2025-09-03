@@ -1,0 +1,11 @@
+<p>
+  Hello
+  <?= $name ?>
+</p>
+<p>Use this code to reset the password for your account with TaxUpdates:</p>
+<h2><?= $authentication_code ?></h2>
+<p>The code expires in 15 minutes.</p>
+<p>
+  You can input the code
+  <a href="<?= esc($base_url . '/password/new-password?email=' . urlencode($email)) ?>">at this link</a>
+</p>

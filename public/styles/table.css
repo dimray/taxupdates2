@@ -1,0 +1,35 @@
+table {
+  border-collapse: collapse;
+}
+
+table tr {
+  line-height: 1.5;
+}
+
+table td {
+  padding-inline-end: 2rem;
+  vertical-align: middle;
+}
+
+table th {
+  text-align: left;
+  vertical-align: middle;
+  padding-inline-end: 1rem;
+  padding-block-end: 0.5rem;
+}
+
+table tbody tr:nth-of-type(odd) {
+  background-color: hsla(0, 0%, 0%, 5%);
+}
+
+table .center-element {
+  text-align: center;
+}
+
+table .table-subheading {
+  text-align: left;
+  max-width: 80px;
+  font-weight: 300;
+  font-size: 1rem;
+  margin-inline-end: 0.5rem;
+}

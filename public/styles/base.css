@@ -1,0 +1,109 @@
+html {
+  font-family: system-ui, sans-serif;
+}
+
+.hidden {
+  display: none;
+  pointer-events: none;
+}
+
+p {
+  margin-block: 1rem;
+  max-width: 800px;
+  line-height: 1.5;
+}
+
+hr {
+  max-width: 800px;
+  margin-inline-start: 0;
+  margin-inline-end: auto;
+}
+
+.button {
+  text-decoration: none;
+  border: 1px solid black;
+  padding-inline: 0.8rem;
+  padding-block: 0.3rem;
+  background-color: hsla(0, 0%, 0%, 80%);
+  color: white;
+  border-radius: 5px;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: hsla(0, 0%, 0%, 90%);
+}
+
+.link,
+a {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+  text-align: left;
+}
+
+a:hover,
+a:focus,
+.link:hover,
+.link:focus {
+  color: hsl(240, 100%, 40%);
+}
+
+.confirm-delete {
+  background: hsla(0, 100%, 50%, 20%);
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  color: hsla(0, 100%, 20%, 100%);
+}
+
+.confirm-delete:hover,
+.confirm-delete:focus {
+  background: hsla(0, 100%, 50%, 30%);
+  cursor: pointer;
+}
+
+.x-delete {
+  border: none;
+  color: red;
+  background: hsla(0, 100%, 50%, 5%);
+  border-radius: 5px;
+}
+
+.x-delete:hover,
+.x-delete:focus {
+  background: hsla(0, 100%, 50%, 30%);
+  cursor: pointer;
+}
+
+.word-break span {
+  display: block;
+}
+
+.pagination ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.copy-element {
+  font-weight: 300;
+  font-size: 1rem;
+}
+
+.copy-button {
+  border: none;
+  cursor: pointer;
+}
+
+.copy-button:hover,
+.copy-button:focus {
+  background-color: hsla(0, 0%, 0%, 10%);
+}
