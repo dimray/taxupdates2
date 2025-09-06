@@ -117,8 +117,29 @@ input[type="password"],
   gap: 1rem;
 }
 
+.inline-form.end {
+  align-items: flex-end;
+}
+
 .inline-form.show-clients {
   gap: 3rem;
+}
+
+.inline-form button:not(.link) {
+  /* margin-block-end: 3px; this knocks out the alignment in business-details/change-reporting-period*/
+  padding-block-start: 3px;
+  height: 2.2rem;
+  font-size: 1rem;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 5px;
+  background-color: hsla(0, 0%, 90%, 100%);
+}
+
+.inline-form button:not(.link):hover,
+.inline-form button:not(.link):focus {
+  cursor: pointer;
+  background-color: hsla(0, 0%, 80%, 100%);
 }
 
 /* csv upload */
@@ -146,6 +167,12 @@ input[type="password"],
 .csv_upload_label:hover,
 .csv_upload_label:focus {
   color: hsl(240, 100%, 40%);
+}
+
+#csv_filename {
+  margin-inline-start: 1rem;
+  font-size: 0.8rem;
+  font-weight: 300;
 }
 
 /* end csv upload */

@@ -123,6 +123,7 @@ CREATE TABLE user_devices (
     INDEX idx_user_id (user_id)
 );
 
+-- CHANGES MADE FROM v1:
 
 -- probably take this out
 CREATE TABLE bot_attempts (
@@ -134,6 +135,20 @@ CREATE TABLE bot_attempts (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+-- stop encrypting name and email in Users
+
+-- First, drop the unique index on email_hash
+DROP INDEX idx_users_email_hash ON users;
+-- Then, drop the email_hash column
+ALTER TABLE users DROP COLUMN email_hash;
+
+-- stop encrypting business_id in Submissions table
+
+-- First, drop the index on business_id_hash
+DROP INDEX idx_business_id_hash ON submissions;
+-- Then, drop the business_id_hash column
+ALTER TABLE submissions DROP COLUMN business_id_hash;
 
 
 

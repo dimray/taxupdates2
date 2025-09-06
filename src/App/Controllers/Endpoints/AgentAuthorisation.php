@@ -255,7 +255,7 @@ class AgentAuthorisation extends Controller
 
             $this->client_agent->updateAuthorisation($agent_type, $agent_id, $client_id);
 
-            Flash::addMessage("You are authorised to act for " . $_SESSION['client_name'] . " as " . $agent_type . " agent.", Flash::SUCCESS);
+            Flash::addMessage("You are authorised to act for " . $_SESSION['client']['name'] . " as " . $agent_type . " agent.", Flash::SUCCESS);
         }
 
         if ($response['type'] === 'redirect') {

@@ -25,35 +25,14 @@
 <h2>Upload client list as a CSV file:</h2>
 
 
-<form action="<?= $form_action ?>" method="POST" enctype="multipart/form-data">
-
-
-    <label for="csv_upload" class="csv_upload_label">1. Select your CSV file</label>
-
-
-    <input type="file" id="csv_upload" name="csv_upload"
-        accept=".csv, text/csv, application/vnd.ms-excel, text/plain, application/csv, text/tab-separated-values"
-        required>
-
-    <br>
-    <br>
-
-
-    <button class="link" type="submit">2. Submit selected file</button>
-
-</form>
+<?php include ROOT_PATH . "views/shared/data-upload.php"; ?>
 
 <br>
 <hr>
 
 <h2>Or paste your client list here:</h2>
 
-<form action="<?= $form_action ?>" method="POST">
-
-    <textarea name="pasted_data" rows="10" cols="80" placeholder="Paste data here..."></textarea><br>
-
-    <button type="submit" class="link">Submit data</button>
-</form>
+<?php include ROOT_PATH . "views/shared/data-paste.php"; ?>
 
 <br>
 <hr>

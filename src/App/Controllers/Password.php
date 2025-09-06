@@ -52,9 +52,7 @@ class Password extends Controller
             return $this->redirect("/password/reset");
         }
 
-        $email_hash = Helper::getHash($email);
-
-        $user = $this->user->findUserBy("email_hash", $email_hash);
+        $user = $this->user->findUserBy("email", $email);
 
         if ($user) {
 
@@ -140,9 +138,7 @@ class Password extends Controller
         }
 
         // get user
-        $email_hash = Helper::getHash(strtolower(trim($email)));
-
-        $user = $this->user->findUserBy("email_hash", $email_hash);
+        $user = $this->user->findUserBy("email", $email);
 
         if (!$user) {
             Flash::addMessage("An error occurred. Please try again.", Flash::WARNING);
@@ -166,9 +162,8 @@ class Password extends Controller
     public function processResendCode()
     {
         $email = strtolower(trim($this->request->get['email'])) ?? '';
-        $email_hash = Helper::getHash($email);
 
-        $user = $this->user->findUserBy("email_hash", $email_hash);
+        $user = $this->user->findUserBy("email", $email);
 
         if ($user) {
 

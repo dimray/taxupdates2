@@ -1,8 +1,10 @@
 <form class="generic-form" action="/profile/generate-and-send-code" method="POST">
 
-    <div class="form-input">
-        <label for="new_email">New Email</label>
-        <input type="text" name="new_email" id="new_email" value="<?= esc($email) ?>">
+    <div>
+        <div class="form-input">
+            <label for="new_email">New Email</label>
+            <input type="text" name="new_email" id="new_email" value="<?= esc($email) ?>">
+        </div>
     </div>
 
     <?php include ROOT_PATH . "views/shared/errors.php"; ?>

@@ -13,7 +13,7 @@ class Submission extends Model
     protected $table = "submissions";
 
     // used in Submissions
-    public function findSubmissionsByUser($nino_hash, $tax_year, $user_id, $submission_type = null, $business_id_hash = null): array
+    public function findSubmissionsByUser($nino_hash, $tax_year, $user_id, $submission_type = null, $business_id = null): array
     {
         $pdo = $this->database->getConnection();
 
@@ -30,9 +30,9 @@ class Submission extends Model
             $params[':submission_type'] = $submission_type;
         }
 
-        if ($business_id_hash !== null) {
-            $sql .= " AND business_id_hash = :business_id_hash";
-            $params[':business_id_hash'] = $business_id_hash;
+        if ($business_id !== null) {
+            $sql .= " AND business_id = :business_id";
+            $params[':business_id'] = $business_id;
         }
 
         $stmt = $pdo->prepare($sql);
@@ -47,7 +47,7 @@ class Submission extends Model
     }
 
     // used in submissions
-    public function findSubmissionsByAgentForUser($firm_id, $nino_hash, $tax_year, $submission_type = null, $business_id_hash = null)
+    public function findSubmissionsByAgentForUser($firm_id, $nino_hash, $tax_year, $submission_type = null, $business_id = null)
     {
 
         $pdo = $this->database->getConnection();
@@ -65,9 +65,9 @@ class Submission extends Model
             $params[':submission_type'] = $submission_type;
         }
 
-        if ($business_id_hash !== null) {
-            $sql .= " AND business_id_hash = :business_id_hash";
-            $params[':business_id_hash'] = $business_id_hash;
+        if ($business_id !== null) {
+            $sql .= " AND business_id = :business_id";
+            $params[':business_id'] = $business_id;
         }
 
         $stmt = $pdo->prepare($sql);
@@ -113,7 +113,7 @@ class Submission extends Model
     }
 
     // used in delete annual summary (self-employment and property business) (to update the submission to show deleted)
-    public function findSubmission(string $nino_hash, string $business_id_hash, string $tax_year,  string $submission_type): ?int
+    public function findSubmission(string $nino_hash, string $business_id, string $tax_year,  string $submission_type): ?int
     {
 
         $pdo = $this->database->getConnection();
@@ -121,7 +121,7 @@ class Submission extends Model
         $sql = "SELECT id
         FROM submissions
         WHERE nino_hash = :nino_hash
-        AND business_id_hash = :business_id_hash
+        AND business_id = :business_id
         AND tax_year = :tax_year        
         AND submission_type = :submission_type
         AND deleted_at IS NULL
@@ -131,7 +131,7 @@ class Submission extends Model
         $stmt = $pdo->prepare($sql);
 
         $stmt->bindValue(":nino_hash", $nino_hash, PDO::PARAM_STR);
-        $stmt->bindValue(":business_id_hash", $business_id_hash, PDO::PARAM_STR);
+        $stmt->bindValue(":business_id", $business_id, PDO::PARAM_STR);
         $stmt->bindValue(":tax_year", $tax_year, PDO::PARAM_STR);
         $stmt->bindValue(":submission_type", $submission_type, PDO::PARAM_STR);
 

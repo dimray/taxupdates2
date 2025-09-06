@@ -1,0 +1,44 @@
+.print-button {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+@media print {
+  /* Hide all elements on the page by default */
+  body * {
+    visibility: hidden;
+  }
+
+  /*
+    Now, make the print container and all of its descendants visible.
+    The `*` is crucial for descendants.
+  */
+  .print-container,
+  .print-container * {
+    visibility: visible;
+  }
+
+  /*
+    Position the print container at the top-left of the page.
+    This also handles cases where its parent might be hidden by
+    another CSS rule.
+  */
+  .print-container {
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
+
+  /* Ensure the print button and other non-print elements are not visible */
+  .no-print,
+  .print-button {
+    display: none !important;
+  }
+
+  /* Optional: Reset body styles for a clean printout */
+  body {
+    margin: 0;
+    padding: 0;
+  }
+}

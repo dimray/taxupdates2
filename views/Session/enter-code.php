@@ -21,9 +21,12 @@
 
 <form class="generic-form" action="/session/check-verification-code" method="POST" id="collect-device-data">
 
-    <div class="form-input">
-        <label for="authentication_code">Verification Code</label>
-        <input type="text" name="authentication_code" id="authentication_code" autofocus>
+    <div>
+        <div class="form-input">
+            <label for="authentication_code">Verification Code</label>
+            <input type="text" name="authentication_code" id="authentication_code" autofocus>
+        </div>
+
     </div>
 
     <input type="hidden" name="email" value="<?= esc($email) ?>" id="email">

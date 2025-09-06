@@ -158,7 +158,7 @@ abstract class Model
     }
 
     private array $allowedColumns =  [
-        'email_hash',
+        'email',
         'nino_hash',
         'access_token',
         'refresh_token',

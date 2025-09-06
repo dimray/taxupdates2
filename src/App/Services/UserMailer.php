@@ -20,8 +20,8 @@ class UserMailer
     public function handleEmailing(array $user, string $subject, string $template): array
     {
         $user_id = (int) $user['id'];
-        $user_email = Encryption::decrypt($user['email']);
-        $user_name = Encryption::decrypt($user['name']);
+        $user_email = $user['email'];
+        $user_name = $user['name'];
 
         $last_sent = isset($user['last_email_sent_at']) ? strtotime($user['last_email_sent_at']) : 0;
         $send_count = (int) $user['email_send_count'] ?? 0;

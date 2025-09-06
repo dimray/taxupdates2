@@ -1,7 +1,7 @@
    <p>To request authorisation, enter the client's postcode and select whether you are the main or supporting agent.</p>
 
-   <p>The postcode must match the UK postcode on record with HMRC. If your client does not have a UK postcode there is
-       no facility to request agent authorisation through MTD Software.</p>
+   <p>The postcode must match the UK postcode on record with HMRC. If your client does not have a UK postcode agent
+       authorisation cannot be requested through MTD software.</p>
 
    <form class="generic-form" action="/agent-authorisation/create-new-authorisation" method="GET">
        <div>

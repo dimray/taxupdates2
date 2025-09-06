@@ -7,43 +7,32 @@ namespace App\Helpers;
 class AgentHelper
 {
 
-    public static function unsetClientSession()
+    public static function setClientSession(array $data): bool
     {
-        unset(
-            $_SESSION['nino'],
-            $_SESSION['client_name'],
-            $_SESSION['client_id'],
-            $_SESSION['business_id'],
-            $_SESSION['type_of_business'],
-            $_SESSION['trading_name'],
-            $_SESSION['clients_to_delete'],
-            $_SESSION['agent_type'],
-            $_SESSION['period_type'],
-            $_SESSION['period_start_date'],
-            $_SESSION['period_end_date']
-        );
+        $client_id = (int) $data['client_id'] ?? '';
+        $nino = $data['nino'] ?? '';
+        $client_name = $data['client_name'] ?? '';
+
+        if (empty($nino) || empty($client_id) || empty($client_name)) {
+            return false;
+        }
+
+        $_SESSION['client']['nino'] = $nino;
+        $_SESSION['client']['name'] = $client_name;
+        $_SESSION['client']['id'] = $client_id;
+
+        return true;
     }
 
-    // used by Firm and Clients
-    public static function paginate(int $total_items, int $per_page, array $get): array
+
+    public static function isSupportingAgent(): bool
     {
-        $current_page = isset($get['page']) ? (int) $get['page'] : 1;
-        $current_page = max($current_page, 1);
+        $supporting_agent = false;
 
-        $total_pages = (int) ceil($total_items / $per_page);
-        $offset = ($current_page - 1) * $per_page;
+        if (isset($_SESSION['agent_type']) && $_SESSION['agent_type'] === "supporting") {
+            $supporting_agent = true;
+        }
 
-        return [
-
-            'per_page' => $per_page,
-            'offset' => $offset,
-            'total_pages' => $total_pages,
-            'total_items' => $total_items,
-            'current_page' => $current_page,
-            'has_prev_page' => $current_page > 1,
-            'has_next_page' => $current_page < $total_pages,
-            'next_page' => $current_page < $total_pages ? $current_page + 1 : null,
-            'prev_page' => $current_page > 1 ? $current_page - 1 : null,
-        ];
+        return $supporting_agent;
     }
 }

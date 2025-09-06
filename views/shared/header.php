@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="/styles/list.css">
     <link rel="stylesheet" href="/styles/table.css">
     <link rel="stylesheet" href="/styles/clients.css">
+    <link rel="stylesheet" href="/styles/print.css">
 
 </head>
 

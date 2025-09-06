@@ -24,56 +24,33 @@ class Clients extends Controller
     {
         //show-clients form comes here. This redirects to various functions depending which checkboxes are ticked or buttons clicked          
 
-        AgentHelper::unsetClientSession();
+        unset($_SESSION['client']);
 
-        // var_dump($this->request->post);
-        // exit;
+        if (isset($this->request->post)) {
+            if (!AgentHelper::setClientSession($this->request->post)) {
+                return $this->redirect("/clients/show-clients");
+            }
+        }
 
         if (isset($this->request->post['select_client'])) {
 
-            $client_id = (int) $this->request->post['client_id'] ?? '';
-            $nino = $this->request->post['nino'] ?? '';
-            $client_name = $this->request->post['client_name'] ?? '';
-            $check_authorisation = $client['check_authorisation'] ?? null;
-            $authorisation = $client['authorisation'] ?? null;
-
-            if (empty($nino) || empty($client_id) || empty($client_name)) {
-                return $this->redirect("/clients/show-clients");
-            }
-
-            $_SESSION['client']['nino'] = $nino;
-            $_SESSION['client']['name'] = $client_name;
-            $_SESSION['client']['id'] = $client_id;
+            $check_authorisation = $this->request->post['check_authorisation'] ?? null;
+            $authorisation = $this->request->post['authorisation'] ?? null;
 
             if (!empty($check_authorisation)) {
                 return $this->redirect("/agent-authorisation/request-status-of-relationship");
             }
 
-            if ($authorisation === null) {
+            if (empty($authorisation)) {
                 return $this->redirect("/agent-authorisation/unauthorised");
             }
 
             $_SESSION['client']['agent_type'] = $authorisation;
 
             return $this->redirect("/business-details/list-all-businesses");
-        }
+        } elseif (isset($this->request->post['show_submissions'])) {
 
-
-        if (isset($this->request->post['show_submissions'])) {
-
-            $client_id = (int)$this->request->post['show_submissions'];
-            $client = $this->request->post['clients'][$client_id] ?? null;
-            $authorisation = $client['authorisation'] ?? "";
-            $client_name = $client['client_name'] ?? "";
-            $_SESSION['agent_type'] = $authorisation;
-            $_SESSION['client_id'] = $client_id;
-            $_SESSION['client_name'] = $client_name;
-
-
-
-            if (isset($client['nino'])) {
-                $_SESSION['nino'] = $client['nino'];
-            }
+            // sets the agent session above, then redirects here
 
             return $this->redirect("/submissions/get-submissions");
         }
@@ -83,7 +60,7 @@ class Clients extends Controller
 
     public function showClients()
     {
-        AgentHelper::unsetClientSession();
+        unset($_SESSION['client']);
 
         $firm_id = $_SESSION['firm_id'];
         $clients = [];
@@ -105,7 +82,7 @@ class Clients extends Controller
 
             if ($total_clients > 0) {
 
-                $pagination = AgentHelper::paginate($total_clients, self::CLIENTS_PER_PAGE, $this->request->get ?? []);
+                $pagination = Helper::paginate($total_clients, self::CLIENTS_PER_PAGE, $this->request->get ?? []);
 
                 $offset = $pagination['offset'];
 
@@ -125,11 +102,14 @@ class Clients extends Controller
     // links to search form in show view
     {
         $search_nino = $this->request->post['search_nino'] ?? null;
+
         $firm_id = $_SESSION['firm_id'];
 
         if ($search_nino) {
             $search_nino = trim(strtoupper($search_nino));
-            $search_result = $this->client_agent->findClientByNino($search_nino, $firm_id);
+            $nino_hash = Helper::getHash($search_nino);
+
+            $search_result = $this->client_agent->findClientByNino($nino_hash, $firm_id);
 
             if ($search_result) {
                 $_SESSION['client_search_result'] = $search_result;
@@ -152,7 +132,7 @@ class Clients extends Controller
 
     public function uploadClients()
     {
-        AgentHelper::unsetClientSession();
+        unset($_SESSION['client']);
 
         $errors = $this->flashErrors();
 

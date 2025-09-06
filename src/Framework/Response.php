@@ -51,4 +51,14 @@ class Response
 
         echo $this->body;
     }
+
+    public function download(string $content, string $filename, string $content_type = 'application/octet-stream'): void
+    {
+        $this->setStatusCode(200);
+        $this->addHeader("Content-Type: $content_type");
+        $this->addHeader("Content-Disposition: attachment; filename=\"" . $filename . "\"");
+        $this->addHeader("Content-Length: " . strlen($content));
+
+        $this->setBody($content);
+    }
 }

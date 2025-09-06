@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use App\Validate;
+use App\Flash;
 use Framework\Controller;
 use Framework\Csrf;
 use Framework\Encryption;
 use App\Models\User;
 use App\Helpers\Helper;
-
-use App\Validate;
-use App\Flash;
 use App\Models\Agent;
 use App\Models\Individual;
 use App\Models\UserDevice;
@@ -94,9 +93,7 @@ class Session extends Controller
             return $this->redirect("/session/new?email=" . urlencode($email));
         }
 
-        $email_hash = Helper::getHash($email);
-
-        $user = $this->user->findUserBy("email_hash", $email_hash);
+        $user = $this->user->findUserBy("email", $email);
 
         if (!$user) {
             $this->addError("The combination of email and password is not recognised");
@@ -177,7 +174,7 @@ class Session extends Controller
             $template = "Session/verification-email";
             $email_response = $this->user_mailer->handleEmailing($user, $subject, $template);
 
-            $user_email = Encryption::decrypt($user['email']);
+            $user_email = $user['email'];
 
             if (!$email_response['success']) {
                 $this->addError($email_response['message'] ?? '');
@@ -223,9 +220,7 @@ class Session extends Controller
         // find the user
         $email = strtolower(trim($this->request->post['email']));
 
-        $email_hash = Helper::getHash($email);
-
-        $user = $this->user->findUserBy("email_hash", $email_hash);
+        $user = $this->user->findUserBy("email", $email);
 
         if (!$user) {
             Flash::addMessage("Unable to find your account. Please try to login again.", Flash::WARNING);
@@ -250,7 +245,7 @@ class Session extends Controller
             Flash::addMessage($response['message'], Flash::SUCCESS);
 
             // get the updated user
-            $updated_user = $this->user->findUserBy("email_hash", $email_hash);
+            $updated_user = $this->user->findUserBy("email", $email);
 
             $this->user_login->loginUser($updated_user);
 
@@ -282,9 +277,7 @@ class Session extends Controller
     {
         $email = strtolower(trim($this->request->get['email'] ?? ""));
 
-        $email_hash = Helper::getHash($email);
-
-        $user = $this->user->findUserBy("email_hash", $email_hash);
+        $user = $this->user->findUserBy("email", $email);
 
         if ($user) {
 

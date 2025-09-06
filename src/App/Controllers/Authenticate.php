@@ -18,7 +18,7 @@ class Authenticate extends Controller
 
         $user_role = $_SESSION['user_role'];
 
-        $client_name = $_SESSION['client_name'] ?? null;
+        $client_name = $_SESSION['client']['name'] ?? null;
 
         $hide_tax_year = true;
 
@@ -39,11 +39,11 @@ class Authenticate extends Controller
             $scope = "write:self-assessment read:self-assessment";
         }
 
-        // TO DO: add read and write self-assessment to agent when get error
+        // Add read and write self-assessment scopes to agent if a client nino is set
         if ($role === "agent") {
             $scope = "read:sent-invitations read:check-relationship write:sent-invitations write:cancel-invitations";
 
-            if (isset($_SESSION['nino'])) {
+            if (isset($_SESSION['client']['nino'])) {
                 $scope .= " " . "read:self-assessment write:self-assessment";
             }
         }

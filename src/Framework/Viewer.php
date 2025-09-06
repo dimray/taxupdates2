@@ -12,7 +12,7 @@ class Viewer
 
         // Capture the view output
         ob_start();
-        require ROOT_PATH . "/views/$template";
+        require ROOT_PATH . "views/$template";
         $content = ob_get_clean();
 
         // If no layout specified, return raw content
@@ -22,7 +22,7 @@ class Viewer
 
         // Render content inside specified layout
         ob_start();
-        require ROOT_PATH . "/views/layouts/{$layout}.php";
+        require ROOT_PATH . "views/layouts/{$layout}.php";
         return ob_get_clean();
     }
 

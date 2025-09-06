@@ -69,9 +69,8 @@ class ClientAgent extends Model
     }
 
     // used in Clients
-    public function findClientByNino(string $nino, int $agent_firm_id): bool|array
+    public function findClientByNino(string $nino_hash, int $agent_firm_id): bool|array
     {
-        $nino_hash = Helper::getHash($nino);
 
         $pdo = $this->database->getConnection();
 

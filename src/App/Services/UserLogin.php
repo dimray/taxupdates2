@@ -27,9 +27,9 @@ class UserLogin
         // set session
         $_SESSION['user_id'] = (int) $user['id'];
 
-        $_SESSION['email'] = Encryption::decrypt($user['email']);
+        $_SESSION['email'] = $user['email'];
 
-        $_SESSION['user_name'] = Encryption::decrypt($user['name']);
+        $_SESSION['user_name'] = $user['name'];
 
         $_SESSION['user_role'] = $user['user_role'];
 

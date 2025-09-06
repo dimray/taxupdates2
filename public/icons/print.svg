@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg width="800px" height="800px" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg" class="icon">
+  <defs>
+    <clipPath id="clip0_15_82">
+      <rect width="24" height="24" fill="white"/>
+    </clipPath>
+    <filter id="filter0_d_15_82" x="0" y="0" width="24" height="24" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="1"/>
+      <feGaussianBlur stdDeviation="1"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_15_82"/>
+      <feBlend mode="normal" in2="SourceGraphic" result="shape"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#clip0_15_82)">
+    <circle cx="12" cy="12" r="12" fill="white"/>
+    <g filter="url(#filter0_d_15_82)">
+      <path fill="black" d="M18.596 20.596v-3h-3v-1h3v-3h1v3h3v1h-3v3h-1ZM4.576 9.616h14.847H4.577ZM7 20v-4H3.577v-5.385q0-.85.577-1.425t1.423-.575h12.846q.85 0 1.425.575t.575 1.425v.82q-.238-.077-.488-.14t-.512-.08v-.577q0-.425-.287-.724t-.713-.299H5.577q-.425 0-.713.288t-.287.712V15H7v-1.538h7.473q-.188.232-.344.473q-.156.24-.279.527H8V19h5.523q.079.28.221.521l.287.479H7Zm9-11.385v-3H8v3H7v-4h10v4h-1Z"/>
+    </g>
+  </g>
+</svg>

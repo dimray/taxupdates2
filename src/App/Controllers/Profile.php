@@ -56,8 +56,8 @@ class Profile extends Controller
 
         if ($user) {
 
-            $profile['name'] = Encryption::decrypt($user['name']);
-            $profile['email'] = Encryption::decrypt($user['email']);
+            $profile['name'] = ($user['name']);
+            $profile['email'] = ($user['email']);
 
             if (isset($_SESSION['nino'])) {
                 $profile['nino'] = $_SESSION['nino'];
@@ -102,7 +102,7 @@ class Profile extends Controller
         }
 
         $data['id'] = $_SESSION['user_id'];
-        $data['name'] = Encryption::encrypt($name);
+        $data['name'] = $name;
 
         $this->user->update($data);
 
@@ -139,8 +139,7 @@ class Profile extends Controller
 
         // check email is unique
         $duplicate = false;
-        $email_hash = Helper::getHash($new_email);
-        $duplicate = $this->user->findUserBy("email_hash", $email_hash);
+        $duplicate = $this->user->findUserBy("email", $new_email);
 
         if ($duplicate) {
 
@@ -153,16 +152,14 @@ class Profile extends Controller
 
         if ($user) {
 
-            $encrypted_email = Encryption::encrypt($new_email);
-
             // save the new email in database
             $this->user->update([
                 'id' => $_SESSION['user_id'],
-                'new_email' => $encrypted_email
+                'new_email' => $new_email
             ]);
 
             // ensure code is sent to the new email address
-            $user['email'] = $encrypted_email;
+            $user['email'] = $new_email;
 
             $subject = "TaxUpdates - Confirm Email Address";
             $template = "Profile/email-reset-email";
@@ -241,20 +238,17 @@ class Profile extends Controller
         }
 
         // check code and update email address
-        $encrypted_new_email = $user['new_email'] ?? '';
+        $new_email = $user['new_email'] ?? '';
 
         // var_dump(Encryption::decrypt($encrypted_new_email));
         // exit;
 
-        if (empty($encrypted_new_email)) {
+        if (empty($new_email)) {
             Flash::addMessage("An error occurred. Please try again.", Flash::WARNING);
             return $this->redirect("/profile/show-profile");
         }
 
-        $unencrypted_new_email = Encryption::decrypt($encrypted_new_email);
-        $new_email_hash = Helper::getHash($unencrypted_new_email);
-
-        $response = $this->user_validator->checkAuthenticationCode("profile", $authentication_code, $user, [], "", $encrypted_new_email, $new_email_hash);
+        $response = $this->user_validator->checkAuthenticationCode("profile", $authentication_code, $user, [], "", $new_email);
 
         if ($response['success']) {
             Flash::addMessage($response['message'], Flash::SUCCESS);

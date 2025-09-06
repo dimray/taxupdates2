@@ -14,13 +14,13 @@ class UserValidator
 
     private const MAX_ATTEMPTS = 7;
 
-    public function checkAuthenticationCode(string $controller, string $authentication_code, array $user, array $device_data = [], string $password_hash = "", string $encrypted_new_email = "", string $new_email_hash = ""): array
+    public function checkAuthenticationCode(string $controller, string $authentication_code, array $user, array $device_data = [], string $password_hash = "", string $new_email = ""): array
     {
         $authentication_attempts = $user['authentication_code_attempts'] ?? 0;
 
         $user_id = (int) $user['id'];
 
-        $user_email = Encryption::decrypt($user['email']) ?? '';
+        $user_email = $user['email'] ?? '';
 
         $expiry = isset($user['authentication_code_expiry']) ? strtotime($user['authentication_code_expiry']) : 0;
 
@@ -41,9 +41,8 @@ class UserValidator
             if (!empty($password_hash)) {
                 $data['password_hash'] = $password_hash;
             }
-            if (!empty($encrypted_new_email) && !empty($new_email_hash)) {
-                $data['email'] = $encrypted_new_email;
-                $data['email_hash'] = $new_email_hash;
+            if (!empty($new_email)) {
+                $data['email'] = $new_email;
             }
 
             $this->user->update($data);

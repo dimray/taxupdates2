@@ -1,11 +1,16 @@
 <form class="generic-form" action="/profile/update-name" method="POST">
 
-    <div class="form-input">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name" value="<?= esc($name) ?>">
+    <div>
+        <div class="form-input">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name" value="<?= esc($name) ?>">
+        </div>
+
     </div>
 
     <?php include ROOT_PATH . "views/shared/errors.php"; ?>
+
+
 
     <button type="submit" class="form-button">Update</button>
 

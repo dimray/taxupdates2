@@ -23,12 +23,13 @@ $router->group(["middleware" => "hide_tax_year"], function ($router) {
 
 $router->group(["namespace" => "Endpoints", "middleware" => "hide_tax_year"], function ($router) {
     $router->add("/agent-authorisation/{action}", ["controller" => "agent-authorisation"]);
+    $router->add("/agent-authorisation-test-support/{action}", ["controller" => "agent-authorisation-test-support"]);
 });
 
 $router->group(["namespace" => "Endpoints"], function ($router) {
-
     $router->add("/business-details/{action}", ["controller" => "business-details"]);
-    // $router->add("/agent-authorisation/{action}", ["controller" => "agent-authorisation"]);
+    $router->add("/obligations/{action}", ["controller" => "obligations"]);
+    $router->add("/self-employment/{action}", ["controller" => "self-employment"]);
 });
 
 $router->add("/", ["controller" => "home", "action" => "index"]);

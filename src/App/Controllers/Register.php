@@ -98,9 +98,9 @@ class Register extends Controller
 
         unset($data['password'], $data['confirm_password']);
 
-        $data['email_hash'] = Helper::getHash($data['email']);
-        $data['email'] = Encryption::encrypt($data['email']);
-        $data['name'] = Encryption::encrypt($data['name']);
+        // $data['email_hash'] = Helper::getHash($data['email']);
+        // $data['email'] = Encryption::encrypt($data['email']);
+        // $data['name'] = Encryption::encrypt($data['name']);
 
         if ($role === "individual") {
 
@@ -121,15 +121,15 @@ class Register extends Controller
         }
 
         // send email
-        $email_hash = $data['email_hash'];
+        $email = $data['email'];
 
-        $user = $this->user->findUserBy("email_hash", $email_hash);
+        $user = $this->user->findUserBy("email", $email);
         $subject = "Activate Your TaxUpdates Account";
         $template = "Register/activation-email";
 
         $response = $this->user_mailer->handleEmailing($user, $subject, $template);
 
-        $user_email = Encryption::decrypt($user['email']);
+        $user_email = $user['email'];
 
         if (!$response['success']) {
             $this->addError($response['message'] ?? '');
@@ -164,9 +164,7 @@ class Register extends Controller
     {
         $user_email = strtolower(trim($this->request->get['email'] ?? ""));
 
-        $email_hash =  Helper::getHash($user_email);
-
-        $user = $this->user->findUserBy("email_hash", $email_hash);
+        $user = $this->user->findUserBy("email", $user_email);
         $subject = "Activate Your TaxUpdates Account";
         $template = "Register/activation-email";
 
@@ -195,9 +193,7 @@ class Register extends Controller
 
         $user_email = strtolower(trim($this->request->post['email'])) ?? "";
 
-        $email_hash = Helper::getHash($user_email);
-
-        $user = $this->user->findUserBy("email_hash", $email_hash);
+        $user = $this->user->findUserBy("email", $user_email);
 
         if (!$user) {
             Flash::addMessage("Unable to find your account details. Please try registering again.", Flash::WARNING);
@@ -229,7 +225,7 @@ class Register extends Controller
             Flash::addMessage($response['message'], Flash::SUCCESS);
 
             // get the updated user
-            $updated_user = $this->user->findUserBy("email_hash", $email_hash);
+            $updated_user = $this->user->findUserBy("email", $user_email);
 
             $this->user_login->loginUser($updated_user);
 
@@ -311,9 +307,8 @@ class Register extends Controller
         // check email is unique
         $duplicate = false;
         $email = strtolower(trim($data['email']));
-        $email_hash = Helper::getHash($email);
 
-        $duplicate = $this->user->findUserBy("email_hash", $email_hash);
+        $duplicate = $this->user->findUserBy("email", $email);
 
         if ($duplicate) {
 

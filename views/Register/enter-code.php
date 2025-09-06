@@ -16,25 +16,27 @@
 
 
 <form class="generic-form" action="/register/activate-account" method="POST" id="collect-device-data">
+    <div>
+        <div class="form-input">
+            <label for="authentication_code">Activation Code</label>
+            <input type="text" name="authentication_code" id="authentication_code" autofocus>
+        </div>
 
-    <div class="form-input">
-        <label for="authentication_code">Activation Code</label>
-        <input type="text" name="authentication_code" id="authentication_code" autofocus>
+        <input type="hidden" name="email" value="<?= esc($email) ?>" id="email">
+        <input type="hidden" name="device_data" id="device_data">
+
+        <br>
+        <?php if ($timer != 0): ?>
+
+            <button id="countdown-button" class="form-button">Activate</button>
+
+        <?php else: ?>
+
+            <button class="form-button" type="submit">Activate</button>
+
+        <?php endif; ?>
+
     </div>
-
-    <input type="hidden" name="email" value="<?= esc($email) ?>" id="email">
-    <input type="hidden" name="device_data" id="device_data">
-
-
-    <?php if ($timer != 0): ?>
-
-        <button id="countdown-button" class="form-button">Activate</button>
-
-    <?php else: ?>
-
-        <button class="form-button" type="submit">Activate</button>
-
-    <?php endif; ?>
 
 </form>
 

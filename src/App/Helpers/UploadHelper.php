@@ -376,7 +376,7 @@ class UploadHelper
                 $key = trim($fields[0]);
                 $value = trim($fields[1]);
 
-                // Optional: skip blank keys
+                // skip blank keys
                 if ($key !== '') {
                     $result[$key] = $value;
                 }

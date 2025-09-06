@@ -42,6 +42,14 @@
     <script src="/scripts/copy-text.js"></script>
 <?php endif; ?>
 
+<?php if (!empty($include_file_upload_script)): ?>
+    <script src="/scripts/file-upload.js"></script>
+<?php endif; ?>
+
+<?php if (!empty($include_print_script)): ?>
+    <script src="/scripts/print.js"></script>
+<?php endif; ?>
+
 </body>
 
 </html>

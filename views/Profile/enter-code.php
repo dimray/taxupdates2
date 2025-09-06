@@ -16,14 +16,16 @@
 
 <form class="generic-form" action="/profile/update-email" method="POST">
 
-    <div class="form-input">
-        <label for="authentication_code">Code</label>
-        <input type="text" name="authentication_code" id="authentication_code">
-    </div>
+    <div>
+        <div class="form-input">
+            <label for="authentication_code">Code</label>
+            <input type="text" name="authentication_code" id="authentication_code">
+        </div>
 
-    <div class="form-input">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password">
+        <div class="form-input">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+        </div>
     </div>
 
     <button class="form-button" id="countdown-button">Confirm New Email</button>

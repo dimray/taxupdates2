@@ -1,13 +1,15 @@
 <form class="generic-form" action="/session/create" method="POST" id="collect-device-data">
+    <div>
+        <div class="form-input">
+            <label for="email">Email</label>
+            <input type="text" name="email" id="email" value="<?= esc($email ?? '') ?>">
+        </div>
 
-    <div class="form-input">
-        <label for="email">Email</label>
-        <input type="text" name="email" id="email" value="<?= esc($email ?? '') ?>">
-    </div>
+        <div class="form-input">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">
+        </div>
 
-    <div class="form-input">
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password">
     </div>
 
     <input type="hidden" name="device_data" id="device_data">
