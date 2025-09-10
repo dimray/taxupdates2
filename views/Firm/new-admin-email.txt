@@ -1,0 +1,7 @@
+Hello <?= $name ?>,
+
+You have been given the Firm Admin role in your firm's TaxUpdates account.
+
+The Admin deals with billing, is able to remove users, and can delete the firm's account.
+
+The role was transferred to you by the previous Admin.

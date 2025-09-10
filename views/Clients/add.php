@@ -24,7 +24,7 @@
 
     <?php include ROOT_PATH . "views/shared/errors.php"; ?>
 
-    <button type="submit" class="link">Submit</button>
+    <button type="submit" class="button">Submit</button>
 </form>
 
 

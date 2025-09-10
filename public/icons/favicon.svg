@@ -1,0 +1,7 @@
+<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Horizontal top bar of the T -->
+  <rect x="10" y="10" width="80" height="15" fill="black" />
+  
+  <!-- Vertical stem of the T -->
+  <rect x="40" y="25" width="20" height="65" fill="black" />
+</svg>

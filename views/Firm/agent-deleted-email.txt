@@ -1,0 +1,9 @@
+Hello <?= $name ?>,
+
+Your profile with TaxUpdates has been removed by your Firm Admin.
+
+If you don't believe your account should have been removed, please contact the Firm Admin.
+
+To use TaxUpdates again, you will need to register a new account.
+
+

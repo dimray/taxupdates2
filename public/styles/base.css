@@ -7,6 +7,10 @@ html {
   pointer-events: none;
 }
 
+main {
+  margin-inline: 0.5rem;
+}
+
 p {
   margin-block: 1rem;
   max-width: 800px;
@@ -17,22 +21,6 @@ hr {
   max-width: 800px;
   margin-inline-start: 0;
   margin-inline-end: auto;
-}
-
-.button {
-  text-decoration: none;
-  text-transform: uppercase;
-  border: 1px solid hsla(0, 0%, 0%, 80%);
-  padding-inline: 0.8rem;
-  padding-block: 0.3rem;
-  background-color: hsla(0, 0%, 0%, 70%);
-  color: white;
-  border-radius: 5px;
-}
-
-.button:hover {
-  cursor: pointer;
-  background-color: hsla(0, 0%, 0%, 80%);
 }
 
 .link,
@@ -56,33 +44,6 @@ button.link:hover,
 button.link:focus {
   color: hsl(240, 100%, 40%);
   background-color: transparent;
-}
-
-.confirm-delete {
-  background: hsla(0, 100%, 50%, 20%);
-  border: none;
-  font: inherit;
-  cursor: pointer;
-  color: hsla(0, 100%, 20%, 100%);
-}
-
-.confirm-delete:hover,
-.confirm-delete:focus {
-  background: hsla(0, 100%, 50%, 30%);
-  cursor: pointer;
-}
-
-.x-delete {
-  border: none;
-  color: red;
-  background: hsla(0, 100%, 50%, 5%);
-  border-radius: 5px;
-}
-
-.x-delete:hover,
-.x-delete:focus {
-  background: hsla(0, 100%, 50%, 30%);
-  cursor: pointer;
 }
 
 .word-break span {
@@ -114,4 +75,10 @@ button.link:focus {
 .copy-button:focus,
 .open-dialog:focus {
   background-color: hsla(0, 0%, 0%, 10%);
+}
+
+.either-or {
+  font-weight: bold;
+  text-decoration: underline;
+  text-transform: uppercase;
 }

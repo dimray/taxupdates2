@@ -34,6 +34,8 @@ class ApiAgentAuthorisation extends ApiCalls
 
         $response_array = $this->sendPostRequest($url, $payload, $headers);
 
+
+
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];
         $response_headers = $response_array['headers'];

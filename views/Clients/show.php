@@ -1,13 +1,17 @@
 <?php if (!empty($clients)): ?>
 
-<div class="client-list-container">
+<div class="long-table">
     <table>
         <thead>
             <tr>
                 <th>Name</th>
                 <th>NI Number</th>
+                <th>Agent Status</th>
+                <!-- <th>Update Status</th>
+                    <th>Submissions</th> -->
+                <!-- <th>Filing</th> -->
 
-                <th colspan="2" class="center-text">HMRC Authorisation</th>
+
             </tr>
             <tr>
                 <?php if (count($clients) > 1): ?>
@@ -20,65 +24,84 @@
                 <th></th>
                 <?php endif; ?>
 
-                <th class="table-subheading">Current Status</th>
-                <th class="table-subheading word-break"><span>Update</span> <span>Status</span></th>
+                <!-- <th class="table-subheading">Agent Type</th>
+                    <th class="table-subheading word-break"><span>Update</span> <span>Status</span></th> -->
             </tr>
 
         </thead>
         <tbody>
 
             <?php foreach ($clients as $client): ?>
+
             <tr>
-                <td><?= esc($client['client_name']) ?></td>
-                <td><?= esc($client['nino']) ?></td>
-                <td><?= esc($client['authorisation'] ?? "unauthorised") ?></td>
-
-
-                <td>
-                    <form class="inline-form show-clients" action="/clients/index" method="POST">
-                        <input type="hidden" name="select_client" value="true">
-                        <input type="hidden" name="client_id" value="<?= esc($client['client_id']) ?>">
-                        <input type="hidden" name="client_name" value="<?= esc($client['client_name']) ?>">
-                        <input type="hidden" name="nino" value="<?= esc($client['nino']) ?>">
-                        <input type="hidden" name="authorisation" value="<?= esc($client['authorisation'] ?? null) ?>">
-
-                        <input type="checkbox" name="check_authorisation" value="1"
-                            title="Update HMRC authorisation status">
-
-                        <button class="link" type="submit">Select</button>
-                    </form>
+                <td data-label="Name"><?= esc($client['client_name']) ?></td>
+                <td data-label="NI Number"><?= esc($client['nino']) ?></td>
+                <td data-label="Agent Status">
+                    <?= $client['authorisation'] ? esc($client['authorisation'] . " agent") : "unauthorised" ?>
                 </td>
 
-                <?php if ($client['authorisation']): ?>
-                <td>
+
+                <td data-label="">
                     <form action="/clients/index" method="POST">
 
                         <input type="hidden" name="client_id" value="<?= esc($client['client_id']) ?>">
                         <input type="hidden" name="client_name" value="<?= esc($client['client_name']) ?>">
                         <input type="hidden" name="nino" value="<?= esc($client['nino']) ?>">
+                        <input type="hidden" name="authorisation" value="<?= esc($client['authorisation'] ?? null) ?>">
+
+                        <input type="hidden" name="update_status" value="true">
+
+                        <button class="link" type="submit">Update Status</button>
+                    </form>
+                </td>
+
+                <?php if ($client['authorisation']): ?>
+                <td data-label="">
+                    <form action="/clients/index" method="POST">
+
+                        <input type="hidden" name="client_id" value="<?= esc($client['client_id']) ?>">
+                        <input type="hidden" name="client_name" value="<?= esc($client['client_name']) ?>">
+                        <input type="hidden" name="nino" value="<?= esc($client['nino']) ?>">
+
                         <input type="hidden" name="show_submissions" value="true">
 
-                        <button class="link" type="submit">Submissions</button>
+                        <button class="link" type="submit">View Submissions</button>
 
+                    </form>
+
+                </td>
+
+                <td data-label="">
+                    <form action="/clients/index" method="POST">
+                        <input type="hidden" name="client_id" value="<?= esc($client['client_id']) ?>">
+                        <input type="hidden" name="client_name" value="<?= esc($client['client_name']) ?>">
+                        <input type="hidden" name="nino" value="<?= esc($client['nino']) ?>">
+                        <input type="hidden" name="authorisation" value="<?= esc($client['authorisation'] ?? null) ?>">
+
+                        <input type="hidden" name="select_client" value="true">
+
+
+                        <button class="button" type="submit">Select Client</button>
                     </form>
 
                 </td>
                 <?php else: ?>
                 <td></td>
+                <td></td>
                 <?php endif; ?>
 
                 <?php if ($search_result): ?>
-                <td>
+                <td data-label="">
                     <p><a href="/clients/show-clients">Clear Search</a></p>
                 </td>
                 <?php endif; ?>
 
-                <td>
+                <td data-label="">
                     <form action="/clients/confirm-delete" method="POST">
 
                         <input type="hidden" name="client_id" value="<?= esc($client['client_id']) ?>">
                         <input type="hidden" name="client_name" value="<?= esc($client['client_name']) ?>">
-                        <button type="submit" class="x-delete">x</button>
+                        <button type="submit" class="x-delete">Delete</button>
 
 
                     </form>
@@ -92,13 +115,13 @@
     </table>
 </div>
 
-
+<?php include ROOT_PATH . "views/shared/pagination.php" ?>
 
 <?php include ROOT_PATH . "views/shared/errors.php"; ?>
 
 
 
-<?php include ROOT_PATH . "views/shared/pagination.php" ?>
+<hr>
 
 <h3>Search For A Client</h3>
 
@@ -114,7 +137,8 @@
 
 </form>
 
-<br>
+<hr>
+
 
 <?php else: ?>
 
@@ -126,11 +150,6 @@
 
 <p><a href="/clients/add-clients">Add Clients</a></p>
 
-<?php if (!empty($clients)): ?>
-
-<p><a href="/clients/delete-clients">Delete Clients</a></p>
-
-<?php endif; ?>
 
 <?php $include_clients_show_script = true; ?>
 <?php $include_scroll_to_errors_script = true; ?>

@@ -15,16 +15,9 @@ class Uploads extends Controller
 
     public function createCumulativeUpload()
     {
-        unset($_SESSION['cumulative_data']);
-
-        // period dates are set if coming from obligations, 
-        // but also redirects here if there is an error after dates have already been set
-        if (isset($this->request->get['period_start_date'])) {
-            $_SESSION['period_start_date'] = $this->request->get['period_start_date'];
-        }
-
-        if (isset($this->request->get['period_end_date'])) {
-            $_SESSION['period_end_date'] = $this->request->get['period_end_date'];
+        // keep foreign property session in case adding more properties
+        if ($_SESSION['type_of_business'] !== "foreign-property") {
+            unset($_SESSION['cumulative_data']);
         }
 
         $errors = $this->flashErrors();
@@ -38,34 +31,59 @@ class Uploads extends Controller
 
         $hide_tax_year = true;
 
+        $type_of_business = $_SESSION['type_of_business'];
+
         $form_action = "/uploads/process-cumulative-upload";
 
-        return $this->view("Uploads/cumulative-upload.php", compact("heading", "business_details", "errors", "hide_tax_year", "form_action"));
+        $country_codes = [];
+
+        if ($type_of_business === "foreign-property") {
+            $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
+        }
+
+        return $this->view("Uploads/cumulative-upload.php", compact("heading", "business_details", "type_of_business", "errors", "hide_tax_year", "form_action", "country_codes"));
     }
 
     public function processCumulativeUpload()
     {
-        if (empty($this->request->post['pasted_data']) && !isset($this->request->files['csv_upload'])) {
-            return $this->redirect("/cumulative-upload/create");
+
+
+        if ($_SESSION['type_of_business'] === "foreign-property") {
+            // set country code and foreign tax credit relief
+            $country_code = $this->request->post['country_code'] ?? '';
+
+            if (empty($country_code)) {
+                $this->addError("Country is required");
+                return $this->redirect("/uploads/create-cumulative-upload");
+            }
+
+            $foreign_tax_credit_relief = isset($this->request->post['foreign_tax_credit_relief']) ? true : false;
+        }
+
+        // keep foreign property session in case adding more properties
+        if ($_SESSION['type_of_business'] !== "foreign-property") {
+            unset($_SESSION['cumulative_data']);
+        }
+
+        // check for no data
+        if (
+            (empty($this->request->post['pasted_data']) || !isset($this->request->post['pasted_data'])) &&
+            (isset($this->request->files['csv_upload']) && $this->request->files['csv_upload']['error'] == UPLOAD_ERR_NO_FILE)
+        ) {
+            $this->addError("No data submitted");
+            return $this->redirect("/uploads/create-cumulative-upload");
+        }
+
+        // check for double data
+        if (
+            !empty($this->request->post['pasted_data']) &&
+            (isset($this->request->files['csv_upload']) && $this->request->files['csv_upload']['error'] != UPLOAD_ERR_NO_FILE)
+        ) {
+            $_SESSION['errors'] = ["Either upload a file or paste your data, not both."];
+            return $this->redirect("/uploads/create-cumulative-upload");
         }
 
         $parsed_data = [];
-
-        // csv upload
-        if (isset($this->request->files['csv_upload'])) {
-
-            $file = $this->request->files['csv_upload'] ?? null;
-
-            $errors = UploadHelper::processCsvErrors($file, 200, 2);
-
-            if (!empty($errors)) {
-
-                $_SESSION['errors'] = $errors;
-                return $this->redirect("/cumulative-upload/create");
-            }
-
-            $parsed_data = UploadHelper::parseKeyValueCsv($file);
-        }
 
         // data paste
         if (isset($this->request->post['pasted_data']) && !empty($this->request->post['pasted_data'])) {
@@ -77,10 +95,23 @@ class Uploads extends Controller
             if (!empty($errors)) {
 
                 $_SESSION['errors'] = $errors;
-                return $this->redirect("/cumulative-upload/create");
+                return $this->redirect("/uploads/create-cumulative-upload");
             }
 
             $parsed_data = UploadHelper::parseDataToKeyValueArray($pasted_data, ['name', 'nino']);
+        } else {
+            // csv upload
+            $file = $this->request->files['csv_upload'] ?? null;
+
+            $errors = UploadHelper::processCsvErrors($file, 200, 2);
+
+            if (!empty($errors)) {
+
+                $_SESSION['errors'] = $errors;
+                return $this->redirect("/uploads/create-cumulative-upload");
+            }
+
+            $parsed_data = UploadHelper::parseKeyValueCsv($file);
         }
 
         $camel_case_data = SubmissionsHelper::camelCaseArrayKeys($parsed_data);
@@ -98,6 +129,15 @@ class Uploads extends Controller
             return $this->redirect("/uploads/create-cumulative-upload");
         }
 
+        if ($_SESSION['type_of_business'] === "foreign-property") {
+
+            $cumulative_data['foreignTaxCreditRelief'] = $foreign_tax_credit_relief;
+
+            $_SESSION['cumulative_data'][$_SESSION['business_id']][$country_code] = $cumulative_data;
+            // add more properties
+            return $this->redirect("/uploads/add-country");
+        }
+
         $_SESSION['cumulative_data'][$_SESSION['business_id']] = $cumulative_data;
 
         return $this->redirect("/uploads/approve-" . $_SESSION['type_of_business']);
@@ -113,7 +153,7 @@ class Uploads extends Controller
 
         if (empty($cumulative_data)) {
             Flash::addMessage("An error occurred, please try again", Flash::WARNING);
-            return $this->redirect("/cumulative-upload/create");
+            return $this->redirect("/uploads/create-cumulative-upload");
         }
 
         $errors = $this->flashErrors();
@@ -148,5 +188,141 @@ class Uploads extends Controller
                 "hide_tax_year"
             )
         );
+    }
+
+    public function approveUkProperty()
+    {
+        $business_details = Helper::setBusinessDetails();
+        $business_details['periodStartDate'] = $_SESSION['period_start_date'];
+        $business_details['periodEndDate'] = $_SESSION['period_end_date'];
+
+        $cumulative_data = $_SESSION['cumulative_data'][$_SESSION['business_id']] ?? "";
+
+        if (empty($cumulative_data)) {
+            Flash::addMessage("An error occurred, please try again", Flash::WARNING);
+            return $this->redirect("/uploads/create-cumulative-upload");
+        }
+
+        $errors = $this->flashErrors();
+
+        $income = $cumulative_data['income'] ?? [];
+        $expenses = $cumulative_data['expenses'] ?? [];
+        $rentaroom = $cumulative_data['rentARoom'] ?? [];
+        $residential_finance = $cumulative_data['residentialFinance'] ?? [];
+
+        if (!empty($rentaroom)) {
+            $rentaroom['rentsReceived'] = $rentaroom['rentARoomRentsReceived'] ?? 0;
+            $rentaroom['amountClaimed'] = $rentaroom['rentARoomAmountClaimed'] ?? 0;
+            unset($rentaroom['rentARoomRentsReceived'], $rentaroom['rentARoomAmountClaimed']);
+        }
+
+        $total_income = array_sum($income);
+        $total_expenses = array_sum($expenses);
+        $rentaroom_profit = (($rentaroom['rentsReceived'] ?? 0) - ($rentaroom['amountClaimed'] ?? 0));
+        $profit = $total_income + $rentaroom_profit - $total_expenses;
+
+        $heading = "Confirm Cumulative Summary";
+
+        $hide_tax_year = true;
+
+        return $this->view(
+            "Endpoints/PropertyBusiness/approve-cumulative-summary-uk.php",
+            compact(
+                "heading",
+                "business_details",
+                "errors",
+                "income",
+                "expenses",
+                "rentaroom",
+                "rentaroom_profit",
+                "residential_finance",
+                "total_income",
+                "total_expenses",
+                "profit",
+                "hide_tax_year"
+            )
+        );
+    }
+
+    public function addCountry()
+    {
+        $business_details = Helper::setBusinessDetails();
+        $business_details['periodStartDate'] = $_SESSION['period_start_date'];
+        $business_details['periodEndDate'] = $_SESSION['period_end_date'];
+
+        if ($_SESSION['type_of_business'] !== 'foreign-property' || empty($_SESSION['cumulative_data'][$_SESSION['business_id']])) {
+            return $this->redirect("/uploads/create-cumulative-upload");
+        }
+
+        $heading = "Cumulative Summary";
+
+        $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
+        $session_country_codes = array_keys($_SESSION['cumulative_data'][$_SESSION['business_id']]);
+        $country_names = [];
+
+        foreach ($session_country_codes as $code) {
+
+            foreach ($country_codes as $continent => $countries) {
+                if (isset($countries[$code])) {
+                    $country_names[] = $countries[$code];
+                    break;
+                }
+            }
+        }
+
+        return $this->view("Uploads/cumulative-add-country.php", compact("heading", "business_details", "country_names"));
+    }
+
+    public function approveForeignProperty()
+    {
+
+        $business_details = Helper::setBusinessDetails();
+        $business_details['periodStartDate'] = $_SESSION['period_start_date'];
+        $business_details['periodEndDate'] = $_SESSION['period_end_date'];
+
+
+        $foreign_property_data = $_SESSION['cumulative_data'][$_SESSION['business_id']] ?? "";
+
+        if (empty($foreign_property_data)) {
+            Flash::addMessage("An error occurred, please try again", Flash::WARNING);
+            return $this->redirect("/uploads/create-cumulative-upload");
+        }
+
+        $totals = [];
+
+        foreach ($foreign_property_data as $country_code => $country_data) {
+
+            $total_income = array_sum($country_data['income']);
+            $total_expenses = array_sum($country_data['expenses']);
+
+            $totals[$country_code] = [
+                'total_income' => $total_income,
+                'total_expenses' => $total_expenses
+            ];
+        }
+
+        $errors = $this->flashErrors();
+
+        $heading = "Confirm Cumulative Summary";
+
+        $hide_tax_year = true;
+
+        return $this->view(
+            "Endpoints/PropertyBusiness/approve-cumulative-summary-foreign.php",
+            compact(
+                "heading",
+                "business_details",
+                "errors",
+                "totals",
+                "hide_tax_year"
+            )
+        );
+
+        var_dump($foreign_property_data);
+        exit;
+
+        // get total income
+        // get total expenses
+        // for each country
     }
 }

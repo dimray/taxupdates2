@@ -37,12 +37,24 @@ class ApiErrors
             }
         }
 
+
         if ($code === 403 && $response_code === "INVALID_SCOPE") {
             return [
                 'type' => 'redirect',
                 'location' => '/authenticate/new'
             ];
         }
+
+        // code 401 is unauthorized
+        if ($code === 401) {
+            return [
+                'type' => 'redirect',
+                'location' => '/authenticate/new'
+            ];
+        }
+
+
+
 
         return ['type' => 'error'];
     }

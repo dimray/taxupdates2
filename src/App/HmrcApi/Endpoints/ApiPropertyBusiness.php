@@ -8,23 +8,19 @@ use App\HmrcApi\ApiCalls;
 use App\HmrcApi\ApiErrors;
 use App\Flash;
 
-class ApiSelfEmployment extends ApiCalls
+class ApiPropertyBusiness extends ApiCalls
 {
-
-    public function retrieveASelfEmploymentCumulativePeriodSummary(string $nino, string $business_id, string $tax_year): array
+    public function retrieveAPropertyCumulativePeriodSummary(string $location, string $nino, string $business_id, string $tax_year): array
     {
-        $url = $this->base_url .  "/individuals/business/self-employment/{$nino}/{$business_id}/cumulative/{$tax_year}";
-
-        $access_token  = $_SESSION['access_token'];
+        $url = $this->base_url . "/individuals/business/property/{$location}/{$nino}/{$business_id}/cumulative/{$tax_year}";
 
         $headers = [
-            "Accept: application/vnd.hmrc.5.0+json",
-            "Authorization: Bearer " . $access_token
+            "Accept: application/vnd.hmrc.6.0+json",
+            "Authorization: Bearer " . $_SESSION['access_token']
         ];
 
-        // test scenario headers
         $test_headers = [
-            // 'Gov-Test-Scenario: CONSOLIDATED_EXPENSES'
+            // 'Gov-Test-Scenario: NOT_FOUND'
         ];
 
         $headers = array_merge($headers, $test_headers);
@@ -34,7 +30,6 @@ class ApiSelfEmployment extends ApiCalls
         $response_code = $response_array['response_code'] ?? 0;
         $response = $response_array['response'] ?? [];
         $response_headers = $response_array['headers'] ?? [];
-
 
         if ($response_code === 200) {
             return [
@@ -46,34 +41,32 @@ class ApiSelfEmployment extends ApiCalls
         }
     }
 
-    public function createAndAmendASelfEmploymentCumulativePeriodSummary(string $nino, string $business_id, string $tax_year, array $cumulative_upload_data): array
+    public function createAndAmendAPropertyCumulativePeriodSummary(string $location, string $nino, string $business_id, string $tax_year, array $cumulative_data): array
     {
 
-        $url = $this->base_url . "/individuals/business/self-employment/{$nino}/{$business_id}/cumulative/{$tax_year}";
+        $url = $this->base_url . "/individuals/business/property/{$location}/{$nino}/{$business_id}/cumulative/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
+        $payload = json_encode($cumulative_data);
+
         $headers = [
-            "Accept: application/vnd.hmrc.5.0+json",
-            "Authorization: Bearer " . $access_token,
+            "Accept: application/vnd.hmrc.6.0+json",
+            "Authorization: Bearer " . $_SESSION['access_token'],
             "Content-Type: application/json"
         ];
 
-        // test scenario headers
         $test_headers = [
             // 'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);
 
-        $payload = json_encode($cumulative_upload_data);
-
         $response_array = $this->sendPutRequest($url, $payload, $headers);
 
+        $response_headers = $response_array['headers'];
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];
-        $response_headers = $response_array['headers'];
-
 
         if ($response_code === 204 || $response_code === 200) {
 

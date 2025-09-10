@@ -2,7 +2,7 @@
 
     <h2>Filing Obligations</h2>
 
-    <div class="table-container">
+    <div class="regular-table">
         <table>
 
             <thead>
@@ -19,11 +19,11 @@
             <tbody>
                 <?php foreach ($obligations as $obligation): ?>
                     <tr>
-                        <td><?= esc(formatDate($obligation["periodStartDate"])) ?></td>
-                        <td><?= esc(formatDate($obligation["periodEndDate"])) ?></td>
-                        <td><?= esc(formatDate($obligation["dueDate"])) ?></td>
-                        <td><?= esc(formatDate($obligation["receivedDate"] ?? '')) ?></td>
-                        <td><?= esc(ucfirst($obligation["status"])) ?></td>
+                        <td data-label="Start Date"><?= esc(formatDate($obligation["periodStartDate"])) ?></td>
+                        <td data-label="End Date"><?= esc(formatDate($obligation["periodEndDate"])) ?></td>
+                        <td data-label="Due Date"><?= esc(formatDate($obligation["dueDate"])) ?></td>
+                        <td data-label="Received Date"><?= esc(formatDate($obligation["receivedDate"] ?? '')) ?></td>
+                        <td data-label="Status"><?= esc(ucfirst($obligation["status"])) ?></td>
 
                         <?php if ($obligation['status'] === "fulfilled"): ?>
                             <td>

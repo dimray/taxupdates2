@@ -1,0 +1,50 @@
+button {
+}
+
+.button {
+  text-decoration: none;
+  text-transform: uppercase;
+  border: 1px solid hsla(0, 0%, 0%, 80%);
+  padding-inline: 0.8rem;
+  padding-block: 0.3rem;
+  background-color: hsla(0, 0%, 0%, 70%);
+  color: white;
+  border-radius: 5px;
+  line-height: 1rem;
+  width: fit-content;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: hsla(0, 0%, 0%, 80%);
+}
+
+.confirm-delete {
+  background: hsla(0, 100%, 50%, 20%);
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  color: hsla(0, 100%, 20%, 100%);
+  line-height: 1rem;
+}
+
+.confirm-delete:hover,
+.confirm-delete:focus {
+  background: hsla(0, 100%, 50%, 30%);
+  cursor: pointer;
+  color: hsla(0, 100%, 15%, 0.9);
+}
+
+.x-delete {
+  border: none;
+  color: red;
+  background: hsla(0, 100%, 50%, 5%);
+  border-radius: 5px;
+  line-height: 1rem;
+}
+
+.x-delete:hover,
+.x-delete:focus {
+  background: hsla(0, 100%, 50%, 30%);
+  cursor: pointer;
+}

@@ -201,4 +201,41 @@ class SubmissionsHelper
 
         return $submission_stats;
     }
+
+    public static function finaliseUkPropertyCumulativeSummaryArray(): void
+    {
+        $cumulative_data = $_SESSION['cumulative_data'][$_SESSION['business_id']];
+
+        if (!empty($cumulative_data['rentARoom'])) {
+
+            if (isset($cumulative_data['rentARoom']['rentARoomRentsReceived'])) {
+                $cumulative_data['income']['rentARoom']['rentsReceived'] = $cumulative_data['rentARoom']['rentARoomRentsReceived'];
+            }
+
+            if (isset($cumulative_data['rentARoom']['rentARoomAmountClaimed'])) {
+                $cumulative_data['expenses']['rentARoom']['amountClaimed'] = $cumulative_data['rentARoom']['rentARoomAmountClaimed'];
+            }
+
+            unset($cumulative_data['rentARoom']);
+        }
+
+        if (!empty($cumulative_data['residentialFinance'])) {
+
+            if (isset($cumulative_data['residentialFinance']['residentialFinancialCost'])) {
+                $cumulative_data['expenses']['residentialFinancialCost'] = $cumulative_data['residentialFinance']['residentialFinancialCost'];
+            }
+
+            if (isset($cumulative_data['residentialFinance']['residentialFinancialCostsCarriedForward'])) {
+                $cumulative_data['expenses']['residentialFinancialCostsCarriedForward'] = $cumulative_data['residentialFinance']['residentialFinancialCostsCarriedForward'];
+            }
+
+            unset($cumulative_data['residentialFinance']);
+        }
+
+        $final_array['fromDate'] = $_SESSION['period_start_date'];
+        $final_array['toDate'] = $_SESSION['period_end_date'];
+        $final_array['ukProperty'] = $cumulative_data;
+
+        $_SESSION['cumulative_data'][$_SESSION['business_id']] = $final_array;
+    }
 }

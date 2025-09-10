@@ -50,6 +50,10 @@
     <script src="/scripts/print.js"></script>
 <?php endif; ?>
 
+<!-- always runs as needed for header menu -->
+<script src="/scripts/details-summary.js"></script>
+<script src="/scripts/mobile-nav.js"></script>
+
 </body>
 
 </html>

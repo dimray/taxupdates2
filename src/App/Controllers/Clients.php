@@ -22,11 +22,14 @@ class Clients extends Controller
 
     public function index()
     {
-        //show-clients form comes here. This redirects to various functions depending which checkboxes are ticked or buttons clicked          
+        //update status, view submissions, select clients all come here.
+        // this function sets the client session, then redirects to the appropriate place
+
 
         unset($_SESSION['client']);
 
         if (isset($this->request->post)) {
+            // set client session
             if (!AgentHelper::setClientSession($this->request->post)) {
                 return $this->redirect("/clients/show-clients");
             }
@@ -34,25 +37,17 @@ class Clients extends Controller
 
         if (isset($this->request->post['select_client'])) {
 
-            $check_authorisation = $this->request->post['check_authorisation'] ?? null;
             $authorisation = $this->request->post['authorisation'] ?? null;
-
-            if (!empty($check_authorisation)) {
-                return $this->redirect("/agent-authorisation/request-status-of-relationship");
-            }
-
-            if (empty($authorisation)) {
-                return $this->redirect("/agent-authorisation/unauthorised");
-            }
 
             $_SESSION['client']['agent_type'] = $authorisation;
 
             return $this->redirect("/business-details/list-all-businesses");
         } elseif (isset($this->request->post['show_submissions'])) {
 
-            // sets the agent session above, then redirects here
-
             return $this->redirect("/submissions/get-submissions");
+        } elseif (isset($this->request->post['update_status'])) {
+
+            return $this->redirect("/clients/update-status");
         }
 
         return $this->redirect("/clients/show-clients");
@@ -364,5 +359,11 @@ class Clients extends Controller
         }
 
         return $valid_clients;
+    }
+
+    public function updateStatus()
+    {
+        $heading = "Check Or Update Client Status";
+        return $this->view("Clients/update-status.php", compact("heading"));
     }
 }

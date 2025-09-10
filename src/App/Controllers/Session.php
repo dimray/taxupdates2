@@ -8,7 +8,6 @@ use App\Validate;
 use App\Flash;
 use Framework\Controller;
 use Framework\Csrf;
-use Framework\Encryption;
 use App\Models\User;
 use App\Helpers\Helper;
 use App\Models\Agent;

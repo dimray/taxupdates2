@@ -43,3 +43,169 @@ table .table-subheading {
 .number-table td:first-of-type {
   text-align: left;
 }
+
+.number-table .country-code {
+  text-align: right;
+  padding-inline-end: 2rem;
+}
+
+.mobile-view {
+  display: none;
+}
+
+.mobile-view .country-code {
+  text-align: right;
+}
+
+@media (max-width: 1200px) {
+  .long-table table td {
+    line-height: 1.5;
+  }
+}
+
+@media (max-width: 1000px) {
+  /* mobile view for long tables */
+
+  table td {
+    line-height: 1.5;
+  }
+
+  .long-table table thead {
+    display: none;
+  }
+
+  .long-table .desktop-view {
+    display: none;
+  }
+
+  .long-table .mobile-view {
+    display: block;
+  }
+
+  /* Make each table row a block-level element */
+  .long-table table,
+  .long-table tbody,
+  .long-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  /* Style each row as a card with a bottom border for separation */
+  .long-table tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+  }
+
+  .long-table td {
+    display: block;
+    text-align: right;
+    padding-inline: 0.5rem;
+    padding-block: 0.25rem;
+  }
+
+  .long-table td::before {
+    content: attr(data-label);
+    font-weight: 300;
+    float: left; /* Keep the label on the left */
+    text-align: left;
+  }
+}
+
+@media (max-width: 800px) {
+  /* Hide the original table header */
+
+  .regular-table .desktop-view {
+    display: none;
+  }
+
+  .regular-table table thead {
+    display: none;
+  }
+
+  .regular-table .mobile-view {
+    display: block;
+  }
+
+  /* Make each table row a block-level element */
+  .regular-table table,
+  .regular-table tbody,
+  .regular-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  /* Style each row as a card with a bottom border for separation */
+  .regular-table tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+  }
+
+  .regular-table td {
+    display: block;
+    text-align: right;
+    padding-inline: 0.5rem;
+    padding-block: 0.25rem;
+  }
+
+  .regular-table td::before {
+    content: attr(data-label);
+    font-weight: 300;
+    float: left; /* Keep the label on the left */
+    text-align: left;
+  }
+}
+
+@media (max-width: 600px) {
+  /* Hide the original table header */
+  .short-table table thead {
+    display: none;
+  }
+
+  .short-table .desktop-view {
+    display: none;
+  }
+
+  .short-table .mobile-view {
+    display: block;
+  }
+
+  /* Make each table row a block-level element */
+  .short-table table,
+  .short-table tbody,
+  .short-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  /* Style each row as a card */
+  .short-table tr {
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+  }
+
+  .short-table td {
+    display: block;
+    text-align: right;
+    padding-inline: 0.5rem;
+    padding-block: 0.25rem;
+  }
+
+  .short-table td::before {
+    content: attr(data-label);
+    font-weight: 300;
+    float: left; /* Keep the label on the left */
+    text-align: left;
+  }
+}

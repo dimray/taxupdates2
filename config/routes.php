@@ -9,8 +9,9 @@ $router->group(["middleware" => "auth"], function ($router) {
 
 $router->group(["middleware" => "guest"], function ($router) {
     $router->add("/register/{action}", ["controller" => "register"]);
-    $router->add("/session/{action}", ["controller" => "session"]);
     $router->add("/password/{action}", ["controller" => "password"]);
+    // can't use /session/destroy as it's caught here. Can use /logout above.
+    $router->add("/session/{action}", ["controller" => "session"]);
 
     $router->add("/register", ["controller" => "register", "action" => "new"]);
     $router->add("/login/new", ["controller" => "session", "action" => "new"]);
@@ -30,6 +31,7 @@ $router->group(["namespace" => "Endpoints"], function ($router) {
     $router->add("/business-details/{action}", ["controller" => "business-details"]);
     $router->add("/obligations/{action}", ["controller" => "obligations"]);
     $router->add("/self-employment/{action}", ["controller" => "self-employment"]);
+    $router->add("/property-business/{action}", ["controller" => "property-business"]);
 });
 
 $router->add("/", ["controller" => "home", "action" => "index"]);
