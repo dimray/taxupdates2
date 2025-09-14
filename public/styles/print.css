@@ -5,40 +5,100 @@
 }
 
 @media print {
-  /* Hide all elements on the page by default */
-  body * {
-    visibility: hidden;
-  }
-
-  /*
-    Now, make the print container and all of its descendants visible.
-    The `*` is crucial for descendants.
-  */
-  .print-container,
-  .print-container * {
-    visibility: visible;
-  }
-
-  /*
-    Position the print container at the top-left of the page.
-    This also handles cases where its parent might be hidden by
-    another CSS rule.
-  */
-  .print-container {
-    position: absolute;
-    left: 0;
-    top: 0;
-  }
-
-  /* Ensure the print button and other non-print elements are not visible */
-  .no-print,
-  .print-button {
+  body > *:not(.print-area) {
     display: none !important;
   }
 
-  /* Optional: Reset body styles for a clean printout */
+  html,
   body {
-    margin: 0;
-    padding: 0;
+    display: block !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
+
+  .print-area {
+    position: static !important;
+    display: block !important;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    margin: 0;
+    color: black;
+    background: white;
+    font-size: 12pt;
+    line-height: 1.5;
+    page-break-after: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Preserve table display properties */
+  .print-area table {
+    display: table !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+  }
+
+  .print-area tr {
+    display: table-row !important;
+  }
+
+  .print-area th,
+  .print-area td {
+    display: table-cell !important;
+    padding: 4px 8px !important;
+    border: 1px solid #ddd !important;
+  }
+
+  /* General child element reset */
+  .print-area * {
+    visibility: visible !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    position: static !important;
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  .print-area .list-header {
+    font-size: 1.2rem !important;
+    padding-block-start: 0.8rem !important;
+    padding-block-end: 0.2rem !important;
+  }
+
+  /* Preserve list structure */
+  /* .print-area ul,
+  .print-area ol {
+    display: block !important;
+    padding-left: 1.5em !important;
+  }
+
+  .print-area li {
+    display: list-item !important;
+  } */
+
+  .no-print {
+    display: none !important;
+  }
+
+  @page {
+    size: auto;
+    margin: 1cm;
+  }
+}
+
+.print-button {
+  border: none;
+  background-color: transparent;
+
+  cursor: pointer;
+}
+
+.print-button {
+  border: none;
+  background-color: transparent;
+
+  cursor: pointer;
 }

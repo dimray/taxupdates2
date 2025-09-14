@@ -1,5 +1,5 @@
  <div class="regular-table">
-     <table class="number-table">
+     <table class="number-table desktop-view">
 
          <thead>
 
@@ -203,7 +203,7 @@
 
                  <tr>
                      <td>
-                         Interest On Bank Other Loans
+                         Loan Interest
                      </td>
                      <td data-label="Total Amount">
                          <?= esc(formatNumber($expenses['interestOnBankOtherLoans'] ?? 0)) ?>
@@ -319,7 +319,169 @@
              </tr>
          </tbody>
 
-
-
      </table>
+
+     <div class="mobile-view">
+         <div class="card">
+
+             <h3>Income</h3>
+             <div class="data-row">
+                 <div class="label">Turnover</div>
+                 <div class="value"><?= esc(formatNumber($income['turnover'] ?? 0)) ?></div>
+             </div>
+
+             <div class="data-row">
+                 <div class="label">Other Income</div>
+                 <div class="value"><?= esc(formatNumber($income['other'] ?? 0)) ?></div>
+             </div>
+
+             <div class="data-row">
+                 <div class="label">Tax Taken Off Income</div>
+                 <div class="value"><?= esc(formatNumber($income['taxTakenOffTradingIncome'] ?? 0)) ?></div>
+             </div>
+
+             <h3>Allowable Expenses</h3>
+
+             <?php if (isset($expenses['consolidatedExpenses'])): ?>
+
+                 <div class="data-row">
+                     <div class="label">Consolidated Expenses</div>
+                     <div class="value"><?= esc(formatNumber($expenses['consolidatedExpenses'] ?? 0)) ?></div>
+                 </div>
+
+             <?php else: ?>
+
+                 <div class="data-row">
+                     <div class="label">Cost Of Goods</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['costOfGoods'] ?? 0) - ($disallowed['costOfGoodsDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Payments To Subcontractors</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['paymentsToSubcontractors'] ?? 0) - ($disallowed['paymentsToSubcontractorsDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Wages And Staff Costs</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['wagesAndStaffCosts'] ?? 0) - ($disallowed['wagesAndStaffCostsDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Travel Expenses</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['carVanTravelExpenses'] ?? 0) - ($disallowed['carVanTravelExpensesDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Premises Running Costs</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['premisesRunningCosts'] ?? 0) - ($disallowed['premisesRunningCostsDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Maintenance Costs</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['maintenanceCosts'] ?? 0) - ($disallowed['maintenanceCostsDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Administrative Costs</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['adminCosts'] ?? 0) - ($disallowed['adminCostsDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Business Entertainment</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['businessEntertainmentCosts'] ?? 0) - ($disallowed['businessEntertainmentCostsDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Advertising Costs</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['advertisingCosts'] ?? 0) - ($disallowed['advertisingCostsDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Loan Interest</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['interestOnBankOtherLoans'] ?? 0) - ($disallowed['interestOnBankOtherLoansDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Finance Costs</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['financeCharges'] ?? 0) - ($disallowed['financeChargesDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Irrecoverable Debts</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['irrecoverableDebts'] ?? 0) - ($disallowed['irrecoverableDebtsDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Professional Fees</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['professionalFees'] ?? 0) - ($disallowed['professionalFeesDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Depreciation</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['depreciation'] ?? 0) - ($disallowed['depreciationDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+                 <div class="data-row">
+                     <div class="label">Other Expenses</div>
+                     <div class="value">
+                         <?= esc(formatNumber(($expenses['otherExpenses'] ?? 0) - ($disallowed['otherExpensesDisallowable'] ?? 0))) ?>
+                     </div>
+                 </div>
+
+             <?php endif; ?>
+
+             <h3>Summary</h3>
+
+             <div class="data-row">
+                 <div class="label">Total Income</div>
+                 <div class="value">
+                     <?= esc(formatNumber($total_income)) ?>
+                 </div>
+             </div>
+
+             <div class="data-row">
+                 <div class="label">Allowable Expenses</div>
+                 <div class="value">
+                     <?= esc(formatNumber($total_allowed)) ?>
+                 </div>
+             </div>
+
+             <div class="data-row">
+                 <div class="label">Profit</div>
+                 <div class="value">
+                     <?= esc(formatNumber($profit)) ?>
+                 </div>
+             </div>
+
+         </div>
+     </div>
+
  </div>

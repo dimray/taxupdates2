@@ -14,23 +14,35 @@ button {
   width: fit-content;
 }
 
-.button:hover {
+.button:hover,
+.button:focus {
   cursor: pointer;
   background-color: hsla(0, 0%, 0%, 80%);
+  color: white;
+}
+
+.button:disabled {
+  background-color: hsla(0, 0%, 50%, 20%);
+  border: 1px solid hsla(0, 0%, 50%, 20%);
+  color: hsla(0, 0%, 50%, 70%);
+  cursor: none;
 }
 
 .confirm-delete {
-  background: hsla(0, 100%, 50%, 20%);
+  background: hsla(0, 100%, 50%, 30%);
   border: none;
   font: inherit;
   cursor: pointer;
-  color: hsla(0, 100%, 20%, 100%);
-  line-height: 1rem;
+  color: hsla(0, 100%, 15%, 0.9);
+  line-height: 1.2rem;
+  padding-inline: 1rem;
+  padding-block: 0.2rem;
+  border-radius: 5px;
 }
 
 .confirm-delete:hover,
 .confirm-delete:focus {
-  background: hsla(0, 100%, 50%, 30%);
+  background: hsla(0, 100%, 50%, 40%);
   cursor: pointer;
   color: hsla(0, 100%, 15%, 0.9);
 }
@@ -46,5 +58,18 @@ button {
 .x-delete:hover,
 .x-delete:focus {
   background: hsla(0, 100%, 50%, 30%);
+  cursor: pointer;
+}
+
+.delete-button {
+  background-color: hsla(0, 100%, 24%, 90%);
+  color: white;
+  border-radius: 5px;
+  border: none;
+  padding-inline: 1rem;
+}
+
+.delete-button:not(:disabled):hover {
+  background-color: hsla(0, 100%, 24%, 100%);
   cursor: pointer;
 }

@@ -19,6 +19,20 @@ class Obligations extends Controller
         // what is this?
         unset($_SESSION['cumulative_data']);
 
+        if (isset($this->request->get['business_id'])) {
+            $_SESSION['business_id'] = $this->request->get['business_id'];
+        }
+
+        if (isset($this->request->get['type_of_business'])) {
+            $_SESSION['type_of_business'] = $this->request->get['type_of_business'];
+        }
+
+        if (isset($this->request->get['trading_name'])) {
+            $_SESSION['trading_name'] = $this->request->get['trading_name'];
+        } else {
+            unset($_SESSION['trading_name']);
+        }
+
         $business_id = $_SESSION['business_id'];
 
         // test foreign property

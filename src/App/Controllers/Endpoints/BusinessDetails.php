@@ -16,6 +16,8 @@ class BusinessDetails extends Controller
 
     public function listAllBusinesses()
     {
+        $updates = $this->request->get['updates'] ?? "";
+
         $nino = Helper::getNino();
 
         $response = $this->apiBusinessDetails->listAllBusinesses($nino);
@@ -34,7 +36,7 @@ class BusinessDetails extends Controller
 
         $hide_tax_year = true;
 
-        return $this->view("/Endpoints/BusinessDetails/index.php", compact("heading", "businesses", "hide_tax_year"));
+        return $this->view("/Endpoints/BusinessDetails/index.php", compact("heading", "businesses", "hide_tax_year", "updates"));
     }
 
     public function retrieveBusinessDetails()

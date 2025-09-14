@@ -210,3 +210,20 @@ function formatDateTime($input)
         return (string) $input;
     }
 }
+
+function getCountry($country_code): string
+{
+    $country_data = require ROOT_PATH . "config/mappings/country-codes.php";
+
+    $country_string = "";
+    foreach ($country_data as $continent) {
+        foreach ($continent as $code => $country) {
+            if (strtoupper($code) === strtoupper($country_code)) {
+                $country_string = $country;
+                break;
+            }
+        }
+    }
+
+    return $country_string;
+}

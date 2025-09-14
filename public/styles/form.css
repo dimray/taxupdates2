@@ -97,10 +97,6 @@ input[type="password"],
   border: 2px solid hsl(0, 0%, 0%);
 }
 
-.delete-button {
-  background-color: hsla(0, 100%, 24%, 90%);
-}
-
 .form-button:disabled {
   background-color: #ccc; /* Light grey background */
   color: #666; /* Muted text */
@@ -111,11 +107,6 @@ input[type="password"],
 
 .form-button:not(:disabled):hover {
   background-color: hsla(0, 0%, 12%);
-  cursor: pointer;
-}
-
-.delete-button:not(:disabled):hover {
-  background-color: hsla(0, 100%, 24%, 100%);
   cursor: pointer;
 }
 
@@ -233,3 +224,34 @@ input[type="checkbox"] {
 }
 
 /* end change tax year */
+
+/* placeholder */
+/* WebKit (Chrome, Safari, Edge) */
+::-webkit-input-placeholder {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/* Mozilla Firefox 4 to 18 */
+:-moz-placeholder {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/* Mozilla Firefox 19+ */
+::-moz-placeholder {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/* Internet Explorer 10-11 */
+:-ms-input-placeholder {
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+/* Modern browsers (standard) */
+::placeholder {
+  font-size: 1rem;
+  font-weight: 300;
+}

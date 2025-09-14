@@ -138,4 +138,40 @@ class Helper
             return $input;
         }
     }
+
+    public static function unsetBusinessSessionInfo()
+    {
+        unset($_SESSION['business_id']);
+        unset($_SESSION['type_of_business']);
+        unset($_SESSION['trading_name']);
+    }
+
+
+    // used in individual losses - change sequence
+    public static function validateSequence(array $claims)
+    {
+        // Extract the sequence numbers into an array
+        $sequences = array_map(function ($claim) {
+            return (int)$claim['sequence'];
+        }, $claims);
+
+        // Sort the sequences and check for gaps
+        sort($sequences);
+
+        $valid = true;
+
+        // Check if the sequence starts from 1 and has no gaps
+        if ($sequences[0] !== 1) {
+            $valid = false;
+        } else {
+            for ($i = 1; $i < count($sequences); $i++) {
+                if ($sequences[$i] !== $sequences[$i - 1] + 1) {
+                    $valid = false;
+                    break;
+                }
+            }
+        }
+
+        return $valid;
+    }
 }

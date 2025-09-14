@@ -1,0 +1,48 @@
+/* 1. Hide the default marker */
+summary {
+  list-style: none; /* For most browsers */
+}
+
+/* For WebKit browsers (Safari, older Chrome) */
+summary::-webkit-details-marker {
+  display: none;
+}
+
+summary:not(.navLink) {
+  /* Use a flexbox or grid to align the icon and text */
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1;
+  font-family: monospace;
+  color: darkblue;
+  background-color: hsla(240, 100%, 27%, 10%);
+  padding-inline: 0.5rem;
+
+  border-radius: 5px;
+
+  cursor: pointer;
+  width: fit-content;
+  line-height: 2;
+  text-transform: capitalize;
+}
+
+summary::after {
+  content: "+";
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: 800;
+  /* This ensures the icon stays close to the text */
+  flex-shrink: 0;
+}
+
+details[open] summary::after {
+  content: "-";
+}
+
+/* Optional: Add a transition for a smoother change */
+summary::after {
+  transition: content 0.2s ease-in-out;
+}

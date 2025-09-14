@@ -7,12 +7,5 @@
 
 <p>Do you need to add data for any other countries?</p>
 
-<form action="/uploads/create-cumulative-upload" method="GET">
-    <button class="link" type="submit">Yes, add another country</button>
-</form>
-
-<br>
-
-<form action="/uploads/approve-foreign-property" method="GET">
-    <button class="link" type="submit">No, continue to summary</button>
-</form>
+<p><a href="/uploads/create-cumulative-upload">Yes, add another country</a></p>
+<p><a href="/uploads/approve-foreign-property">No, continue to summary</a></p>

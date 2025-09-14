@@ -6,12 +6,12 @@
         <?php include ROOT_PATH . "views/shared/tax-year.php"; ?>
     <?php endif; ?>
 
-    <?php if (!empty($heading)): ?>
-        <h1><?= esc($heading) ?></h1>
-    <?php endif; ?>
-
     <?php if (!empty($_SESSION['client']['name'])): ?>
         <p>Client Name: <?= $_SESSION['client']['name'] ?></p>
+    <?php endif; ?>
+
+    <?php if (!empty($heading)): ?>
+        <h1><?= esc($heading) ?></h1>
     <?php endif; ?>
 
     <?php displayFlashMessages(); ?>

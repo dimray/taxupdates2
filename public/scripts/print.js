@@ -3,28 +3,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
   printButtons.forEach(function (button) {
     button.addEventListener("click", function () {
-      // Find the print container
+      // Remove previous print areas
+      document.querySelectorAll(".print-area").forEach((el) => {
+        el.classList.remove("print-area");
+      });
+
+      // Find current print container
       const section = button.closest(".print-container");
 
       if (section) {
-        // Add a class to the print container and the body
-        document.body.classList.add("is-printing");
-        section.classList.add("is-printing-target");
+        // Create a print-only clone
+        const clone = section.cloneNode(true);
+        clone.id = "temp-print-area";
+        clone.classList.add("print-area");
 
-        // Open details elements within the target
-        section.querySelectorAll("details").forEach((details) => {
-          details.setAttribute("open", true);
-        });
+        // Remove non-print elements from clone
+        clone.querySelectorAll(".no-print").forEach((el) => el.remove());
 
-        // Call the print function
-        window.print();
+        // Open details element if needed
+        if (clone.tagName.toLowerCase() === "details") {
+          clone.setAttribute("open", true);
+        }
 
-        // Clean up classes after printing
-        // Use setTimeout to ensure cleanup happens after the print dialog is closed
+        // Add to document
+        document.body.appendChild(clone);
+
         setTimeout(() => {
-          document.body.classList.remove("is-printing");
-          section.classList.remove("is-printing-target");
-        }, 500); // 500ms delay to be safe
+          window.print();
+
+          // Remove clone after printing
+          document.getElementById("temp-print-area")?.remove();
+        }, 100);
       }
     });
   });

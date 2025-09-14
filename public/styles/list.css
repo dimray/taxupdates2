@@ -26,3 +26,40 @@ dl dt:nth-of-type(odd) {
 }
 
 /* end data list dl */
+
+ul {
+  padding-inline: 1rem;
+}
+
+ul ul {
+  padding-inline: 0;
+  margin-inline: 0;
+  list-style: none;
+}
+li {
+  padding-inline: 0;
+  margin-inline: 0;
+  list-style: none;
+}
+
+.list-header {
+  margin-block: 1rem;
+  font-weight: 600;
+}
+
+/* remove padding and margin on mobile view */
+/* @media (max-width: 758px) {
+  ul {
+    padding-inline: 1rem;
+  }
+
+  ul ul {
+    padding-inline: 0;
+    margin-inline: 0;
+    list-style: none;
+  }
+  li {
+    padding-inline: 0;
+    margin-inline: 0;
+  }
+} */

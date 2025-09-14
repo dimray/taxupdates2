@@ -2,6 +2,10 @@ table {
   border-collapse: collapse;
 }
 
+table.left-align-headers thead th {
+  text-align: left;
+}
+
 table tr {
   line-height: 1.5;
 }
@@ -9,17 +13,25 @@ table tr {
 table td {
   padding-inline-end: 2rem;
   vertical-align: middle;
-  line-height: 2.5;
+  padding-block: 0.4rem;
 }
 
-table th {
-  text-align: left;
+table thead th {
+  text-align: right;
   vertical-align: middle;
-  padding-inline-end: 1rem;
+
+  padding-inline-end: 2rem;
   padding-block-end: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
-table tbody tr:nth-of-type(odd) {
+th.subheading {
+  text-align: left;
+  font-size: 1.3rem;
+}
+
+table tbody tr:has(td):nth-of-type(odd) {
   background-color: hsla(0, 0%, 0%, 5%);
 }
 
@@ -36,7 +48,7 @@ table .table-subheading {
 }
 
 .number-table td {
-  line-height: 1.8;
+  line-height: 1.5;
   text-align: right;
 }
 
@@ -53,28 +65,83 @@ table .table-subheading {
   display: none;
 }
 
+/* MOBILE STYLES */
+
+@media (max-width: 1000px) {
+  .long-table .mobile-view {
+    display: block;
+  }
+
+  .long-table .desktop-view {
+    display: none;
+  }
+
+  hr {
+    max-width: 600px;
+  }
+}
+
+@media (max-width: 800px) {
+  .mobile-view {
+    display: block;
+  }
+  .desktop-view {
+    display: none;
+  }
+}
+
 .mobile-view .country-code {
   text-align: right;
 }
 
-@media (max-width: 1200px) {
-  .long-table table td {
-    line-height: 1.5;
-  }
+.mobile-view .card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding-block: 0.5rem;
+  padding-inline: 0.5rem;
+  max-width: 600px;
+  margin-block: 0.5rem;
 }
 
-@media (max-width: 1000px) {
-  /* mobile view for long tables */
+.mobile-view hr {
+  max-width: 600px;
+}
 
-  table td {
-    line-height: 1.5;
-  }
+.mobile-view .data-row {
+  display: flex;
+  justify-content: space-between;
+  line-height: 1.5;
+  padding-block: 0.2rem;
+}
 
-  .long-table table thead {
+.mobile-view .data-row:nth-of-type(odd) {
+  background-color: hsla(0, 0%, 0%, 4%);
+}
+
+.mobile-view form {
+  max-width: 600px;
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-view form .link {
+  font-size: 1.1rem;
+}
+
+.mobile-view .display-inline {
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* @media (max-width: 1000px) {
+  .long-table .desktop-view {
     display: none;
   }
 
-  .long-table .desktop-view {
+  .long-table table thead {
     display: none;
   }
 
@@ -82,7 +149,6 @@ table .table-subheading {
     display: block;
   }
 
-  /* Make each table row a block-level element */
   .long-table table,
   .long-table tbody,
   .long-table tr {
@@ -90,8 +156,7 @@ table .table-subheading {
     width: 100%;
   }
 
-  /* Style each row as a card with a bottom border for separation */
-  .long-table tr {
+  .long-table tr:not(:has(.subheading)) {
     margin-bottom: 1rem;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -109,15 +174,12 @@ table .table-subheading {
 
   .long-table td::before {
     content: attr(data-label);
-    font-weight: 300;
-    float: left; /* Keep the label on the left */
+    float: left;
     text-align: left;
   }
 }
 
 @media (max-width: 800px) {
-  /* Hide the original table header */
-
   .regular-table .desktop-view {
     display: none;
   }
@@ -130,7 +192,6 @@ table .table-subheading {
     display: block;
   }
 
-  /* Make each table row a block-level element */
   .regular-table table,
   .regular-table tbody,
   .regular-table tr {
@@ -138,8 +199,7 @@ table .table-subheading {
     width: 100%;
   }
 
-  /* Style each row as a card with a bottom border for separation */
-  .regular-table tr {
+  .regular-table tr:not(:has(.subheading)) {
     margin-bottom: 1rem;
     border: 1px solid #ccc;
     border-radius: 5px;
@@ -157,55 +217,7 @@ table .table-subheading {
 
   .regular-table td::before {
     content: attr(data-label);
-    font-weight: 300;
-    float: left; /* Keep the label on the left */
+    float: left;
     text-align: left;
   }
-}
-
-@media (max-width: 600px) {
-  /* Hide the original table header */
-  .short-table table thead {
-    display: none;
-  }
-
-  .short-table .desktop-view {
-    display: none;
-  }
-
-  .short-table .mobile-view {
-    display: block;
-  }
-
-  /* Make each table row a block-level element */
-  .short-table table,
-  .short-table tbody,
-  .short-table tr {
-    display: block;
-    width: 100%;
-  }
-
-  /* Style each row as a card */
-  .short-table tr {
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    max-width: 500px;
-  }
-
-  .short-table td {
-    display: block;
-    text-align: right;
-    padding-inline: 0.5rem;
-    padding-block: 0.25rem;
-  }
-
-  .short-table td::before {
-    content: attr(data-label);
-    font-weight: 300;
-    float: left; /* Keep the label on the left */
-    text-align: left;
-  }
-}
+} */

@@ -120,8 +120,8 @@ class SelfEmployment extends Controller
             Flash::addMessage("Your Cumulative Summary has been submitted to HMRC", Flash::SUCCESS);
 
             if (!AgentHelper::isSupportingAgent()) {
-                exit("success");
-                // return $this->redirect("/individual-calculations/trigger-calculation");
+
+                return $this->redirect("/self-employment/success");
             }
         }
 
@@ -131,5 +131,15 @@ class SelfEmployment extends Controller
 
         // failure or supporting agent
         return $this->redirect("/obligations/retrieve-cumulative-obligations");
+    }
+
+    public function success()
+    {
+
+        $heading = "Success";
+
+        $hide_tax_year = true;
+
+        return $this->view("Endpoints/SelfEmployment/success.php", compact("heading", "hide_tax_year"));
     }
 }

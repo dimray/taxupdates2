@@ -38,11 +38,10 @@ summary,
   width: 100%;
   display: inline-block;
   padding-inline: 1.5rem;
-}
-
-.navLink {
   color: hsl(0, 0%, 90%);
   white-space: nowrap;
+  font-weight: 400;
+  text-transform: capitalize;
 }
 
 .navLink:hover,
@@ -89,6 +88,7 @@ details summary {
   list-style: none;
   display: flex;
   justify-content: start;
+  align-items: flex-end;
   /* flex is to put the pseudo element near to the text */
   gap: 0.3rem;
   cursor: pointer;

@@ -56,4 +56,26 @@ class TaxYearHelper
 
         return $end_date->format('Y-m-d');
     }
+
+    public static function getPreviousTaxYear(string $tax_year): string
+    {
+        // Expecting format: "YYYY-YY"
+        [$start, $end] = explode('-', $tax_year);
+
+        $previous_start_year = (int) $start - 1;
+        $previous_end_year = substr((string) ($previous_start_year + 1), -2);
+
+        return sprintf('%d-%s', $previous_start_year, $previous_end_year);
+    }
+
+    public static function getNextTaxYear(string $tax_year): string
+    {
+        // Expecting format: "YYYY-YY"
+        [$start, $end] = explode('-', $tax_year);
+
+        $next_start_year = (int) $start + 1;
+        $next_end_year = substr((string) ($next_start_year + 1), -2);
+
+        return sprintf('%d-%s', $next_start_year, $next_end_year);
+    }
 }

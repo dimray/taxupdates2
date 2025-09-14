@@ -101,7 +101,6 @@ class PropertyBusiness extends Controller
             $foreign_property_data = $summary['foreignProperty'] ?? [];
 
 
-
             // this sorts the inner arrays for display
             foreach ($foreign_property_data as &$entry) {
                 if (isset($entry['income']['rentIncome']['rentAmount'])) {
@@ -109,24 +108,33 @@ class PropertyBusiness extends Controller
                     unset($entry['income']['rentIncome']);
                 }
 
+                $entry['foreignTaxCreditRelief'] = $entry['income']['foreignTaxCreditRelief'] ?? false;
+                unset($entry['income']['foreignTaxCreditRelief']);
+
                 $finance_fields = ['residentialFinancialCost', 'broughtFwdResidentialFinancialCost'];
                 foreach ($finance_fields as $field) {
                     if (isset($entry['expenses'][$field])) {
-                        $entry['financeCosts'][$field] = $entry['expenses'][$field];
+                        $entry['residentialFinance'][$field] = $entry['expenses'][$field];
                         unset($entry['expenses'][$field]);
                     }
                 }
             }
             unset($entry);
 
-            // var_dump($foreign_property_data);
-            // exit;
+            // get total income, total expenses, profit
+            $totals = [];
 
-            // $foreign_property_fields = require ROOT_PATH . "config/mappings/foreign-property.php";
+            foreach ($foreign_property_data as $key => $country_data) {
 
-            // $income_fields = $foreign_property_fields['cumulative']['income'];
-            // $expense_fields = $foreign_property_fields['cumulative']['expenses'];
-            // $finance_fields = $foreign_property_fields['cumulative']['residentialFinance'];
+                $total_income = array_sum($country_data['income']);
+                $total_expenses = array_sum($country_data['expenses']);
+
+                $totals[$country_data['countryCode']] = [
+                    'total_income' => $total_income,
+                    'total_expenses' => $total_expenses,
+                    'profit' => $total_income - $total_expenses
+                ];
+            }
 
             // check if consolidated expenses is needed, and also if there are non-consolidated expenses present:
             $consolidated_expenses = false;
@@ -139,32 +147,9 @@ class PropertyBusiness extends Controller
                 }
             }
 
-
-            // This just filters income, expense and finance fields to get rid of unused fields. The data from the api is not filtered. It's needed to make sure all tables are using the same fields if there are multiple countries.
-            // $income_fields = array_filter($income_fields, function ($field) use ($foreign_property_data) {
-            //     foreach ($foreign_property_data as $entry) {
-            //         if (isset($entry['income'][$field])) return true;
-            //     }
-            //     return false;
-            // });
-
-            // $expense_fields = array_filter($expense_fields, function ($field) use ($foreign_property_data) {
-            //     foreach ($foreign_property_data as $entry) {
-            //         if (isset($entry['expenses'][$field])) return true;
-            //     }
-            //     return false;
-            // });
-
-            // $finance_fields = array_filter($finance_fields, function ($field) use ($foreign_property_data) {
-            //     foreach ($foreign_property_data as $entry) {
-            //         if (isset($entry['financeCosts'][$field])) return true;
-            //     }
-            //     return false;
-            // });
-
             return $this->view(
                 "Endpoints/PropertyBusiness/show-cumulative-summary.php",
-                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "foreign_property_data", "consolidated_expenses", "non_consolidated_expenses")
+                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "foreign_property_data", "totals", "consolidated_expenses", "non_consolidated_expenses")
             );
         }
     }
@@ -180,13 +165,22 @@ class PropertyBusiness extends Controller
             return $this->redirect("/uploads/approve-uk-property");
         }
 
-        SubmissionsHelper::finaliseUkPropertyCumulativeSummaryArray();
+        $location =  ($_SESSION['type_of_business'] === "uk-property") ? "uk" : "foreign";
 
-        $cumulative_data = $_SESSION['cumulative_data'][$_SESSION['business_id']];
+        if ($location === "uk") {
+            SubmissionsHelper::finaliseUkPropertyCumulativeSummaryArray();
+
+            $cumulative_data = $_SESSION['cumulative_data'][$_SESSION['business_id']];
+        }
+
+        if ($location === "foreign") {
+
+            $foreign_property_data = $_SESSION['cumulative_data'][$_SESSION['business_id']];
+
+            $cumulative_data = SubmissionsHelper::finaliseForeignPropertyCumulativeSummaryArray($foreign_property_data);
+        }
 
         unset($_SESSION['cumulative_data']);
-
-        $location =  ($_SESSION['type_of_business'] === "uk-property") ? "uk" : "foreign";
 
         $nino = Helper::getNino();
 
@@ -210,7 +204,7 @@ class PropertyBusiness extends Controller
 
             $submission_data = SubmissionsHelper::createSubmission("cumulative", $submission_id);
 
-            $submission_data['submission_payload'] = json_encode($final_array);
+            $submission_data['submission_payload'] = json_encode($cumulative_data);
 
             $this->submission->insert($submission_data);
 

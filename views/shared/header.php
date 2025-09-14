@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/styles/form.css">
     <link rel="stylesheet" href="/styles/list.css">
     <link rel="stylesheet" href="/styles/table.css">
+    <link rel="stylesheet" href="/styles/details-summary.css">
     <link rel="stylesheet" href="/styles/clients.css">
     <link rel="stylesheet" href="/styles/print.css">
 
@@ -51,13 +52,14 @@
 
                     <?php if ($_SESSION['user_role'] === 'individual' || isset($_SESSION['client']['nino'])):  ?>
                         <li><a class="navLink topLink 
-                        <?= str_starts_with($current_path, '/business-details/list-all-businesses') ? 'active' : '' ?>"
-                                href="/business-details/list-all-businesses">Updates</a></li>
+                        <?= str_starts_with($current_path, '/business-details/list-all-businesses?updates=true') ? 'active' : '' ?>"
+                                href="/business-details/list-all-businesses?updates=true">Updates</a></li>
                         <li>
                             <details class="details-menu prevent-select">
                                 <summary class="navLink topLink">Year End</summary>
                                 <ul class="submenu">
-                                    <li><a class="navLink subLink " href="">Business or Property Income</a></li>
+                                    <li><a class="navLink subLink " href="/business-details/list-all-businesses">Business
+                                            Adjustments</a></li>
                                     <li><a class="navLink subLink " href="">Other Income</a></li>
                                     <li><a class="navLink subLink" href="">Capital Gains</a></li>
                                     <li><a class="navLink subLink" href="">Tax Reliefs</a></li>

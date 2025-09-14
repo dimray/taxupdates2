@@ -9,8 +9,4 @@
 <br>
 
 
-<button class="button" type="submit">Submit Selected File</button>
-
-
-
 <?php $include_file_upload_script = true; ?>

@@ -238,4 +238,53 @@ class SubmissionsHelper
 
         $_SESSION['cumulative_data'][$_SESSION['business_id']] = $final_array;
     }
+
+    public static function finaliseForeignPropertyCumulativeSummaryArray(array $foreign_property_array): array
+    {
+
+        foreach ($foreign_property_array as &$entry) {
+            $entry['income']['rentIncome']['rentAmount'] = $entry['income']['rentAmount'] ?? 0;
+            unset($entry['income']['rentAmount']);
+
+            $entry['income']['foreignTaxCreditRelief'] = $entry['foreignTaxCreditRelief'] ?? false;
+            unset($entry['foreignTaxCreditRelief']);
+
+            $entry['expenses']['residentialFinancialCost'] = $entry['residentialFinance']['residentialFinancialCost'] ?? 0;
+            $entry['expenses']['broughtFwdResidentialFinancialCost'] = $entry['residentialFinance']['broughtFwdResidentialFinancialCost'] ?? 0;
+            unset($entry['residentialFinance']);
+
+            // set the order:
+
+            $income = [];
+            $income['rentIncome']['rentAmount'] = $entry['income']['rentIncome']['rentAmount'];
+            $income['foreignTaxCreditRelief'] = $entry['income']['foreignTaxCreditRelief'];
+            $income['premiumsOfLeaseGrant'] = $entry['income']['premiumsOfLeaseGrant'] ?? 0;
+            $income['otherPropertyIncome'] = $entry['income']['otherPropertyIncome'] ?? 0;
+            $income['foreignTaxPaidOrDeducted'] = $entry['income']['foreignTaxPaidOrDeducted'] ?? 0;
+            $income['specialWithholdingTaxOrUkTaxPaid'] = $entry['income']['specialWithholdingTaxOrUkTaxPaid'] ?? 0;
+
+            $entry['income'] = $income;
+
+            $expenses = [];
+            $expenses['premisesRunningCosts'] = $entry['expenses']['premisesRunningCosts'] ?? 0;
+            $expenses['repairsAndMaintenance'] = $entry['expenses']['repairsAndMaintenance'] ?? 0;
+            $expenses['financialCosts'] = $entry['expenses']['financialCosts'] ?? 0;
+            $expenses['professionalFees'] = $entry['expenses']['professionalFees'] ?? 0;
+            $expenses['travelCosts'] = $entry['expenses']['travelCosts'] ?? 0;
+            $expenses['costOfServices'] = $entry['expenses']['costOfServices'] ?? 0;
+            $expenses['other'] = $entry['expenses']['other'] ?? 0;
+            $expenses['residentialFinancialCost'] = $entry['expenses']['residentialFinancialCost'] ?? 0;
+            $expenses['broughtFwdResidentialFinancialCost'] = $entry['expenses']['broughtFwdResidentialFinancialCost'] ?? 0;
+
+            $entry['expenses'] = $expenses;
+        }
+
+        unset($entry);
+
+        return [
+            'fromDate' => $_SESSION['period_start_date'],
+            'toDate' => $_SESSION['period_end_date'],
+            'foreignProperty' => $foreign_property_array
+        ];
+    }
 }

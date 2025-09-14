@@ -20,6 +20,14 @@ class Uploads extends Controller
             unset($_SESSION['cumulative_data']);
         }
 
+        if (isset($this->request->get['period_start_date'])) {
+            $_SESSION['period_start_date'] = $this->request->get['period_start_date'];
+        }
+
+        if (isset($this->request->get['period_end_date'])) {
+            $_SESSION['period_end_date'] = $this->request->get['period_end_date'];
+        }
+
         $errors = $this->flashErrors();
 
         $business_details = Helper::setBusinessDetails();
@@ -46,8 +54,6 @@ class Uploads extends Controller
 
     public function processCumulativeUpload()
     {
-
-
         if ($_SESSION['type_of_business'] === "foreign-property") {
             // set country code and foreign tax credit relief
             $country_code = $this->request->post['country_code'] ?? '';
@@ -275,30 +281,53 @@ class Uploads extends Controller
 
     public function approveForeignProperty()
     {
-
         $business_details = Helper::setBusinessDetails();
         $business_details['periodStartDate'] = $_SESSION['period_start_date'];
         $business_details['periodEndDate'] = $_SESSION['period_end_date'];
 
+        $cumulative_data = $_SESSION['cumulative_data'][$_SESSION['business_id']] ?? "";
 
-        $foreign_property_data = $_SESSION['cumulative_data'][$_SESSION['business_id']] ?? "";
-
-        if (empty($foreign_property_data)) {
+        if (empty($cumulative_data)) {
             Flash::addMessage("An error occurred, please try again", Flash::WARNING);
             return $this->redirect("/uploads/create-cumulative-upload");
         }
 
+        // put the country code inside the array and save this as the session array
+        $foreign_property_data = [];
+
+        foreach ($cumulative_data as $country_code => $country_data) {
+            $updated_array = array_merge(['countryCode' => $country_code], $country_data);
+            $foreign_property_data[] = $updated_array;
+        }
+
+        $_SESSION['cumulative_data'][$_SESSION['business_id']] = $foreign_property_data;
+
+        $cumulative_data = $foreign_property_data;
+
+        // set totals
         $totals = [];
 
-        foreach ($foreign_property_data as $country_code => $country_data) {
+        foreach ($cumulative_data as $key => $country_data) {
 
             $total_income = array_sum($country_data['income']);
             $total_expenses = array_sum($country_data['expenses']);
 
-            $totals[$country_code] = [
+            $totals[$country_data['countryCode']] = [
                 'total_income' => $total_income,
-                'total_expenses' => $total_expenses
+                'total_expenses' => $total_expenses,
+                'profit' => $total_income - $total_expenses
             ];
+        }
+
+        // check if consolidated expenses is needed, and also if there are non-consolidated expenses present:
+        $consolidated_expenses = false;
+        $non_consolidated_expenses = false;
+        foreach ($cumulative_data as $entry) {
+            if (isset($entry['expenses']['consolidatedExpenses'])) {
+                $consolidated_expenses = true;
+            } else {
+                $non_consolidated_expenses = true;
+            }
         }
 
         $errors = $this->flashErrors();
@@ -313,16 +342,12 @@ class Uploads extends Controller
                 "heading",
                 "business_details",
                 "errors",
+                "foreign_property_data",
                 "totals",
+                "consolidated_expenses",
+                "non_consolidated_expenses",
                 "hide_tax_year"
             )
         );
-
-        var_dump($foreign_property_data);
-        exit;
-
-        // get total income
-        // get total expenses
-        // for each country
     }
 }

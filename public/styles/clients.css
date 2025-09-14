@@ -4,6 +4,12 @@
   gap: 1rem;
 }
 
+@media (max-width: 500px) {
+  .client-inputs {
+    flex-direction: column;
+  }
+}
+
 .form-input {
   align-self: flex-start;
 }
@@ -22,4 +28,14 @@
   height: 1.5rem;
   line-height: 1.5rem;
   margin-block-start: 0.5rem;
+}
+
+.clients-table th {
+  text-align: left;
+}
+
+@media (max-width: 1000px) {
+  .client-filter {
+    display: none;
+  }
 }

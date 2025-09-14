@@ -7,6 +7,10 @@ html {
   pointer-events: none;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 main {
   margin-inline: 0.5rem;
 }
@@ -50,6 +54,14 @@ button.link:focus {
   display: block;
 }
 
+.align-right {
+  text-align: right;
+}
+
+.align-center {
+  text-align: center;
+}
+
 .pagination ul {
   list-style: none;
   padding: 0;
@@ -81,4 +93,11 @@ button.link:focus {
   font-weight: bold;
   text-decoration: underline;
   text-transform: uppercase;
+}
+
+display-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }

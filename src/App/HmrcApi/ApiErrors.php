@@ -22,6 +22,15 @@ class ApiErrors
             Flash::addMessage("An error has occurred. Please try again", Flash::WARNING);
         }
 
+        // if calculation not yet ready
+        if ($code === 404 && $api === "individual-calculations" && $endpoint === "retrieve-calculation") {
+            // no flash message
+            return [
+                'type' => 'redirect',
+                'location' => '/individual-calculations/wait-for-calculation'
+            ];
+        }
+
         // if agent and not authorised
         if ($code === 403 && strtoupper($response_code) === "CLIENT_OR_AGENT_NOT_AUTHORISED") {
             if ($_SESSION['user_role'] === "agent") {

@@ -32,6 +32,8 @@ $router->group(["namespace" => "Endpoints"], function ($router) {
     $router->add("/obligations/{action}", ["controller" => "obligations"]);
     $router->add("/self-employment/{action}", ["controller" => "self-employment"]);
     $router->add("/property-business/{action}", ["controller" => "property-business"]);
+    $router->add("/individual-calculations/{action}", ["controller" => "individual-calculations"]);
+    $router->add("/individual-losses/{action}", ["controller" => "individual-losses"]);
 });
 
 $router->add("/", ["controller" => "home", "action" => "index"]);
