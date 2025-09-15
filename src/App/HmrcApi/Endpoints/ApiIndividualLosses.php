@@ -341,7 +341,6 @@ class ApiIndividualLosses extends ApiCalls
 
         $response_array = $this->sendPutRequest($url, $payload, $headers);
 
-
         $response = $response_array['response'];
         $response_code = $response_array['response_code'];
         $response_headers = $response_array['headers'];

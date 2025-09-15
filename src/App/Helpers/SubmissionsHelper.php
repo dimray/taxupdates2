@@ -66,6 +66,38 @@ class SubmissionsHelper
         return $data;
     }
 
+    public static function formatValueAsFloat(mixed $value): mixed
+    {
+        if (is_array($value)) {
+            return $value;
+        }
+
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        $trimmed = trim((string)$value);
+
+        if ($trimmed === '') {
+            return '';
+        }
+
+        if (is_numeric($trimmed)) {
+            return round((float) $trimmed, 2);
+        }
+
+        // Try to normalize comma-formatted numbers
+        $normalized = str_replace(',', '', $trimmed);
+
+        if (is_numeric($normalized)) {
+            return round((float) $normalized, 2);
+        }
+
+        // Leave non-numeric strings unchanged
+        return $value;
+    }
+
+
     public static function validatePositiveNegativeCumulativeArrays(array $data, string $business_type): array
     {
         $errors = [];
@@ -287,4 +319,6 @@ class SubmissionsHelper
             'foreignProperty' => $foreign_property_array
         ];
     }
+
+   
 }

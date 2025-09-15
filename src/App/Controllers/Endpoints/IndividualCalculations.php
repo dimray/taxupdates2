@@ -19,7 +19,6 @@ class IndividualCalculations extends Controller
 
     public function triggerCalculation()
     {
-        Helper::unsetBusinessSessionInfo();
 
         $nino = Helper::getNino();
 
@@ -52,8 +51,6 @@ class IndividualCalculations extends Controller
 
     public function retrieveCalculation()
     {
-        Helper::unsetBusinessSessionInfo();
-
         $calculation_id = $this->request->get['calculation_id'] ?? '';
 
         // needed for redirect if calculation isn't ready yet

@@ -47,6 +47,20 @@ li {
   font-weight: 600;
 }
 
+.list ul {
+  margin-inline: 1rem;
+  padding-block-end: 0.5rem;
+}
+
+.list li {
+  list-style-type: disc;
+  margin-inline-start: 1rem;
+}
+
+.list ul ul li {
+  list-style-type: circle;
+}
+
 /* remove padding and margin on mobile view */
 /* @media (max-width: 758px) {
   ul {

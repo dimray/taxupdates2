@@ -211,8 +211,8 @@ class PropertyBusiness extends Controller
             Flash::addMessage("Your Cumulative Summary has been submitted to HMRC", Flash::SUCCESS);
 
             if (!AgentHelper::isSupportingAgent()) {
-                exit("success");
-                // return $this->redirect("/individual-calculations/trigger-calculation");
+
+                return $this->redirect("/property-business/success");
             }
         }
 
@@ -222,5 +222,14 @@ class PropertyBusiness extends Controller
 
         // failure or supporting agent
         return $this->redirect("/obligations/retrieve-cumulative-obligations");
+    }
+
+    public function success()
+    {
+        $heading = "Action Successful";
+
+        $hide_tax_year = true;
+
+        return $this->view("Endpoints/PropertyBusiness/success.php", compact("heading", "hide_tax_year"));
     }
 }

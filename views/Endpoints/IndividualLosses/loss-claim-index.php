@@ -40,7 +40,9 @@
 
 <?php endif; ?>
 
-<p><a href="/individual-losses/create-loss-claim">Create A Loss Claim</a></p>
+<p><a href="/individual-losses/create-loss-claim">Create A Loss Claim For This Business</a></p>
+
+<p><a href="/business-details/list-all-businesses">Create A Loss Claim For A Different Business</a></p>
 
 <p><a href="/individual-losses/list-loss-claims">View Loss Claims</a></p>
 

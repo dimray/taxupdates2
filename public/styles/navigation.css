@@ -163,6 +163,14 @@ details summary {
     background-color: #dcdcdc;
   }
 
+  .navLink.active {
+    background-color: #dcdcdc;
+  }
+
+  .navLink.active:hover {
+    background-color: #dcdcdc;
+  }
+
   .topLink {
     border-radius: 0;
   }

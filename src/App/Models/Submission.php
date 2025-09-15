@@ -115,7 +115,6 @@ class Submission extends Model
     // used in delete annual summary (self-employment and property business) (to update the submission to show deleted)
     public function findSubmission(string $nino_hash, string $business_id, string $tax_year,  string $submission_type): ?int
     {
-
         $pdo = $this->database->getConnection();
 
         $sql = "SELECT id
@@ -137,8 +136,8 @@ class Submission extends Model
 
         $stmt->execute();
 
-        $result = $stmt->fetch();
+        $id = $stmt->fetchColumn();
 
-        return $result ? (int) $result['id'] : null;
+        return $id !== false ? (int) $id : null;
     }
 }

@@ -1,6 +1,7 @@
 <form class="generic-form" action="/individual-losses/process-loss-claim" method="GET">
 
-    <p>You are telling HMRC how to allocate your loss from <b><?= esc($loss_year) ?></b>. If the loss was not incurred
+    <p>You are telling HMRC how to allocate a loss made by this business in <b><?= esc($loss_year) ?></b>. If the loss
+        was not incurred
         in <?= esc($loss_year) ?>,
         change the tax
         year at the top of this page.</p>

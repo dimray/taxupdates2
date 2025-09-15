@@ -468,6 +468,9 @@ class IndividualLosses extends Controller
 
         unset($_SESSION['loss_claims']);
 
+        // re-index claims as the index has gaps because it excludes non sideways-relief claims
+        $claims = array_values($claims);
+
         foreach ($claims as &$claim) {
             if (isset($claim['sequence'])) {
                 $claim['sequence'] = (int) $claim['sequence'];

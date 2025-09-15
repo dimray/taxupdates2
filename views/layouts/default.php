@@ -17,7 +17,9 @@
     <?php displayFlashMessages(); ?>
 
     <?php if (!empty($business_details)): ?>
-        <?php displayArrayAsList($business_details); ?>
+        <div class="list">
+            <?php displayArrayAsList($business_details); ?>
+        </div>
     <?php endif; ?>
 
     <?= $content ?>

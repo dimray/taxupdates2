@@ -59,7 +59,7 @@
                                 <summary class="navLink topLink">Year End</summary>
                                 <ul class="submenu">
                                     <li><a class="navLink subLink " href="/business-details/list-all-businesses">Business
-                                            Adjustments</a></li>
+                                            Income</a></li>
                                     <li><a class="navLink subLink " href="">Other Income</a></li>
                                     <li><a class="navLink subLink" href="">Capital Gains</a></li>
                                     <li><a class="navLink subLink" href="">Tax Reliefs</a></li>

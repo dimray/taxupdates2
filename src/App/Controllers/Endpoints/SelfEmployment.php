@@ -6,6 +6,7 @@ namespace App\Controllers\Endpoints;
 
 use App\Flash;
 use App\Helpers\AgentHelper;
+use App\Helpers\AnnualSubmissionHelper;
 use App\Helpers\Helper;
 use App\Helpers\SubmissionsHelper;
 use App\HmrcApi\Endpoints\ApiSelfEmployment;
@@ -18,7 +19,6 @@ class SelfEmployment extends Controller
 
     public function retrieveCumulativePeriodSummary()
     {
-
         $tax_year = $_SESSION['tax_year'];
 
         $nino = Helper::getNino();
@@ -121,7 +121,7 @@ class SelfEmployment extends Controller
 
             if (!AgentHelper::isSupportingAgent()) {
 
-                return $this->redirect("/self-employment/success");
+                return $this->redirect("/self-employment/success?type=cumulative");
             }
         }
 
@@ -133,13 +133,237 @@ class SelfEmployment extends Controller
         return $this->redirect("/obligations/retrieve-cumulative-obligations");
     }
 
-    public function success()
+    public function annualSubmission()
     {
 
-        $heading = "Success";
+        $heading = "Annual Submission";
+
+        return $this->view("Endpoints/SelfEmployment/annual-submission.php", compact("heading"));
+    }
+
+    public function createAnnualSubmission()
+    {
+        if (empty($_SESSION['errors'])) {
+            unset($_SESSION['annual_submission']);
+        }
+
+        $heading = "Annual Submission";
+
+        $business_details = Helper::setBusinessDetails();
+
+        $errors = $this->flashErrors();
+
+        $adjustments =  $_SESSION['annual_submission'][$_SESSION['business_id']]['adjustments'] ?? [];
+        $allowances =  $_SESSION['annual_submission'][$_SESSION['business_id']]['allowances'] ?? [];
+        $sba =  $_SESSION['annual_submission'][$_SESSION['business_id']]['sba'] ?? [];
+        $esba =  $_SESSION['annual_submission'][$_SESSION['business_id']]['esba'] ?? [];
+        $non_financials =  $_SESSION['annual_submission'][$_SESSION['business_id']]['non_financials'] ?? [];
+
+        return $this->view(
+            "Endpoints/SelfEmployment/create-annual-submission.php",
+            compact("heading", "errors", "business_details", "adjustments", "allowances", "sba", "esba", "non_financials")
+        );
+    }
+
+    public function processAnnualSubmission()
+    {
+        unset($_SESSION['annual_submission']);
+
+        $data = $this->request->post ?? [];
+
+        $errors = AnnualSubmissionHelper::validateSelfEmploymentAnnualSubmission($data);
+
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            return $this->redirect("/self-employment/create-annual-submission");
+        }
+
+        return $this->redirect("/self-employment/approve-annual-submission");
+    }
+
+    public function approveAnnualSubmission()
+    {
+        $errors = $this->flashErrors();
+
+        $adjustments =  $_SESSION['annual_submission'][$_SESSION['business_id']]['adjustments'] ?? [];
+        $allowances =  $_SESSION['annual_submission'][$_SESSION['business_id']]['allowances'] ?? [];
+        $sba =  $_SESSION['annual_submission'][$_SESSION['business_id']]['sba'] ?? [];
+        $esba =  $_SESSION['annual_submission'][$_SESSION['business_id']]['esba'] ?? [];
+        $non_financials =  $_SESSION['annual_submission'][$_SESSION['business_id']]['non_financials'] ?? [];
+
+        $heading = "Annual Summary";
+
+        $business_details = Helper::setBusinessDetails();
 
         $hide_tax_year = true;
 
-        return $this->view("Endpoints/SelfEmployment/success.php", compact("heading", "hide_tax_year"));
+        $hide_tax_year = true;
+
+        return $this->view(
+            "Endpoints/SelfEmployment/approve-annual-submission.php",
+            compact("heading", "hide_tax_year", "business_details", "adjustments", "allowances", "sba", "esba", "non_financials", "errors")
+        );
+    }
+
+    public function createAmendAnnualSubmission()
+    {
+        $confirm_submit = $this->request->post['confirm_submit'] ?? false;
+
+        if (!$confirm_submit) {
+
+            $this->addError("You must tick the confirmation box to proceed");
+
+            return $this->redirect("/self-employment/show-finalise-annual-submission");
+        }
+
+        $annual_submission = AnnualSubmissionHelper::finaliseSelfEmploymentAnnualSubmission();
+
+        $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
+
+        $response = $this->apiSelfEmployment->createAndAmendSelfEmploymentAnnualSubmission($nino, $business_id, $tax_year, $annual_submission);
+
+        unset($_SESSION['annual_submission']);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        $submission_id = "";
+
+        if ($response['type'] === 'success') {
+            $submission_id = $response['submission_ref'];
+        }
+
+        if ($submission_id !== "") {
+
+            $submission_data = SubmissionsHelper::createSubmission("annual", $submission_id);
+
+            $submission_data['submission_payload'] = json_encode($annual_submission);
+
+            $this->submission->insert($submission_data);
+
+            Flash::addMessage("Your Annual Submission has been submitted to HMRC", Flash::SUCCESS);
+
+            return $this->redirect("/self-employment/success?type=annual");
+        }
+
+        // failure
+        return $this->redirect("/self-employment/annual-submission");
+    }
+
+    public function retrieveAnnualSubmission()
+    {
+        $nino = Helper::getNino();
+
+        $business_id = $_SESSION['business_id'];
+
+        $tax_year = $_SESSION['tax_year'];
+
+        $response = $this->apiSelfEmployment->retrieveASelfEmploymentAnnualSubmission($nino, $business_id, $tax_year);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        $annual_submission = [];
+
+        if ($response['type'] === 'success') {
+            $annual_submission = $response['submission'] ?? [];
+        }
+
+        $sba = $annual_submission['allowances']['structuredBuildingAllowance'] ?? [];
+        $esba = $annual_submission['allowances']['enhancedStructuredBuildingAllowance'] ?? [];
+        $sba = AnnualSubmissionHelper::flattenSba($sba, "sba");
+        $esba = AnnualSubmissionHelper::flattenSba($esba, "esba");
+
+        unset($annual_submission['allowances']['structuredBuildingAllowance'], $annual_submission['allowances']['enhancedStructuredBuildingAllowance']);
+
+        $adjustments =  $annual_submission['adjustments'] ?? [];
+        $allowances = $annual_submission['allowances'] ?? [];
+        $non_financials = $annual_submission['nonFinancials'] ?? [];
+
+        $heading = "Annual Summary";
+
+        $business_details = Helper::setBusinessDetails();
+
+        $hide_tax_year = true;
+
+        return $this->view(
+            "Endpoints/SelfEmployment/show-annual-submission.php",
+            compact("heading", "business_details", "hide_tax_year", "sba", "esba", "adjustments", "allowances", "non_financials")
+        );
+    }
+
+    public function deleteAnnualSubmission()
+    {
+
+
+        if (isset($this->request->post['delete_annual_submission'])) {
+
+            $nino = Helper::getNino();
+
+            $business_id = $_SESSION['business_id'];
+
+            $tax_year = $_SESSION['tax_year'];
+
+            $response = $this->apiSelfEmployment->deleteASelfEmploymentAnnualSubmission($nino, $business_id, $tax_year);
+
+            if ($response['type'] === 'redirect') {
+                return $this->redirect($response['location']);
+            }
+
+            $deleted = false;
+
+            if ($response['type'] === 'success') {
+                $deleted = true;
+            }
+
+            if ($deleted) {
+
+                $nino_hash = Helper::getHash($nino);
+                $business_id = $_SESSION['business_id'];
+
+                $submission_id = $this->submission->findSubmission($nino_hash, $business_id, $tax_year, "annual");
+
+                if ($submission_id) {
+
+                    $data = [
+                        'id' => $submission_id,
+                        'deleted_at' => date('Y-m-d H:i:s')
+                    ];
+
+                    $this->submission->update($data);
+                }
+
+                Flash::addMessage("The Annual Summary has been deleted");
+
+                return $this->redirect("/self-employment/success");
+            }
+        } else {
+
+
+            $heading = "Delete Annual Submission";
+
+            $hide_tax_year = true;
+
+            $tax_year = $_SESSION['tax_year'];
+
+            return $this->view("Endpoints/SelfEmployment/delete-annual-submission.php", compact("heading", "tax_year", "hide_tax_year"));
+        }
+    }
+
+
+
+    public function success()
+    {
+        $type = $this->request->get['type'] ?? '';
+
+        $heading = "Action Successful";
+
+        $hide_tax_year = true;
+
+        return $this->view("Endpoints/SelfEmployment/success.php", compact("heading", "hide_tax_year", "type"));
     }
 }
