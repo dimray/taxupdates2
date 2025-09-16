@@ -138,7 +138,9 @@ class SelfEmployment extends Controller
 
         $heading = "Annual Submission";
 
-        return $this->view("Endpoints/SelfEmployment/annual-submission.php", compact("heading"));
+        $business_details = Helper::setBusinessDetails();
+
+        return $this->view("Endpoints/SelfEmployment/annual-submission.php", compact("heading", "business_details"));
     }
 
     public function createAnnualSubmission()
@@ -191,11 +193,9 @@ class SelfEmployment extends Controller
         $esba =  $_SESSION['annual_submission'][$_SESSION['business_id']]['esba'] ?? [];
         $non_financials =  $_SESSION['annual_submission'][$_SESSION['business_id']]['non_financials'] ?? [];
 
-        $heading = "Annual Summary";
+        $heading = "Annual Submission";
 
         $business_details = Helper::setBusinessDetails();
-
-        $hide_tax_year = true;
 
         $hide_tax_year = true;
 
@@ -284,7 +284,7 @@ class SelfEmployment extends Controller
         $allowances = $annual_submission['allowances'] ?? [];
         $non_financials = $annual_submission['nonFinancials'] ?? [];
 
-        $heading = "Annual Summary";
+        $heading = "Annual Submission";
 
         $business_details = Helper::setBusinessDetails();
 
@@ -298,8 +298,6 @@ class SelfEmployment extends Controller
 
     public function deleteAnnualSubmission()
     {
-
-
         if (isset($this->request->post['delete_annual_submission'])) {
 
             $nino = Helper::getNino();
@@ -337,12 +335,15 @@ class SelfEmployment extends Controller
                     $this->submission->update($data);
                 }
 
-                Flash::addMessage("The Annual Summary has been deleted");
+                Flash::addMessage("The Annual Summary has been deleted", Flash::SUCCESS);
 
-                return $this->redirect("/self-employment/success");
+                return $this->redirect("/self-employment/success?type=annual-deleted");
             }
-        } else {
 
+            // failure
+            Flash::addMessage("Unable to delete Annual Submission", Flash::WARNING);
+            return $this->redirect("/self-employment/annual-submission");
+        } else {
 
             $heading = "Delete Annual Submission";
 
@@ -362,8 +363,10 @@ class SelfEmployment extends Controller
 
         $heading = "Action Successful";
 
+        $business_details = Helper::setBusinessDetails();
+
         $hide_tax_year = true;
 
-        return $this->view("Endpoints/SelfEmployment/success.php", compact("heading", "hide_tax_year", "type"));
+        return $this->view("Endpoints/SelfEmployment/success.php", compact("heading", "hide_tax_year", "business_details", "type"));
     }
 }

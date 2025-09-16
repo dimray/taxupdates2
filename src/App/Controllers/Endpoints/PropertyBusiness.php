@@ -6,6 +6,7 @@ namespace App\Controllers\Endpoints;
 
 use App\Helpers\Helper;
 use App\Helpers\SubmissionsHelper;
+use App\Helpers\AnnualSubmissionHelper;
 use App\Helpers\AgentHelper;
 use App\HmrcApi\Endpoints\ApiPropertyBusiness;
 use App\Models\Submission;
@@ -212,7 +213,7 @@ class PropertyBusiness extends Controller
 
             if (!AgentHelper::isSupportingAgent()) {
 
-                return $this->redirect("/property-business/success");
+                return $this->redirect("/property-business/success?type=cumulative");
             }
         }
 
@@ -224,12 +225,317 @@ class PropertyBusiness extends Controller
         return $this->redirect("/obligations/retrieve-cumulative-obligations");
     }
 
+    public function annualSubmission()
+    {
+        $heading = "Annual Submission";
+
+        $business_details = Helper::setBusinessDetails();
+
+        $type_of_business = $_SESSION['type_of_business'];
+
+        return $this->view("Endpoints/PropertyBusiness/annual-submission.php", compact("heading", "business_details", "type_of_business"));
+    }
+
+
+    public function createAnnualSubmission()
+    {
+        $type_of_business = $_SESSION['type_of_business'];
+
+        if (empty($_SESSION['errors'])) {
+            unset($_SESSION['annual_submission']);
+        }
+
+        $heading = "Annual Submission";
+
+        $business_details = Helper::setBusinessDetails();
+
+        $errors = $this->flashErrors();
+
+        if ($type_of_business === "uk-property") {
+
+            $adjustments =  $_SESSION['annual_submission'][$_SESSION['business_id']]['adjustments'] ?? [];
+            $allowances =  $_SESSION['annual_submission'][$_SESSION['business_id']]['allowances'] ?? [];
+            $sba =  $_SESSION['annual_submission'][$_SESSION['business_id']]['sba'] ?? [];
+            $esba =  $_SESSION['annual_submission'][$_SESSION['business_id']]['esba'] ?? [];
+            $rentaroom =  $_SESSION['annual_submission'][$_SESSION['business_id']]['rentaroom'] ?? [];
+
+            if (!empty($adjustments && isset($adjustments['nonResidentLandlord']))) {
+                $adjustments['nonResidentLandlord'] = $adjustments['nonResidentLandlord'] === true ? "true" : "false";
+            }
+
+            if (!empty($rentaroom && isset($rentaroom['jointlyLet']))) {
+                $rentaroom['rentARoomClaimed'] = "true";
+                $rentaroom['jointlyLet'] = $rentaroom['jointlyLet'] === true ? "true" : "false";
+            }
+
+            return $this->view(
+                "Endpoints/PropertyBusiness/create-annual-submission.php",
+                compact("heading", "business_details", "type_of_business", "errors",  "adjustments", "allowances", "sba", "esba", "rentaroom")
+            );
+        } elseif ($type_of_business === "foreign-property") {
+
+            // get countries from the submission
+
+            // adds countries only if they are an array (have data)
+            $foreign_property_data = array_filter(
+                $_SESSION['annual_submission'][$_SESSION['business_id']] ?? [],
+                fn($v) => is_array($v)
+            );
+
+            $adjustment_fields = AnnualSubmissionHelper::getForeignPropertyAdjustmentFields();
+            $allowance_fields = AnnualSubmissionHelper::getForeignPropertyAllowanceFields();
+            $sba_fields = AnnualSubmissionHelper::getForeignPropertySbaFields();
+
+            return $this->view(
+                "Hmrc/PropertyBusiness/create-annual-submission.php",
+                compact("heading", "business_details", "type_of_business", "errors", "foreign_property_data", "country_codes", "adjustment_fields", "allowance_fields", "sba_fields")
+            );
+        }
+    }
+
+    public function processAnnualSubmission()
+    {
+        $data = $this->request->post ?? [];
+
+        if (empty($data)) {
+            return $this->redirect("/property-business/create-annual-submission");
+        }
+
+        $errors = AnnualSubmissionHelper::validatePropertyBusinessAnnualSubmission($data);
+
+        if (!empty($errors)) {
+            $_SESSION['errors'] = $errors;
+            return $this->redirect("/property-business/create-annual-submission?edit=true");
+        }
+
+        return $this->redirect("/property-business/approve-annual-submission");
+    }
+
+    public function approveAnnualSubmission()
+    {
+
+        $errors = $this->flashErrors();
+
+        $type_of_business = $_SESSION['type_of_business'];
+
+        $heading = "Annual Submission";
+
+        $business_details = Helper::setBusinessDetails();
+
+        $hide_tax_year = true;
+
+        if ($type_of_business === "uk-property") {
+
+            $adjustments =  $_SESSION['annual_submission'][$_SESSION['business_id']]['adjustments'] ?? [];
+            $allowances =  $_SESSION['annual_submission'][$_SESSION['business_id']]['allowances'] ?? [];
+            $sba =  $_SESSION['annual_submission'][$_SESSION['business_id']]['sba'] ?? [];
+            $esba =  $_SESSION['annual_submission'][$_SESSION['business_id']]['esba'] ?? [];
+            $rentaroom =  $_SESSION['annual_submission'][$_SESSION['business_id']]['rentaroom'] ?? [];
+
+            return $this->view(
+                "Endpoints/PropertyBusiness/approve-annual-submission.php",
+                compact("heading", "hide_tax_year", "business_details", "type_of_business",  "adjustments", "allowances", "sba", "esba", "rentaroom", "errors")
+            );
+        }
+    }
+
+    public function createAmendAnnualSubmission()
+    {
+        $confirm_submit = $this->request->post['confirm_submit'] ?? false;
+
+        if (!$confirm_submit) {
+
+            $this->addError("You must tick the confirmation box to proceed");
+
+            return $this->redirect("/property-business/show-finalise-annual-submission");
+        }
+
+        $annual_submission = AnnualSubmissionHelper::finalisePropertyBusinessAnnualSubmission();
+
+        $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
+
+        $location = $_SESSION['type_of_business'] === "uk-property" ? "uk" : "foreign";
+
+        $response = $this->apiPropertyBusiness->createAndAmendAPropertyBusinessAnnualSubmission($location, $nino, $business_id, $tax_year, $annual_submission);
+
+        unset($_SESSION['annual_submission']);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        $submission_id = "";
+
+        if ($response['type'] === 'success') {
+            $submission_id = $response['submission_ref'];
+        }
+
+        if ($submission_id !== "") {
+
+            $submission_data = SubmissionsHelper::createSubmission("annual", $submission_id);
+
+            $submission_data['submission_payload'] = json_encode($annual_submission);
+
+            $this->submission->insert($submission_data);
+
+            Flash::addMessage("Your Annual Submission has been submitted to HMRC", Flash::SUCCESS);
+
+            return $this->redirect("/property-business/success?type=annual");
+        }
+
+        // failure
+        return $this->redirect("/self-employment/annual-submission");
+    }
+
+    public function retrieveAnnualSubmission()
+    {
+        $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
+        $location = $_SESSION['type_of_business'] === "uk-property" ? "uk" : "foreign";
+
+        $response = $this->apiPropertyBusiness->retrieveAPropertyBusinessAnnualSubmission($location, $nino, $business_id, $tax_year);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        $submission = [];
+
+        if ($response['type'] === 'success') {
+            $submission = $response['submission'];
+        }
+
+        $type_of_business = $_SESSION['type_of_business'];
+
+        $heading = "Annual Submission";
+        $business_details = Helper::setBusinessDetails();
+        $hide_tax_year = true;
+
+        $empty_data = false;
+        if (empty($submission)) {
+            $empty_data = true;
+            return $this->view(
+                "Hmrc/PropertyBusiness/show-annual-submission.php",
+                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "type_of_business")
+            );
+        }
+
+        if ($location === "uk") {
+            $annual_submission = $submission['ukProperty'] ?? [];
+
+            $rentaroom = $annual_submission['adjustments']['rentARoom']['jointlyLet'] ?? [];
+
+            $sba = $annual_submission['allowances']['structuredBuildingAllowance'] ?? [];
+            $esba = $annual_submission['allowances']['enhancedStructuredBuildingAllowance'] ?? [];
+            $sba = AnnualSubmissionHelper::flattenSba($sba, "sba");
+            $esba = AnnualSubmissionHelper::flattenSba($esba, "esba");
+
+            unset($annual_submission['allowances']['structuredBuildingAllowance'], $annual_submission['allowances']['enhancedStructuredBuildingAllowance'], $annual_submission['adjustments']['rentARoom']['jointlyLet']);
+
+            $adjustments =  $annual_submission['adjustments'] ?? [];
+            $allowances = $annual_submission['allowances'] ?? [];
+
+            return $this->view(
+                "Endpoints/PropertyBusiness/show-annual-submission.php",
+                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "type_of_business", "sba", "esba", "adjustments", "allowances", "rentaroom")
+            );
+        }
+
+        if ($location === "foreign") {
+
+            $foreign_property_data = $submission['foreignProperty'] ?? [];
+
+            foreach ($foreign_property_data as &$entry) {
+                // Flatten SBA
+                $entry['sba'] = AnnualSubmissionHelper::flattenSba($entry['allowances']['structuredBuildingAllowance'] ?? [], "sba");
+
+                unset($entry['allowances']['structuredBuildingAllowance']);
+            }
+            unset($entry);
+
+            $adjustment_fields = $this->getForeignPropertyAdjustmentFields();
+            $allowance_fields = $this->getForeignPropertyAllowanceFields();
+            $sba_fields = $this->getForeignPropertySbaFields();
+
+            return $this->view(
+                "Hmrc/PropertyBusiness/show-annual-submission.php",
+                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "type_of_business", "foreign_property_data", "adjustment_fields", "allowance_fields", "sba_fields")
+            );
+        }
+    }
+
+    public function deleteAnnualSubmission()
+    {
+        if (isset($this->request->post['delete_annual_submission'])) {
+
+            $nino = Helper::getNino();
+
+            $business_id = $_SESSION['business_id'];
+
+            $tax_year = $_SESSION['tax_year'];
+
+            $response = $this->apiPropertyBusiness->deleteAPropertyBusinessAnnualSubmission($nino, $business_id, $tax_year);
+
+            if ($response['type'] === 'redirect') {
+                return $this->redirect($response['location']);
+            }
+
+            $deleted = false;
+
+            if ($response['type'] === 'success') {
+                $deleted = true;
+            }
+
+            if ($deleted) {
+
+                $nino_hash = Helper::getHash($nino);
+                $business_id = $_SESSION['business_id'];
+
+                $submission_id = $this->submission->findSubmission($nino_hash, $business_id, $tax_year, "annual");
+
+                if ($submission_id) {
+
+                    $data = [
+                        'id' => $submission_id,
+                        'deleted_at' => date('Y-m-d H:i:s')
+                    ];
+
+                    $this->submission->update($data);
+                }
+
+                Flash::addMessage("The Annual Submission has been deleted", Flash::SUCCESS);
+
+                return $this->redirect("/property-business/success?type=annual-deleted");
+            }
+
+            // failure
+            Flash::addMessage("Unable to delete Annual Submission", Flash::WARNING);
+            return $this->redirect("/property-business/annual-submission");
+        } else {
+
+            $tax_year = $_SESSION['tax_year'];
+
+            $heading = "Delete Annual Submission";
+
+            $hide_tax_year = true;
+
+            return $this->view("Endpoints/PropertyBusiness/delete-annual-submission.php", compact("tax_year", "hide_tax_year", "heading"));
+        }
+    }
+
     public function success()
     {
+        $type = $this->request->get['type'] ?? '';
+
         $heading = "Action Successful";
 
         $hide_tax_year = true;
 
-        return $this->view("Endpoints/PropertyBusiness/success.php", compact("heading", "hide_tax_year"));
+        $business_details = Helper::setBusinessDetails();
+
+        return $this->view("Endpoints/PropertyBusiness/success.php", compact("heading", "hide_tax_year", "business_details", "type"));
     }
 }

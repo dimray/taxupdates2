@@ -36,12 +36,26 @@ button {
   color: hsla(0, 100%, 15%, 0.9);
   line-height: 1.2rem;
   padding-inline: 1rem;
-  padding-block: 0.2rem;
+  padding-block-end: 0.2rem;
+  border-radius: 5px;
+}
+
+.confirm-delete-small {
+  background: hsla(0, 100%, 50%, 30%);
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  color: hsla(0, 100%, 15%, 0.9);
+  line-height: 1.2rem;
+  padding-inline: 0.5rem;
+  padding-block-end: 0.2rem;
   border-radius: 5px;
 }
 
 .confirm-delete:hover,
-.confirm-delete:focus {
+.confirm-delete:focus,
+.confirm-delete-small:hover,
+.confirm-delete-small:focus {
   background: hsla(0, 100%, 50%, 40%);
   cursor: pointer;
   color: hsla(0, 100%, 15%, 0.9);

@@ -2,7 +2,7 @@
 
 return [
     'Europe' => [
-        'ALA' => 'Åland Islands',
+        'ALA' => 'Aland Islands',
         'ALB' => 'Albania',
         'AND' => 'Andorra',
         'AUT' => 'Austria',

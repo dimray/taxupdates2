@@ -319,6 +319,4 @@ class SubmissionsHelper
             'foreignProperty' => $foreign_property_array
         ];
     }
-
-   
 }

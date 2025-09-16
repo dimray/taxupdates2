@@ -189,6 +189,273 @@ class AnnualSubmissionHelper
         return $final_data;
     }
 
+    public static function validatePropertyBusinessAnnualSubmission(array $data): array
+    {
+        // dump any empty values
+        foreach ($data as $key => $value) {
+            if ($value === "") {
+                unset($data[$key]);
+            }
+        }
+
+        $property_type = $_SESSION['type_of_business'] === "uk-property" ? "uk" : "foreign";
+
+        if (isset($data['rentARoomClaimed']) && $data['rentARoomClaimed'] == "false") {
+            unset($data['jointlyLet']);
+        }
+
+        if ($property_type === "uk") {
+            $annual_data = SubmissionsHelper::buildArrays($data, "uk-property", "annual");
+        } else {
+            $annual_data = SubmissionsHelper::buildArrays($data, "foreign-property", "annual");
+
+            if (isset($data['countryCode'])) {
+                $annual_data['countryCode'] = $data['countryCode'];
+            }
+        }
+
+        $country_code = $annual_data['countryCode'] ?? null;
+        $adjustments = $annual_data['adjustments'] ?? [];
+        $rentaroom = $annual_data['rentARoom'] ?? [];
+        $allowances = $annual_data['allowances'] ?? [];
+        $sba = $annual_data['structuredBuildingAllowance'] ?? [];
+        $esba = $annual_data['enhancedStructuredBuildingAllowance'] ?? [];
+
+        // add data to session
+        if (!empty($adjustments)) {
+
+            $adjustments = SubmissionsHelper::formatArrayValuesAsFloat($adjustments);
+
+            if (isset($adjustments['nonResidentLandlord'])) {
+
+                $adjustments['nonResidentLandlord'] = filter_var($adjustments['nonResidentLandlord'], FILTER_VALIDATE_BOOL) ?? false;
+            }
+
+            if ($property_type === "foreign" && $country_code) {
+                $_SESSION['annual_submission'][$_SESSION['business_id']][$country_code]['adjustments'] = $adjustments;
+            } else {
+                $_SESSION['annual_submission'][$_SESSION['business_id']]['adjustments'] = $adjustments;
+            }
+        }
+
+        if (!empty($rentaroom)) {
+
+            $rentaroom['jointlyLet'] = filter_var($rentaroom['jointlyLet'], FILTER_VALIDATE_BOOL);
+
+            $_SESSION['annual_submission'][$_SESSION['business_id']]['rentaroom'] = $rentaroom;
+        }
+
+        if (!empty($allowances)) {
+
+            $allowances = SubmissionsHelper::formatArrayValuesAsFloat($allowances);
+
+            if ($property_type === "foreign" && $country_code) {
+                $_SESSION['annual_submission'][$_SESSION['business_id']][$country_code]['allowances'] = $allowances;
+            } else {
+                $_SESSION['annual_submission'][$_SESSION['business_id']]['allowances'] = $allowances;
+            }
+        }
+
+        if (!empty($sba)) {
+
+            if (isset($sba['sba_amount'])) {
+                $sba['sba_amount'] = SubmissionsHelper::formatValueAsFloat($sba['sba_amount']);
+            }
+
+            if (isset($sba['sba_qualifyingAmountExpenditure'])) {
+                $sba['sba_qualifyingAmountExpenditure'] = SubmissionsHelper::formatValueAsFloat($sba['sba_qualifyingAmountExpenditure']);
+            }
+
+            if ($property_type === "foreign" && $country_code) {
+                $_SESSION['annual_submission'][$_SESSION['business_id']][$country_code]['sba'] = $sba;
+            } else {
+                $_SESSION['annual_submission'][$_SESSION['business_id']]['sba'] = $sba;
+            }
+        }
+
+        if (!empty($esba)) {
+
+            if (isset($esba['esba_amount'])) {
+                $esba['esba_amount'] = SubmissionsHelper::formatValueAsFloat($esba['esba_amount']);
+            }
+
+            if (isset($esba['esba_qualifyingAmountExpenditure'])) {
+                $esba['esba_qualifyingAmountExpenditure'] = SubmissionsHelper::formatValueAsFloat($esba['esba_qualifyingAmountExpenditure']);
+            }
+
+            $_SESSION['annual_submission'][$_SESSION['business_id']]['esba'] = $esba;
+        }
+
+        // validation
+        $errors = [];
+
+        if ($property_type === "foreign" && empty($country_code)) {
+            $errors[] = "Country Code is required";
+        }
+
+        // adjustments
+        if ($property_type === "uk") {
+
+            $nonresident_landlord = $adjustments['nonResidentLandlord'] ?? false;
+            unset($adjustments['nonResidentLandlord']);
+        }
+
+
+        if (!empty($adjustments)) {
+
+            foreach ($adjustments as $key => $value) {
+
+                if (!SubmissionsHelper::validateAmount($value, 0, 99999999999.99)) {
+                    $errors[] = SubmissionsHelper::camelCaseToWords($key) . " must be between 0 and 99999999999.99";
+                }
+            }
+        }
+
+        if ($property_type === "uk") {
+
+            $adjustments = $adjustments + ['nonResidentLandlord' => $nonresident_landlord];
+        }
+
+        // allowances
+        $property_allowance = "";
+
+        if (isset($allowances['propertyIncomeAllowance'])) {
+            $property_allowance = $allowances['propertyIncomeAllowance'];
+            unset($allowances['propertyIncomeAllowance']);
+        }
+
+        if (!empty($allowances) || !empty($sba) || !empty($esba)) {
+
+            if (!empty($property_allowance)) {
+
+                if (!empty($allowances) || !empty($sba) || !empty($esba)) {
+                    $errors[] = "If Property Income Allowance is claimed, no other allowances can be claimed.";
+                }
+
+                if ($property_allowance > 1000 || $property_allowance < 0) {
+                    $errors[] = "Property Income Allowance must be between 0 and 1000.";
+                }
+
+                // put it back in the array if it's not empty
+                $allowances['propertyIncomeAllowance'] = $property_allowance;
+            } elseif (!empty($allowances)) {
+
+                foreach ($allowances as $key => $value) {
+                    if (!SubmissionsHelper::validateAmount($value, 0, 99999999999.99)) {
+                        $errors[] = SubmissionsHelper::camelCaseToWords($key) . " must be between 0 and 99999999999.99";
+                    }
+                }
+            }
+        }
+
+        if (!empty($sba)) {
+
+            if (isset($sba['sba_amount'])) {
+                $sba_errors =  self::validateBuildingAllowance($sba, "sba_");
+                $errors = array_merge($errors, $sba_errors);
+            } else {
+                // set it to empty if there's no amount
+                $sba = [];
+            }
+        }
+
+        if (!empty($esba)) {
+
+            if (isset($esba['esba_amount'])) {
+                $esba_errors =  self::validateBuildingAllowance($esba, "esba_");
+                $errors = array_merge($errors, $esba_errors);
+            } else {
+                // set it to empty if there's no amount
+                $esba = [];
+            }
+        }
+
+        return $errors;
+    }
+
+    public static function finalisePropertyBusinessAnnualSubmission()
+    {
+
+        $business_id = $_SESSION['business_id'];
+
+        $submission = $_SESSION['annual_submission'][$business_id] ?? [];
+
+        $final_data = [];
+
+        $type = $_SESSION['type_of_business'];
+
+
+        if ($type === "uk-property") {
+
+            $adjustments =  $submission['adjustments'] ?? [];
+            $allowances =  $submission['allowances'] ?? [];
+            $sba =  $submission['sba'] ?? [];
+            $esba =  $submission['esba'] ?? [];
+            $rentaroom =  $submission['rentaroom'] ?? [];
+
+            if (!empty($rentaroom)) {
+                $adjustments['rentARoom'] = $rentaroom;
+            }
+
+            if (!empty($adjustments)) {
+                $final_data['adjustments'] = $adjustments;
+            }
+
+            if (!empty($sba)) {
+                $sba = self::finaliseStructuredBuildingData($sba);
+                $allowances['structuredBuildingAllowance'] = [$sba];
+            }
+
+            if (!empty($esba)) {
+                $esba = self::finaliseStructuredBuildingData($esba);
+                $allowances['enhancedStructuredBuildingAllowance'] = [$esba];
+            }
+
+            if (!empty($allowances)) {
+                $final_data['allowances'] = $allowances;
+            }
+
+            $final_data = [
+                'ukProperty' => $final_data
+            ];
+        }
+
+        if ($type === "foreign-property") {
+
+            $foreign_data = [];
+
+            foreach ($submission as $countryCode => $data) {
+                $adjustments = $data['adjustments'] ?? [];
+                $allowances = $data['allowances'] ?? [];
+                $sba = $data['sba'] ?? [];
+
+                $country_block = ['countryCode' => $countryCode];
+
+                if (!empty($adjustments)) {
+                    $country_block['adjustments'] = $adjustments;
+                }
+
+                if (!empty($sba)) {
+                    $allowances['structuredBuildingAllowance'] = [
+                        self::finaliseStructuredBuildingData($sba)
+                    ];
+                }
+
+                if (!empty($allowances)) {
+                    $country_block['allowances'] = $allowances;
+                }
+
+                $foreign_data[] = $country_block;
+            }
+
+            $final_data = [
+                'foreignProperty' => $foreign_data
+            ];
+        }
+
+        return $final_data;
+    }
+
     private static function validateBuildingAllowance(array $data, string $prefix): array
     {
         $errors = [];
@@ -302,6 +569,83 @@ class AnnualSubmissionHelper
             "{$prefix}_name" => $entry['building']['name'] ?? null,
             "{$prefix}_number" => $entry['building']['number'] ?? null,
             "{$prefix}_postcode" => $entry['building']['postcode'] ?? null,
+        ];
+    }
+
+    // used to build foreign property annual submission
+    public static function getForeignPropertyAdjustmentFields()
+    {
+        return [
+            'privateUseAdjustment' => [
+                'label' => 'Private Use Adjustment',
+                'type' => 'number',
+                'min' => -99999999999.99,
+                'max' => 99999999999.99,
+                'step' => 0.01,
+            ],
+            'balancingCharge' => [
+                'label' => 'Balancing Charge',
+                'type' => 'number',
+                'min' => -99999999999.99,
+                'max' => 99999999999.99,
+                'step' => 0.01,
+            ],
+        ];
+    }
+
+    // used to build foreign property annual submission
+    public static function getForeignPropertyAllowanceFields()
+    {
+        return [
+            'annualInvestmentAllowance' => [
+                'label' => 'Annual Investment Allowance',
+                'type' => 'number',
+                'min' => 0,
+                'max' => 99999999999.99,
+                'step' => 0.01,
+            ],
+            'costOfReplacingDomesticItems' => [
+                'label' => 'Cost Of Replacing Domestic Items',
+                'type' => 'number',
+                'min' => 0,
+                'max' => 99999999999.99,
+                'step' => 0.01,
+            ],
+            'otherCapitalAllowance' => [
+                'label' => 'Other Capital Allowance',
+                'type' => 'number',
+                'min' => 0,
+                'max' => 99999999999.99,
+                'step' => 0.01,
+            ],
+            'zeroEmissionsCarAllowance' => [
+                'label' => 'Zero Emissions Car Allowance',
+                'type' => 'number',
+                'min' => 0,
+                'max' => 99999999999.99,
+                'step' => 0.01,
+            ],
+            'propertyIncomeAllowance' => [
+                'label' => 'Property Income Allowance',
+                'type' => 'number',
+                'min' => 0,
+                'max' => 1000.00,
+                'step' => 0.01,
+            ]
+
+        ];
+    }
+
+    // used to build foreign property annual submission
+    public static function getForeignPropertySbaFields()
+    {
+        return [
+            'sba_amount' => ['label' => 'Amount', 'type' => 'number', 'min' => 0, 'max' => 99999999999.99, 'step' => 0.01],
+            'sba_qualifyingDate' => ['label' => 'Qualifying Date', 'type' => 'date'],
+            'sba_qualifyingAmountExpenditure' => ['label' => 'Qualifying Expenditure', 'type' => 'number', 'min' => 0, 'max' => 99999999999.99, 'step' => 0.01],
+            'sba_name' => ['label' => 'Building Name', 'type' => 'text'],
+            'sba_number' => ['label' => 'Building Number', 'type' => 'text'],
+            'sba_postcode' => ['label' => 'Postcode', 'type' => 'text'],
         ];
     }
 }

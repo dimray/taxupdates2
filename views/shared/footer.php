@@ -25,6 +25,10 @@
     <script src="/scripts/scroll-to-errors.js"></script>
 <?php endif; ?>
 
+<?php if (!empty($include_rentaroom_toggle_script)): ?>
+    <script src="/scripts/rentaroom-toggle.js"></script>
+<?php endif; ?>
+
 <?php if (!empty($include_clients_show_script)): ?>
     <script src="/scripts/clients-show.js"></script>
 <?php endif; ?>

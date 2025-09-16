@@ -5,7 +5,11 @@
 
         <h2>Adjustments, Allowances And Losses</h2>
 
-        <p><a href="/self-employment/annual-submission">Annual Submission</a></p>
+
+
+        <p><a href="/<?= $type_of_business ?>/annual-submission">Annual Submission</a><span class="small">Capital Allowances and
+                        other adjustments</span></p>
+
 
         <p><a href="">Accounting Adjustments</a></p>
 

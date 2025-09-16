@@ -6,20 +6,13 @@
 
 <div class="list">
     <ul>
-        <li>Claim the Trading Income Allowance</li>
+        <li>Claim the Property Income Allowance</li>
+        <li>Make a Private Use Adjustment</li>
+        <li>Share the RentARoom Allowance</li>
+        <li>Declare you are a Non-Resident Landlord</li>
+        <li>Claim for Replacement of Domestic Items</li>
         <li>Claim Capital Allowances</li>
         <li>Declare Balancing Charges</li>
-        <li>Make adjustments, inluding:
-            <ul>
-                <li>Averaging Adjustments</li>
-                <li>Basis Adjustments</li>
-                <li>Overlap Relief Used</li>
-                <li>Change of Accounting Practice</li>
-                <li>Goods and Services Taken for Own Use</li>
-                <li>Non Taxable Profits</li>
-            </ul>
-        <li>Claim Exemption from National Insurance</li>
-        <li>Declare whether Business Details have changed</li>
     </ul>
 </div>
 
@@ -30,6 +23,6 @@
     overwrite the previous submission, so it is necessary to provide all figures as though no Annual Submission has
     previously been made.</p>
 
-<p><a href="/self-employment/create-annual-submission">Create an Annual Submission</a></p>
+<p><a href="/property-business/create-annual-submission">Create an Annual Submission</a></p>
 
-<p><a href="/self-employment/retrieve-annual-submission">View Annual Submission</a></p>
+<p><a href="/property-business/retrieve-annual-submission">View Annual Submission</a></p>
