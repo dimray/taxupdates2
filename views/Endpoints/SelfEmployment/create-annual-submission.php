@@ -278,4 +278,4 @@
 
 <p><a href="/business-details/retrieve-business-details">Cancel</a></p>
 
-<?php $include_scroll_to_error_script = true; ?>
+<?php $include_scroll_to_errors_script = true; ?>

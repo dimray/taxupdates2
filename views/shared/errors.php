@@ -1,5 +1,7 @@
 <?php if (!empty($errors)): ?>
-    <?php foreach ($errors as $error): ?>
-        <p class="form-error"><?= esc($error) ?></p>
-    <?php endforeach; ?>
+    <div class="error-messages">
+        <?php foreach ($errors as $error): ?>
+            <p class="form-error"><?= esc($error) ?></p>
+        <?php endforeach; ?>
+    </div>
 <?php endif; ?>

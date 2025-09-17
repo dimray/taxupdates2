@@ -10,6 +10,7 @@
         content="One-stop site for Making Tax Digital for Income Tax for both landlords and sole traders">
     <link rel="stylesheet" href="/styles/reset.css">
     <link rel="stylesheet" href="/styles/base.css">
+    <link rel="stylesheet" href="/styles/grid.css">
     <link rel="stylesheet" href="/styles/navigation.css">
     <link rel="stylesheet" href="/styles/buttons.css">
     <link rel="stylesheet" href="/styles/icons.css">
@@ -45,6 +46,23 @@
             $main_agent = ($authenticated_agent && $agent_type === "main");
             $supporting_agent = ($authenticated_agent && $agent_type === "supporting");
 
+            // for giving active class to 'Year End' top level nav when one of its sub-items is active
+            $year_end_paths = [
+                '/business-details/list-all-businesses?year-end=true',
+                '/other-income',
+                '/capital-gains',
+                '/tax-reliefs',
+                '/final-declaration'
+            ];
+
+            $is_year_end_active = false;
+            foreach ($year_end_paths as $path) {
+                if (str_starts_with($current_path, $path)) {
+                    $is_year_end_active = true;
+                    break;
+                }
+            }
+
             ?>
 
             <ul data-state="closed" class="primary-navigation" id="primary-navigation">
@@ -56,9 +74,11 @@
                                 href="/business-details/list-all-businesses?updates=true">Updates</a></li>
                         <li>
                             <details class="details-menu prevent-select">
-                                <summary class="navLink topLink">Year End</summary>
+                                <summary class="navLink topLink <?= $is_year_end_active ? 'active' : '' ?>">
+                                    Year End</summary>
                                 <ul class="submenu">
-                                    <li><a class="navLink subLink " href="/business-details/list-all-businesses">Business
+                                    <li><a class="navLink subLink "
+                                            href="/business-details/list-all-businesses?year-end=true">Business
                                             Income</a></li>
                                     <li><a class="navLink subLink " href="">Other Income</a></li>
                                     <li><a class="navLink subLink" href="">Capital Gains</a></li>

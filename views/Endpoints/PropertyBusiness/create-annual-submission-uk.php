@@ -46,20 +46,20 @@
         <div class="form-input">
             <label for="balancingCharge">Balancing Charge</label>
             <input type="number" min="0" max="99999999999.99" step="0.01" name="balancingCharge" id="balancingCharge"
-                class="money-field" value="<?= $adjustments['balancingCharge'] ?? '' ?>">
+                value="<?= $adjustments['balancingCharge'] ?? '' ?>">
         </div>
 
         <div class="form-input">
             <label for="privateUseAdjustment">Private Use Adjustment</label>
             <input type="number" min="0" max="99999999999.99" step="0.01" name="privateUseAdjustment"
-                id="privateUseAdjustment" class="money-field" value="<?= $adjustments['privateUseAdjustment'] ?? '' ?>">
+                id="privateUseAdjustment" value="<?= $adjustments['privateUseAdjustment'] ?? '' ?>">
         </div>
 
         <div class="form-input">
             <label for="businessPremisesRenovationAllowanceBalancingCharges">BPRA Balancing Charges</label>
             <input type="number" min="0" max="99999999999.99" step="0.01"
                 name="businessPremisesRenovationAllowanceBalancingCharges"
-                id="businessPremisesRenovationAllowanceBalancingCharges" class="money-field"
+                id="businessPremisesRenovationAllowanceBalancingCharges"
                 value="<?= $adjustments['businessPremisesRenovationAllowanceBalancingCharges'] ?? '' ?>">
         </div>
 
@@ -68,43 +68,38 @@
         <div class="form-input">
             <label for="annualInvestmentAllowance">Annual Investment Allowance</label>
             <input type="number" min="0" max="99999999999.99" step="0.01" name="annualInvestmentAllowance"
-                id="annualInvestmentAllowance" class="money-field allowance"
-                value="<?= $allowances['annualInvestmentAllowance'] ?? '' ?>">
+                id="annualInvestmentAllowance" value="<?= $allowances['annualInvestmentAllowance'] ?? '' ?>">
         </div>
 
         <div class="form-input">
             <label for="businessPremisesRenovationAllowance">Business Premises Renovation Allowance</label>
             <input type="number" min="0" max="99999999999.99" step="0.01" name="businessPremisesRenovationAllowance"
-                id="businessPremisesRenovationAllowance" class="money-field allowance"
+                id="businessPremisesRenovationAllowance"
                 value="<?= $allowances['businessPremisesRenovationAllowance'] ?? '' ?>">
         </div>
 
         <div class="form-input">
             <label for="otherCapitalAllowance">Other Capital Allowances</label>
             <input type="number" min="0" max="99999999999.99" step="0.01" name="otherCapitalAllowance"
-                id="otherCapitalAllowance" class="money-field allowance"
-                value="<?= $allowances['otherCapitalAllowance'] ?? '' ?>">
+                id="otherCapitalAllowance" value="<?= $allowances['otherCapitalAllowance'] ?? '' ?>">
         </div>
 
         <div class="form-input">
             <label for="costOfReplacingDomesticItems">Cost Of Replacing Domestic Items</label>
             <input type="number" min="0" max="99999999999.99" step="0.01" name="costOfReplacingDomesticItems"
-                id="costOfReplacingDomesticItems" class="money-field allowance"
-                value="<?= $allowances['costOfReplacingDomesticItems'] ?? '' ?>">
+                id="costOfReplacingDomesticItems" value="<?= $allowances['costOfReplacingDomesticItems'] ?? '' ?>">
         </div>
 
         <div class="form-input">
             <label for="zeroEmissionsCarAllowance">Zero Emissions Car Allowance</label>
             <input type="number" min="0" max="99999999999.99" step="0.01" name="zeroEmissionsCarAllowance"
-                id="zeroEmissionsCarAllowance" class="money-field allowance"
-                value="<?= $allowances['zeroEmissionsCarAllowance'] ?? '' ?>">
+                id="zeroEmissionsCarAllowance" value="<?= $allowances['zeroEmissionsCarAllowance'] ?? '' ?>">
         </div>
 
         <div class="form-input">
             <label for="propertyIncomeAllowance">Property Income Allowance</label>
             <input type="number" min="0" max="1000" step="0.01" name="propertyIncomeAllowance"
-                id="propertyIncomeAllowance" class="money-field"
-                value="<?= $allowances['propertyIncomeAllowance'] ?? '' ?>">
+                id="propertyIncomeAllowance" value="<?= $allowances['propertyIncomeAllowance'] ?? '' ?>">
         </div>
 
         <h3>Structured Building Allowance</h3>
@@ -112,7 +107,7 @@
         <div class="form-input">
             <label for="sba_amount">Amount</label>
             <input type="number" min="0" max="99999999999.99" step="0.01" name="sba_amount" id="sba_amount"
-                value="<?= $sba['sba_amount'] ?? '' ?>" class="money-field allowance">
+                value="<?= $sba['sba_amount'] ?? '' ?>">
         </div>
 
         <div class="form-input">

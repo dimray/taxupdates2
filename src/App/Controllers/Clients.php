@@ -41,7 +41,7 @@ class Clients extends Controller
 
             $_SESSION['client']['agent_type'] = $authorisation;
 
-            return $this->redirect("/business-details/list-all-businesses");
+            return $this->redirect("/business-details/list-all-businesses?updates=true");
         } elseif (isset($this->request->post['show_submissions'])) {
 
             return $this->redirect("/submissions/get-submissions");

@@ -269,26 +269,19 @@ class PropertyBusiness extends Controller
             }
 
             return $this->view(
-                "Endpoints/PropertyBusiness/create-annual-submission.php",
-                compact("heading", "business_details", "type_of_business", "errors",  "adjustments", "allowances", "sba", "esba", "rentaroom")
+                "Endpoints/PropertyBusiness/create-annual-submission-uk.php",
+                compact("heading", "business_details", "errors",  "adjustments", "allowances", "sba", "esba", "rentaroom")
             );
         } elseif ($type_of_business === "foreign-property") {
 
             // get countries from the submission
+            $countries = $_SESSION['annual_submission'][$_SESSION['business_id']] ?? [[]];
 
-            // adds countries only if they are an array (have data)
-            $foreign_property_data = array_filter(
-                $_SESSION['annual_submission'][$_SESSION['business_id']] ?? [],
-                fn($v) => is_array($v)
-            );
-
-            $adjustment_fields = AnnualSubmissionHelper::getForeignPropertyAdjustmentFields();
-            $allowance_fields = AnnualSubmissionHelper::getForeignPropertyAllowanceFields();
-            $sba_fields = AnnualSubmissionHelper::getForeignPropertySbaFields();
+            $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
 
             return $this->view(
-                "Hmrc/PropertyBusiness/create-annual-submission.php",
-                compact("heading", "business_details", "type_of_business", "errors", "foreign_property_data", "country_codes", "adjustment_fields", "allowance_fields", "sba_fields")
+                "Endpoints/PropertyBusiness/create-annual-submission-foreign.php",
+                compact("heading", "business_details", "errors", "countries", "country_codes")
             );
         }
     }
@@ -301,11 +294,39 @@ class PropertyBusiness extends Controller
             return $this->redirect("/property-business/create-annual-submission");
         }
 
-        $errors = AnnualSubmissionHelper::validatePropertyBusinessAnnualSubmission($data);
+        $errors = [];
+
+        $type_of_business = $_SESSION['type_of_business'];
+
+        if ($type_of_business === "uk-property") {
+
+            $errors = AnnualSubmissionHelper::validatePropertyBusinessAnnualSubmission($data);
+        }
+
+        if ($type_of_business === "foreign-property") {
+
+            foreach ($data['foreignPropertyAnnualSubmission'] as $country) {
+
+                $code = $country['countryCode'] ?? '';
+                $country_errors = AnnualSubmissionHelper::validatePropertyBusinessAnnualSubmission($country);
+
+                if (!empty($country_errors)) {
+                    foreach ($country_errors as $err) {
+                        if (!empty($code)) {
+                            $errors[] = "$code: $err";
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!isset($_SESSION['annual_submission']) || empty($_SESSION['annual_submission'])) {
+            $errors[] = "To create an Annual Submission, add data to at least one field";
+        }
 
         if (!empty($errors)) {
             $_SESSION['errors'] = $errors;
-            return $this->redirect("/property-business/create-annual-submission?edit=true");
+            return $this->redirect("/property-business/create-annual-submission");
         }
 
         return $this->redirect("/property-business/approve-annual-submission");
@@ -333,9 +354,16 @@ class PropertyBusiness extends Controller
             $rentaroom =  $_SESSION['annual_submission'][$_SESSION['business_id']]['rentaroom'] ?? [];
 
             return $this->view(
-                "Endpoints/PropertyBusiness/approve-annual-submission.php",
+                "Endpoints/PropertyBusiness/approve-annual-submission-uk.php",
                 compact("heading", "hide_tax_year", "business_details", "type_of_business",  "adjustments", "allowances", "sba", "esba", "rentaroom", "errors")
             );
+        }
+
+        if ($type_of_business === "foreign-property") {
+
+            $foreign_property_data = $_SESSION['annual_submission'][$_SESSION['business_id']];
+
+            return $this->view("Endpoints/PropertyBusiness/approve-annual-submission-foreign.php", compact("heading", "hide_tax_year", "business_details", "foreign_property_data"));
         }
     }
 
@@ -446,9 +474,10 @@ class PropertyBusiness extends Controller
 
         if ($location === "foreign") {
 
-            $foreign_property_data = $submission['foreignProperty'] ?? [];
+            $data = $submission['foreignProperty'] ?? [];
+            $foreign_property_data = [];
 
-            foreach ($foreign_property_data as &$entry) {
+            foreach ($data as &$entry) {
                 // Flatten SBA
                 $entry['sba'] = AnnualSubmissionHelper::flattenSba($entry['allowances']['structuredBuildingAllowance'] ?? [], "sba");
 
@@ -456,13 +485,16 @@ class PropertyBusiness extends Controller
             }
             unset($entry);
 
-            $adjustment_fields = $this->getForeignPropertyAdjustmentFields();
-            $allowance_fields = $this->getForeignPropertyAllowanceFields();
-            $sba_fields = $this->getForeignPropertySbaFields();
+            // put country codes as head of array, to match create submission code
+            foreach ($data as $entry) {
+                $country_code = $entry['countryCode'];
+                unset($entry['countryCode']);
+                $foreign_property_data[$country_code] = $entry;
+            }
 
             return $this->view(
-                "Hmrc/PropertyBusiness/show-annual-submission.php",
-                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "type_of_business", "foreign_property_data", "adjustment_fields", "allowance_fields", "sba_fields")
+                "Endpoints/PropertyBusiness/show-annual-submission.php",
+                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "type_of_business", "foreign_property_data")
             );
         }
     }

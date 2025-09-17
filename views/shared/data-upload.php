@@ -1,4 +1,4 @@
-<label for="csv_upload" class="csv_upload_label">Select CSV file</label>
+<label for="csv_upload" class="csv_upload_label">Upload File</label>
 <span id="csv_filename"></span>
 
 

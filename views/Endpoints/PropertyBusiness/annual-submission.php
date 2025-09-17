@@ -20,8 +20,8 @@
 
 <p>To change an Annual Submission after it has been submitted, make a new submission. The new submission
     will
-    overwrite the previous submission, so it is necessary to provide all figures as though no Annual Submission has
-    previously been made.</p>
+    overwrite the previous submission, so all figures need to be provided as though no Annual Submission has
+    previously been submitted.</p>
 
 <p><a href="/property-business/create-annual-submission">Create an Annual Submission</a></p>
 

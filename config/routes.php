@@ -34,6 +34,7 @@ $router->group(["namespace" => "Endpoints"], function ($router) {
     $router->add("/property-business/{action}", ["controller" => "property-business"]);
     $router->add("/individual-calculations/{action}", ["controller" => "individual-calculations"]);
     $router->add("/individual-losses/{action}", ["controller" => "individual-losses"]);
+    $router->add("/business-source-adjustable-summary/{action}", ["controller" => "business-source-adjustable-summary"]);
 });
 
 $router->add("/", ["controller" => "home", "action" => "index"]);

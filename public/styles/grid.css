@@ -1,0 +1,26 @@
+.generic-form:has(.grid) {
+  background-color: transparent;
+}
+
+.grid .field-container {
+  background-color: hsla(0, 0%, 50%, 15%);
+  /* padding-inline: 0.5rem; */
+}
+
+@media (min-width: 1000px) {
+  .grid {
+    display: grid;
+    grid-template-columns: 484px 484px;
+    width: 100%;
+    gap: 1rem;
+  }
+}
+
+@media (min-width: 1500px) {
+  .grid {
+    display: grid;
+    grid-template-columns: 484px 484px 484px;
+    width: 100%;
+    gap: 2rem 1rem;
+  }
+}

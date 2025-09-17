@@ -42,6 +42,10 @@
     <script src="/scripts/dialog.js"></script>
 <?php endif; ?>
 
+<?php if (!empty($include_zero_adjustments_script)): ?>
+    <script src="/scripts/zero-adjustments.js"></script>
+<?php endif; ?>
+
 <?php if (!empty($include_copy_text_script)): ?>
     <script src="/scripts/copy-text.js"></script>
 <?php endif; ?>
@@ -52,6 +56,10 @@
 
 <?php if (!empty($include_print_script)): ?>
     <script src="/scripts/print.js"></script>
+<?php endif; ?>
+
+<?php if (!empty($include_add_another_script)): ?>
+    <script src="/scripts/add-another.js"></script>
 <?php endif; ?>
 
 <!-- always runs as needed for header menu -->

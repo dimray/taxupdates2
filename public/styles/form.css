@@ -35,9 +35,16 @@ input[type="password"],
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  /* background-color: hsl(0, 0%, 97%); */
-  /* padding-inline: 0.5rem;
-  padding-block-end: 0.5rem; */
+  padding-inline: 0.5rem;
+}
+
+.generic-form .form-input {
+  width: 100%;
+}
+
+.generic-form h2,
+.generic-form h3 {
+  margin-block: 0;
 }
 
 .cumulative-data-form {
@@ -48,16 +55,44 @@ input[type="password"],
 .cumulative-data-form textarea {
   display: block;
   width: 100%;
+
+  border: 2px solid black;
+  border-radius: 0px;
+}
+
+.cumulative-data-form textarea:focus,
+.cumulative-data-form textarea:active {
+  border: 5px solid yellow;
 }
 
 .form-input {
-  color: darkblue;
+  color: black;
   margin-block-end: 2px;
   margin-inline: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   font-weight: 500;
+  gap: 0.3rem;
+  margin-block-end: 1rem;
+}
+
+.form-input input,
+.form-input select {
+  border: 2px solid black;
+  border-radius: 0px;
+}
+
+.form-input input:focus,
+.form-input input:active,
+.form-input select:focus,
+.form-input select:active {
+  border: 5px solid yellow;
+}
+
+.form-input input:disabled {
+  border: 2px solid hsla(0, 0%, 60%, 50%);
+  background-color: hsla(0, 0%, 84%, 50%);
 }
 
 /* used in show clients - for small form with just one input */
@@ -75,7 +110,7 @@ input[type="password"],
 }
 
 .nested-input {
-  color: darkblue;
+  color: black;
   margin-block-end: 2px;
 }
 
@@ -260,4 +295,13 @@ input[type="checkbox"] {
 ::placeholder {
   font-size: 1rem;
   font-weight: 300;
+}
+
+.error-message {
+  margin-block-start: 1rem;
+}
+
+.error-messages .form-error {
+  margin: 0;
+  margin-block-end: 1rem;
 }

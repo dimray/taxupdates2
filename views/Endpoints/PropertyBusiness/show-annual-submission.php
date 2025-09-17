@@ -14,7 +14,7 @@
 
     <?php include "shared/annual-submission-table-foreign.php";  ?>
 
-    <p><a href="/property-business/annual-submission">Amend Submission</a></p>
+    <p><a href="/property-business/annual-submission#amend">Amend Submission</a></p>
 
     <p><a href="/property-business/delete-annual-submission">Delete Submission</a></p>
 
