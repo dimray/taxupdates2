@@ -23,13 +23,13 @@
     </ul>
 </div>
 
+<p><a href="/self-employment/create-annual-submission">Create an Annual Submission</a></p>
+
+<p><a href="/self-employment/retrieve-annual-submission">View Annual Submission</a></p>
+
 <h3 id="amend">Amending A Submission</h3>
 
 <p>To change an Annual Submission after it has been submitted, make a new submission. The new submission
     will
     overwrite the previous submission, so it is necessary to provide all figures as though no Annual Submission has
     previously been made.</p>
-
-<p><a href="/self-employment/create-annual-submission">Create an Annual Submission</a></p>
-
-<p><a href="/self-employment/retrieve-annual-submission">View Annual Submission</a></p>

@@ -241,7 +241,14 @@ class PropertyBusiness extends Controller
     {
         $type_of_business = $_SESSION['type_of_business'];
 
-        if (empty($_SESSION['errors'])) {
+        if ($type_of_business === "uk-property") {
+            if (empty($_SESSION['errors'])) {
+                unset($_SESSION['annual_submission']);
+            }
+        }
+
+        // clear the annual submission data if cancelled
+        if (isset($this->request->get['cancel'])) {
             unset($_SESSION['annual_submission']);
         }
 
@@ -274,14 +281,21 @@ class PropertyBusiness extends Controller
             );
         } elseif ($type_of_business === "foreign-property") {
 
+            if (empty($errors)) {
+                // this clears only the country code, not the annual submission data
+                unset($_SESSION['annual_submission'][$_SESSION['business_id']]['countryCode']);
+            }
+            // country code is saved by AnnualSubmissionHelper if there are errors
+            $country_code = $_SESSION['annual_submission'][$_SESSION['business_id']]['countryCode'] ?? '';
+
             // get countries from the submission
-            $countries = $_SESSION['annual_submission'][$_SESSION['business_id']] ?? [[]];
+            $country_data = $_SESSION['annual_submission'][$_SESSION['business_id']][$country_code] ?? [];
 
             $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
 
             return $this->view(
                 "Endpoints/PropertyBusiness/create-annual-submission-foreign.php",
-                compact("heading", "business_details", "errors", "countries", "country_codes")
+                compact("heading", "business_details", "errors", "country_data", "country_code", "country_codes")
             );
         }
     }
@@ -298,27 +312,7 @@ class PropertyBusiness extends Controller
 
         $type_of_business = $_SESSION['type_of_business'];
 
-        if ($type_of_business === "uk-property") {
-
-            $errors = AnnualSubmissionHelper::validatePropertyBusinessAnnualSubmission($data);
-        }
-
-        if ($type_of_business === "foreign-property") {
-
-            foreach ($data['foreignPropertyAnnualSubmission'] as $country) {
-
-                $code = $country['countryCode'] ?? '';
-                $country_errors = AnnualSubmissionHelper::validatePropertyBusinessAnnualSubmission($country);
-
-                if (!empty($country_errors)) {
-                    foreach ($country_errors as $err) {
-                        if (!empty($code)) {
-                            $errors[] = "$code: $err";
-                        }
-                    }
-                }
-            }
-        }
+        $errors = AnnualSubmissionHelper::validatePropertyBusinessAnnualSubmission($data);
 
         if (!isset($_SESSION['annual_submission']) || empty($_SESSION['annual_submission'])) {
             $errors[] = "To create an Annual Submission, add data to at least one field";
@@ -329,7 +323,39 @@ class PropertyBusiness extends Controller
             return $this->redirect("/property-business/create-annual-submission");
         }
 
+        // add more countries
+        if ($type_of_business === "foreign-property") {
+            return $this->redirect("/property-business/add-country");
+        }
+
         return $this->redirect("/property-business/approve-annual-submission");
+    }
+
+    public function addCountry()
+    {
+        $business_details = Helper::setBusinessDetails();
+
+        if ($_SESSION['type_of_business'] !== 'foreign-property' || empty($_SESSION['annual_submission'][$_SESSION['business_id']])) {
+            return $this->redirect("/uploads/create-cumulative-upload");
+        }
+
+        $heading = "Annual Submission";
+
+        $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
+        $session_country_codes = array_keys($_SESSION['annual_submission'][$_SESSION['business_id']]);
+        $country_names = [];
+
+        foreach ($session_country_codes as $code) {
+
+            foreach ($country_codes as $continent => $countries) {
+                if (isset($countries[$code])) {
+                    $country_names[] = $countries[$code];
+                    break;
+                }
+            }
+        }
+
+        return $this->view("Endpoints/PropertyBusiness/add-country-annual-submission.php", compact("heading", "business_details", "country_names"));
     }
 
     public function approveAnnualSubmission()

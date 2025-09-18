@@ -5,14 +5,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
   toggle.addEventListener("change", function () {
     const inputs = document.querySelectorAll("#zero-adjustments-form input[type='number']");
+    const selects = document.querySelectorAll("#zero-adjustments-form select");
 
     if (toggle.checked) {
       inputs.forEach((input) => {
-        input.setAttribute("disabled", "disabled");
+        input.disabled = true;
+        input.value = "";
+      });
+
+      selects.forEach((select) => {
+        select.disabled = true;
+        select.selectedIndex = 0; // reset to first option
       });
     } else {
       inputs.forEach((input) => {
-        input.removeAttribute("disabled");
+        input.disabled = false;
+      });
+
+      selects.forEach((select) => {
+        select.disabled = false;
       });
     }
   });

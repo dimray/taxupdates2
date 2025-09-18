@@ -106,5 +106,6 @@ document.addEventListener("DOMContentLoaded", function () {
   assignNamesOnLoad();
 
   // Setup for each view using function
-  setupIfExists("foreign-property-annual-submission-container", "foreign-property-annual-submission-group", "foreignPropertyAnnualSubmission", "Add Another Country");
+  // not used:
+  // setupIfExists("foreign-property-annual-submission-container", "foreign-property-annual-submission-group", "foreignPropertyAnnualSubmission", "Add Another Country");
 });

@@ -16,13 +16,13 @@
     </ul>
 </div>
 
+<p><a href="/property-business/create-annual-submission">Create an Annual Submission</a></p>
+
+<p><a href="/property-business/retrieve-annual-submission">View Annual Submission</a></p>
+
 <h3 id="amend">Amending A Submission</h3>
 
 <p>To change an Annual Submission after it has been submitted, make a new submission. The new submission
     will
     overwrite the previous submission, so all figures need to be provided as though no Annual Submission has
     previously been submitted.</p>
-
-<p><a href="/property-business/create-annual-submission">Create an Annual Submission</a></p>
-
-<p><a href="/property-business/retrieve-annual-submission">View Annual Submission</a></p>

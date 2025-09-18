@@ -209,10 +209,11 @@ class AnnualSubmissionHelper
         } else {
             $annual_data = SubmissionsHelper::buildArrays($data, "foreign-property", "annual");
 
-            if (isset($data['countryCode'])) {
-                $annual_data['countryCode'] = $data['countryCode'];
+            if (isset($data['country_code'])) {
+                $annual_data['countryCode'] = $data['country_code'];
             }
         }
+
 
         $country_code = $annual_data['countryCode'] ?? null;
         $adjustments = $annual_data['adjustments'] ?? [];
@@ -368,6 +369,11 @@ class AnnualSubmissionHelper
                 // set it to empty if there's no amount
                 $esba = [];
             }
+        }
+
+        // save the current country code so I can display the right country's data with errors
+        if (!empty($errors)) {
+            $_SESSION['annual_submission'][$_SESSION['business_id']]['countryCode'] = $country_code ?? '';
         }
 
         return $errors;

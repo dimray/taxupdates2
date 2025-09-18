@@ -55,6 +55,7 @@ class Clients extends Controller
 
     public function showClients()
     {
+        Helper::clearUpSession();
         unset($_SESSION['client']);
 
         $firm_id = $_SESSION['firm_id'];

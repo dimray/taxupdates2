@@ -51,4 +51,31 @@ class ApiBusinessSourceAdjustableSummary extends ApiCalls
             return ApiErrors::dealWithError($response_code, $response);
         }
     }
+
+    public function submitAccountingAdjustments(string $nino, string $type_of_business, string $calculation_id, string $tax_year, array $bsas_data): array
+    {
+
+        $url = $this->base_url  . "/individuals/self-assessment/adjustable-summary/{$nino}/{$type_of_business}/{$calculation_id}/adjust/{$tax_year}";
+
+        $access_token = $_SESSION['access_token'];
+
+        $payload = json_encode($bsas_data);
+
+        $headers = [
+            "Accept: application/vnd.hmrc.7.0+json",
+            "Content-Type: application/json",
+            "Authorization: Bearer {$access_token}"
+        ];
+
+        $test_headers = [
+            // 'Gov-Test-Scenario: STATEFUL'
+        ];
+
+        $headers = array_merge($headers, $test_headers);
+
+        $response_array = $this->sendPostRequest($url, $payload, $headers);
+
+        var_dump($response_array);
+        exit;
+    }
 }

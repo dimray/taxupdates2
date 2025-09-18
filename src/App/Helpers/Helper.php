@@ -71,6 +71,105 @@ class Helper
         return true;
     }
 
+    public static function formatDateTime(string $input): string
+    {
+        try {
+            // Parse input as UTC datetime string
+            $utcDate = new DateTime($input, new DateTimeZone('UTC'));
+            // Convert to Europe/London timezone
+            $utcDate->setTimezone(new DateTimeZone('Europe/London'));
+
+            return $utcDate->format('F j Y, g:i A');
+        } catch (Exception $e) {
+            // If input invalid, just return input as fallback
+            return $input;
+        }
+    }
+
+    // used by Firm and Clients
+    public static function paginate(int $total_items, int $per_page, array $get): array
+    {
+        $current_page = isset($get['page']) ? (int) $get['page'] : 1;
+        $current_page = max($current_page, 1);
+
+        $total_pages = (int) ceil($total_items / $per_page);
+        $offset = ($current_page - 1) * $per_page;
+
+        return [
+
+            'per_page' => $per_page,
+            'offset' => $offset,
+            'total_pages' => $total_pages,
+            'total_items' => $total_items,
+            'current_page' => $current_page,
+            'has_prev_page' => $current_page > 1,
+            'has_next_page' => $current_page < $total_pages,
+            'next_page' => $current_page < $total_pages ? $current_page + 1 : null,
+            'prev_page' => $current_page > 1 ? $current_page - 1 : null,
+        ];
+    }
+
+
+    // used in individual losses - change sequence
+    public static function validateSequence(array $claims)
+    {
+        // Extract the sequence numbers into an array
+        $sequences = array_map(function ($claim) {
+            return (int)$claim['sequence'];
+        }, $claims);
+
+        // Sort the sequences and check for gaps
+        sort($sequences);
+
+        $valid = true;
+
+        // Check if the sequence starts from 1 and has no gaps
+        if ($sequences[0] !== 1) {
+            $valid = false;
+        } else {
+            for ($i = 1; $i < count($sequences); $i++) {
+                if ($sequences[$i] !== $sequences[$i - 1] + 1) {
+                    $valid = false;
+                    break;
+                }
+            }
+        }
+
+        return $valid;
+    }
+
+    // used in bsas
+    public static function removeZerosAndEmptyValuesFromArray(array &$data)
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                self::removeZerosAndEmptyValuesFromArray($data[$key]);
+                // Remove empty arrays
+                if (empty($data[$key])) {
+                    unset($data[$key]);
+                }
+            } elseif ($value === '' || $value === '0') {
+                unset($data[$key]);
+            }
+        }
+    }
+
+
+    public static function removeEmptyValuesFromArray(array &$data)
+    {
+        foreach ($data as $key => $value) {
+            if (is_array($value)) {
+                self::removeEmptyValuesFromArray($data[$key]);
+                // Remove empty arrays
+                if (empty($data[$key])) {
+                    unset($data[$key]);
+                }
+            } elseif ($value === '') {
+                unset($data[$key]);
+            }
+        }
+    }
+
     public static function getNino(): string
     {
         $nino = $_SESSION['nino'] ?? $_SESSION['client']['nino'] ?? "";
@@ -101,43 +200,7 @@ class Helper
         return $details;
     }
 
-    // used by Firm and Clients
-    public static function paginate(int $total_items, int $per_page, array $get): array
-    {
-        $current_page = isset($get['page']) ? (int) $get['page'] : 1;
-        $current_page = max($current_page, 1);
 
-        $total_pages = (int) ceil($total_items / $per_page);
-        $offset = ($current_page - 1) * $per_page;
-
-        return [
-
-            'per_page' => $per_page,
-            'offset' => $offset,
-            'total_pages' => $total_pages,
-            'total_items' => $total_items,
-            'current_page' => $current_page,
-            'has_prev_page' => $current_page > 1,
-            'has_next_page' => $current_page < $total_pages,
-            'next_page' => $current_page < $total_pages ? $current_page + 1 : null,
-            'prev_page' => $current_page > 1 ? $current_page - 1 : null,
-        ];
-    }
-
-    public static function formatDateTime(string $input): string
-    {
-        try {
-            // Parse input as UTC datetime string
-            $utcDate = new DateTime($input, new DateTimeZone('UTC'));
-            // Convert to Europe/London timezone
-            $utcDate->setTimezone(new DateTimeZone('Europe/London'));
-
-            return $utcDate->format('F j Y, g:i A');
-        } catch (Exception $e) {
-            // If input invalid, just return input as fallback
-            return $input;
-        }
-    }
 
     public static function unsetBusinessSessionInfo()
     {
@@ -146,32 +209,10 @@ class Helper
         unset($_SESSION['trading_name']);
     }
 
-
-    // used in individual losses - change sequence
-    public static function validateSequence(array $claims)
+    public static function clearUpSession()
     {
-        // Extract the sequence numbers into an array
-        $sequences = array_map(function ($claim) {
-            return (int)$claim['sequence'];
-        }, $claims);
-
-        // Sort the sequences and check for gaps
-        sort($sequences);
-
-        $valid = true;
-
-        // Check if the sequence starts from 1 and has no gaps
-        if ($sequences[0] !== 1) {
-            $valid = false;
-        } else {
-            for ($i = 1; $i < count($sequences); $i++) {
-                if ($sequences[$i] !== $sequences[$i - 1] + 1) {
-                    $valid = false;
-                    break;
-                }
-            }
-        }
-
-        return $valid;
+        unset($_SESSION['cumulative_summary']);
+        unset($_SESSION['annual_submission']);
+        unset($_SESSION['bsas']);
     }
 }

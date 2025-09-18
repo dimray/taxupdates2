@@ -63,6 +63,7 @@ input[type="password"],
 .cumulative-data-form textarea:focus,
 .cumulative-data-form textarea:active {
   border: 5px solid yellow;
+  outline: 3px solid black;
 }
 
 .form-input {
@@ -74,7 +75,7 @@ input[type="password"],
   flex-direction: column;
   font-weight: 500;
   gap: 0.3rem;
-  margin-block-end: 1rem;
+  margin-block-end: 0;
 }
 
 .form-input input,
@@ -88,6 +89,7 @@ input[type="password"],
 .form-input select:focus,
 .form-input select:active {
   border: 5px solid yellow;
+  outline: 3px solid black;
 }
 
 .form-input input:disabled {
@@ -197,6 +199,13 @@ input[type="password"],
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;
+}
+
+.inline-checkbox label {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.2rem;
 }
 
 input[type="checkbox"] {

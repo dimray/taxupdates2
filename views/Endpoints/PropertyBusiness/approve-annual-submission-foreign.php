@@ -15,6 +15,6 @@
 
 </form>
 
-<p><a href="/property-business/create-annual-submission">Cancel</a></p>
+<p><a href="/property-business/create-annual-submission?cancel=true">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>

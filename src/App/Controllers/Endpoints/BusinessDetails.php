@@ -16,6 +16,8 @@ class BusinessDetails extends Controller
 
     public function listAllBusinesses()
     {
+        Helper::clearUpSession();
+
         $updates = $this->request->get['updates'] ?? "";
 
         $nino = Helper::getNino();
