@@ -34,7 +34,12 @@ class BusinessDetails extends Controller
             $businesses = $response['businesses'] ?? [];
         }
 
-        $heading = "Your Businesses";
+        if (empty($updates)) {
+            $heading = "Adjust Business Income";
+        } else {
+            $heading = "Submit An Update";
+        }
+
 
         $hide_tax_year = true;
 
@@ -138,6 +143,21 @@ class BusinessDetails extends Controller
         );
     }
 
+    public function accountingAdmin()
+    {
+        $heading = "Check And Update Accounting Periods Or Type";
+
+        $current_period = $this->request->get['current_period'] ?? $_SESSION['period_type'] ?? '';
+
+        if (empty($current_period)) {
+            return $this->redirect("/business-details/retrieve-business-details");
+        }
+
+        $hide_tax_year = true;
+
+        return $this->view("Endpoints/BusinessDetails/accounting-admin.php", compact("heading", "current_period", "hide_tax_year"));
+    }
+
     public function changeReportingPeriod()
     {
         $current_period = $this->request->get['current_period'];
@@ -176,7 +196,7 @@ class BusinessDetails extends Controller
 
         if (!$business_id) {
             Flash::addMessage("Unable to update period", Flash::WARNING);
-            return $this->redirect("/business-details/retrieve-business-details");
+            return $this->redirect("/business-details/list-all-businesses");
         }
 
         $response = $this->apiBusinessDetails->createAmendPeriodTypeForBusiness($nino, $business_id, $tax_year, $new_period);
@@ -190,5 +210,132 @@ class BusinessDetails extends Controller
         }
 
         return $this->redirect("/business-details/retrieve-business-details");
+    }
+
+    public function retrieveAccountingType()
+    {
+        $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
+
+
+        if (!$business_id) {
+            Flash::addMessage("Unable to retrieve accounting type", Flash::WARNING);
+            return $this->redirect("/business-details/list-all-businesses");
+        }
+
+        $response = $this->apiBusinessDetails->retrieveAccountingType($nino, $business_id, $tax_year);
+
+
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        if ($response['type'] === "success") {
+
+            $accounting_type = strtolower($response['accounting_type']['accountingType'] ?? '');
+        } else {
+            return $this->redirect("/business-details/accounting-admin");
+        }
+
+
+
+        $previous_year = TaxYearHelper::getCurrentTaxYear(-1);
+        $previous_previous_year = TaxYearHelper::getCurrentTaxYear(-2);
+
+        $new_accounting_type = $accounting_type === "cash" ? "accrual" : "cash";
+
+
+        $heading = "Accounting Type";
+
+        $hide_tax_year = true;
+
+        return $this->view("Endpoints/BusinessDetails/change-accounting-type.php", compact("heading", "accounting_type", "new_accounting_type", "hide_tax_year", "previous_year", "previous_previous_year",));
+    }
+
+    public function updateAccountingType()
+    {
+        $tax_year = $this->request->get['tax_year'] ?? null;
+        $new_accounting_type = strtoupper($this->request->get['new_accounting_type'] ?? '');
+
+        if (!$tax_year || !$new_accounting_type) {
+            Flash::addMessage("Unable to update accounting type", Flash::WARNING);
+            return $this->redirect("/business-details/retrieve-business-details");
+        }
+
+        $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'] ?? '';
+
+        if (!$business_id) {
+            Flash::addMessage("Unable to update accounting type", Flash::WARNING);
+            return $this->redirect("/business-details/list-all-businesses");
+        }
+
+        $response = $this->apiBusinessDetails->updateAcccountingType($nino, $business_id, $tax_year, $new_accounting_type);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        if ($response['type'] === "success") {
+            Flash::addMessage("Accounting Type has been updated", Flash::SUCCESS);
+        }
+
+        return $this->redirect("/business-details/retrieve-business-details");
+    }
+
+    public function retrievePeriodsOfAccount()
+    {
+        $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'] ?? '';
+        $tax_year = $_SESSION['tax_year'] ?? '';
+
+        $response = $this->apiBusinessDetails->retrievePeriodsOfAccount($nino, $business_id, $tax_year);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        $periods_of_account = [];
+
+        if ($response['type'] === "success") {
+            if ($response['periods']['periodsOfAccount']) {
+                $periods_of_account = $response['periods']['periodsOfAccountDates'];
+            }
+        } else {
+            return $this->redirect("/business-details/accounting-admin");
+        }
+
+        $heading = "Periods Of Account";
+
+        $business_details = Helper::setBusinessDetails();
+
+        $periods_of_account_string = "";
+
+        if (!empty($periods_of_account)) {
+            $periods_of_account_string = json_encode($periods_of_account);
+        }
+
+        $periods_query_string = http_build_query(compact("periods_of_account_string"));
+
+        return $this->view("Endpoints/BusinessDetails/periods-of-account.php", compact("heading", "business_details", "periods_of_account", "periods_query_string"));
+    }
+
+    public function createUpdatePeriodsOfAccount()
+    {
+        $period_query_string = $this->request->get['periods_of_account_string'] ?? '';
+        $periods_of_account = json_decode($period_query_string, true);
+
+        $heading = "Update Periods Of Account";
+
+        $business_details = Helper::setBusinessDetails();
+
+        return $this->view("Endpoints/BusinessDetails/periods-of-account-update.php", compact("heading", "business_details", "periods_of_account"));
+    }
+
+    public function processCreateUpdatePeriodsOfAccount()
+    {
+        // TO DO, support request sent 26 sept
     }
 }

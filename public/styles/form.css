@@ -38,6 +38,10 @@ input[type="password"],
   padding-inline: 0.5rem;
 }
 
+.generic-form p {
+  margin-block: 0;
+}
+
 .generic-form .form-input {
   width: 100%;
 }
@@ -156,6 +160,12 @@ input[type="password"],
   gap: 3rem;
 }
 
+.inline-form-center {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .inline-form {
   display: flex;
   align-items: flex-end;
@@ -201,11 +211,18 @@ input[type="password"],
   gap: 0.5rem;
 }
 
+.inline-checkbox input[type="checkbox"] {
+  flex: 0 0 1.2rem; /* fixed width column for checkbox */
+  height: 1rem;
+  width: 1rem;
+}
+
 .inline-checkbox label {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 0.2rem;
+  flex: 1;
 }
 
 input[type="checkbox"] {

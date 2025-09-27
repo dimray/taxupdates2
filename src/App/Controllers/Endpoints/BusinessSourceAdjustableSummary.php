@@ -7,14 +7,16 @@ namespace App\Controllers\Endpoints;
 use App\Flash;
 use App\Helpers\BsasHelper;
 use App\Helpers\Helper;
+use App\Helpers\SubmissionsHelper;
 use App\Helpers\TaxYearHelper;
 use App\HmrcApi\Endpoints\ApiBusinessSourceAdjustableSummary;
+use App\Models\Submission;
 use Framework\Controller;
 use DateTime;
 
 class BusinessSourceAdjustableSummary extends Controller
 {
-    public function __construct(private ApiBusinessSourceAdjustableSummary $apiBusinessSourceAdjustableSummary) {}
+    public function __construct(private ApiBusinessSourceAdjustableSummary $apiBusinessSourceAdjustableSummary, private Submission $submission) {}
 
     public function index()
     {
@@ -67,6 +69,8 @@ class BusinessSourceAdjustableSummary extends Controller
 
     public function create()
     {
+        $add_country = $this->request->get['add_country'] ?? false;
+
         $type = $_SESSION['type_of_business'];
 
         if ($type !== "foreign-property") {
@@ -91,7 +95,7 @@ class BusinessSourceAdjustableSummary extends Controller
 
             return $this->view(
                 "Endpoints/BusinessSourceAdjustableSummary/create-bsas-$type.php",
-                compact("heading", "business_details", "errors", "income", "expenses", "additions")
+                compact("heading", "business_details", "errors", "income", "expenses", "additions", "add_country")
             );
         } elseif ($type === "foreign-property") {
 
@@ -111,7 +115,7 @@ class BusinessSourceAdjustableSummary extends Controller
 
             return $this->view(
                 "Endpoints/BusinessSourceAdjustableSummary/create-bsas-$type.php",
-                compact("heading", "business_details", "errors", "income", "expenses", "country_code", "country_codes")
+                compact("heading", "business_details", "errors", "income", "expenses", "country_code", "country_codes", "add_country")
             );
         }
     }
@@ -193,9 +197,12 @@ class BusinessSourceAdjustableSummary extends Controller
             return $this->redirect("/business-source-adjustable-summary/trigger");
         }
 
+        $heading = "Confirm Accounting Adjustments";
+
+        $zero_adjustments = $bsas_data['zeroAdjustments'] ?? "";
+
         if ($type !== "foreign-property") {
 
-            $zero_adjustments = $bsas_data['zeroAdjustments'] ?? "";
             $income = $bsas_data['income'] ?? [];
             $expenses = $bsas_data['expenses'] ?? [];
             $additions = $bsas_data['additions'] ?? [];
@@ -204,8 +211,6 @@ class BusinessSourceAdjustableSummary extends Controller
             $total_additions = array_sum($additions);
             $total_allowed = $total_expenses - $total_additions;
             $profit = $total_income - $total_allowed;
-
-            $heading = "Confirm Accounting Adjustments";
 
             return $this->view(
                 "Endpoints/BusinessSourceAdjustableSummary/finalise-bsas-$type.php",
@@ -220,7 +225,7 @@ class BusinessSourceAdjustableSummary extends Controller
 
             return $this->view(
                 "Endpoints/BusinessSourceAdjustableSummary/finalise-bsas-$type.php",
-                compact("errors", "heading", "hide_tax_year", "business_details", "foreign_property_data")
+                compact("errors", "heading", "hide_tax_year", "business_details", "foreign_property_data", "zero_adjustments")
             );
         }
     }
@@ -242,6 +247,23 @@ class BusinessSourceAdjustableSummary extends Controller
 
             $bsas_data['zeroAdjustments'] = $zero_adjustments;
         } elseif ($type_of_business === "foreign-property") {
+
+            $foreign_property_data = $_SESSION['bsas'][$_SESSION['business_id']] ?? [];
+
+            $bsas_data['countryLevelDetail'] = [];
+
+            foreach ($foreign_property_data as $country => $data) {
+                // skips the countryCode used for identifying current country, if still set 
+                if (!is_array($data) || !isset($data['countryCode'])) {
+                    continue;
+                }
+
+                $bsas_data['countryLevelDetail'][] = [
+                    'countryCode' => $data['countryCode'],
+                    'income' => $data['income'],
+                    'expenses' => $data['expenses'],
+                ];
+            }
         } else {
             // uk-property or self-employment
             $income = $_SESSION['bsas'][$_SESSION['business_id']]['income'] ?? [];
@@ -277,8 +299,151 @@ class BusinessSourceAdjustableSummary extends Controller
                 'foreignProperty' => $bsas_data
             ];
         }
-        // self-employment is just $bsas_data
 
+        // self-employment is just $bsas_data
         $response = $this->apiBusinessSourceAdjustableSummary->submitAccountingAdjustments($nino, $type_of_business, $calculation_id, $tax_year, $bsas_data);
+
+        unset($_SESSION['bsas']);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        if ($response['type'] === "success" && !empty($response['submission_id'])) {
+
+            $submission_data = SubmissionsHelper::createSubmission("bsas", $response['submission_id']);
+
+            $submission_data['submission_payload'] = json_encode($bsas_data);
+
+            $this->submission->insert($submission_data);
+
+            Flash::addMessage("Your Accounting Adjustments have been submitted to HMRC", Flash::SUCCESS);
+        }
+
+        // failure
+        return $this->redirect("/business-source-adjustable-summary/index");
+    }
+
+    public function success()
+    {
+
+        $heading = "Action Successful";
+
+        $business_details = Helper::setBusinessDetails();
+
+        $hide_tax_year = true;
+
+        return $this->view("Endpoints/BusinessSourceAdjustableSummary/success.php", compact("heading", "hide_tax_year", "business_details"));
+    }
+
+    public function list()
+    {
+        $nino = Helper::getNino();
+
+        $tax_year = $_SESSION['tax_year'];
+
+        $business_id = $_SESSION['business_id'];
+
+        $response = $this->apiBusinessSourceAdjustableSummary->listBusinessSourceAdjustableSummaries($nino, $tax_year, $business_id);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        $calculation_id = "";
+
+        if ($response['type'] === 'success' && !empty($response['data'])) {
+
+            $data = $response['data'];
+
+            $latest_timestamp = null;
+
+            foreach ($data['summaries'] as $summary) {
+                if ($summary['summaryStatus'] === 'valid') {
+                    $timestamp = strtotime($summary['requestedDateTime']);
+
+                    if (is_null($latest_timestamp) || $timestamp > $latest_timestamp) {
+                        $latest_timestamp = $timestamp;
+                        $calculation_id = $summary['calculationId'];
+                    }
+                }
+            }
+        }
+
+
+        return $this->redirect("/business-source-adjustable-summary/retrieve?calculation_id=$calculation_id");
+    }
+
+    public function retrieve()
+    {
+
+        $calculation_id = $this->request->get['calculation_id'] ?? '';
+
+        $heading = "Accounting Adjustments";
+
+        $business_type = $_SESSION['type_of_business'];
+
+        $hide_tax_year = true;
+
+        $business_details = Helper::setBusinessDetails();
+
+        // if calculation id is empty, return view saying no bsas before the next api call
+        if (empty($calculation_id)) {
+            return $this->view("Endpoints/BusinessSourceAdjustableSummary/show-bsas-" . $business_type . ".php", compact("heading", "business_details", "hide_tax_year", "calculation_id"));
+        }
+
+        $nino = Helper::getNino();
+
+        $tax_year = $_SESSION['tax_year'];
+
+        $response = $this->apiBusinessSourceAdjustableSummary->retrieveBusinessSourceAdjustableSummary($nino, $business_type, $calculation_id, $tax_year);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        if ($response['type'] !== 'success') {
+            return $this->redirect("/business-source-adjustable-summary/index");
+        }
+
+        $adjustments = $response['summary']['adjustments'] ?? [];
+
+        $zero_adjustments = $adjustments['zeroAdjustments'] ?? false;
+
+        if ($business_type === "self-employment"  || $business_type === "uk-property") {
+
+            $income = $adjustments['income'] ?? [];
+            $expenses = $adjustments['expenses'] ?? [];
+            $additions = $adjustments['additions'] ?? [];
+
+            $total_income = array_sum($income);
+            $total_expenses = array_sum($expenses);
+            $total_additions = array_sum($additions);
+            $total_allowed = $total_expenses - $total_additions;
+            $profit = $total_income - $total_allowed;
+
+            return $this->view(
+                "Endpoints/BusinessSourceAdjustableSummary/show-bsas-" . $business_type . ".php",
+                compact("heading", "business_details", "hide_tax_year", "income", "expenses", "additions", "total_income", "total_expenses", "total_additions", "total_allowed", "profit", "zero_adjustments", "calculation_id")
+            );
+        }
+
+        if ($business_type === "foreign-property") {
+
+            $foreign_property_data = [];
+
+            foreach ($adjustments['countryLevelDetail'] as $data) {
+
+                $country_code = $data['countryCode'];
+                unset($data['countryCode']);
+
+                $foreign_property_data[$country_code] = $data;
+            }
+
+            return $this->view(
+                "Endpoints/BusinessSourceAdjustableSummary/show-bsas-foreign-property.php",
+                compact("heading", "business_details", "hide_tax_year", "foreign_property_data", "zero_adjustments", "calculation_id")
+            );
+        }
     }
 }

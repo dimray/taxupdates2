@@ -31,7 +31,7 @@
             </tr>
 
             <tr>
-                <th colspan="2" class="subheading">Expenses Adjustments</th>
+                <th colspan="2" class="subheading">Expense Adjustments</th>
             </tr>
 
             <?php if (isset($expenses['consolidatedExpenses'])): ?>
@@ -100,7 +100,7 @@
             </tr>
 
             <tr>
-                <td>Total Expenses Adjustment</td>
+                <td>Total Expense Adjustments</td>
                 <td><?= esc(formatNumber($total_expenses)) ?></td>
             </tr>
 

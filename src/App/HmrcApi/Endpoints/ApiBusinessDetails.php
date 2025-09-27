@@ -17,7 +17,7 @@ class ApiBusinessDetails extends ApiCalls
         $url = $this->base_url . "/individuals/business/details/{$nino}/list";
 
         $headers = [
-            "Accept: application/vnd.hmrc.1.0+json",
+            "Accept: application/vnd.hmrc.2.0+json",
             "Authorization: Bearer {$access_token}"
         ];
 
@@ -59,7 +59,7 @@ class ApiBusinessDetails extends ApiCalls
         $access_token  = $_SESSION['access_token'];
 
         $headers = [
-            "Accept: application/vnd.hmrc.1.0+json",
+            "Accept: application/vnd.hmrc.2.0+json",
             "Authorization: Bearer {$access_token}"
         ];
 
@@ -96,7 +96,7 @@ class ApiBusinessDetails extends ApiCalls
         $access_token = $_SESSION['access_token'];
 
         $headers = [
-            "Accept: application/vnd.hmrc.1.0+json",
+            "Accept: application/vnd.hmrc.2.0+json",
             "Authorization: Bearer {$access_token}",
             "Content-Type: application/json"
         ];
@@ -121,6 +121,118 @@ class ApiBusinessDetails extends ApiCalls
         if ($response_code === 204) {
             return [
                 'type' => 'success'
+            ];
+        } else {
+
+            return ApiErrors::dealWithError($response_code, $response);
+        }
+    }
+
+    public function retrieveAccountingType(string $nino, string $business_id, string $tax_year): array
+    {
+        $url = $this->base_url . "/individuals/business/details/{$nino}/{$business_id}/{$tax_year}/accounting-type";
+
+        $access_token = $_SESSION['access_token'];
+
+        $headers = [
+            "Accept: application/vnd.hmrc.2.0+json",
+            "Authorization: Bearer {$access_token}"
+        ];
+
+        // test scenario headers
+        $test_headers = [
+            // 'Gov-Test-Scenario: STATEFUL'
+        ];
+
+        $headers = array_merge($headers, $test_headers);
+
+        $response_array = $this->sendGetRequest($url, $headers);
+
+        $response_code = $response_array['response_code'] ?? 0;
+        $response = $response_array['response'] ?? [];
+        $response_headers = $response_array['headers'] ?? [];
+
+        if ($response_code === 200) {
+
+            return [
+                'type' => 'success',
+                'accounting_type' => $response
+            ];
+        } else {
+
+            return ApiErrors::dealWithError($response_code, $response);
+        }
+    }
+
+    public function updateAcccountingType(string $nino, string $business_id, string $tax_year, string $accounting_type): array
+    {
+
+        $url = $this->base_url . "/individuals/business/details/{$nino}/{$business_id}/{$tax_year}/accounting-type";
+
+        $access_token = $_SESSION['access_token'];
+
+        $headers = [
+            "Accept: application/vnd.hmrc.2.0+json",
+            "Authorization: Bearer {$access_token}",
+            "Content-Type: application/json"
+        ];
+
+        // test scenario headers
+        $test_headers = [
+            // 'Gov-Test-Scenario: STATEFUL'
+        ];
+
+        $headers = array_merge($headers, $test_headers);
+
+        $payload = json_encode([
+            "accountingType" => $accounting_type
+        ]);
+
+        $response_array = $this->sendPutRequest($url, $payload, $headers);
+
+        $response_code = $response_array['response_code'] ?? 0;
+        $response = $response_array['response'] ?? [];
+        $response_headers = $response_array['headers'] ?? [];
+
+        if ($response_code === 204) {
+            return [
+                'type' => 'success'
+            ];
+        } else {
+
+            return ApiErrors::dealWithError($response_code, $response);
+        }
+    }
+
+    public function retrievePeriodsOfAccount(string $nino, string $business_id, string $tax_year): array
+    {
+
+        $url = $this->base_url . "/individuals/business/details/{$nino}/{$business_id}/{$tax_year}/periods-of-account";
+
+        $access_token = $_SESSION['access_token'];
+
+        $headers = [
+            "Accept: application/vnd.hmrc.2.0+json",
+            "Authorization: Bearer {$access_token}"
+        ];
+
+        // test scenario headers
+        $test_headers = [
+            // 'Gov-Test-Scenario: STATEFUL'
+        ];
+
+        $headers = array_merge($headers, $test_headers);
+
+        $response_array = $this->sendGetRequest($url, $headers);
+
+        $response_code = $response_array['response_code'] ?? 0;
+        $response = $response_array['response'] ?? [];
+        $response_headers = $response_array['headers'] ?? [];
+
+        if ($response_code === 200) {
+            return [
+                'type' => 'success',
+                'periods' => $response
             ];
         } else {
 

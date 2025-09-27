@@ -11,7 +11,6 @@ use Framework\Controller;
 
 class Obligations extends Controller
 {
-
     public function __construct(private ApiObligations $apiObligations) {}
 
     public function retrieveCumulativeObligations()
@@ -72,5 +71,31 @@ class Obligations extends Controller
         $controller = $_SESSION['type_of_business'] === "self-employment" ? "self-employment" : "property-business";
 
         return $this->view("Endpoints/Obligations/cumulative.php", compact("heading", "first_tax_year", "business_details", "obligations", "controller"));
+    }
+
+    public function finalDeclaration()
+    {
+        $tax_year = $_SESSION['tax_year'];
+
+        $nino = Helper::getNino();
+
+        $response = $this->apiObligations->retrieveIncomeTaxFinalDeclarationObligations($nino, $tax_year);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        $obligations = $response['obligations'] ?? [];
+
+        $heading = "Final Declaration";
+
+        $deadlines = TaxYearHelper::getDeadlinesFromTaxYear($tax_year);
+        $before_filing_deadline = time() <= $deadlines['filing_deadline'];
+        $before_amendment_deadline = time() <= $deadlines['amendment_deadline'];
+        $before_current_tax_year = TaxYearHelper::beforeCurrentYear($tax_year);
+
+        $first_tax_year = "2024-25";
+
+        return $this->view("Endpoints/Obligations/final-declaration.php", compact("heading", "tax_year", "obligations", "before_amendment_deadline", "before_current_tax_year", "first_tax_year"));
     }
 }

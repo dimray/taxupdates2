@@ -7,7 +7,6 @@
 
 <?php else: ?>
 
-    <!-- need to copy the format from the annual submissions table foreign property  -->
     <?php include "shared/foreign-property-table.php"; ?>
 
 <?php endif; ?>

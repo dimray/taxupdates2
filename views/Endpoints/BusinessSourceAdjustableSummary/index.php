@@ -9,4 +9,4 @@
 
 <p><a href="/business-source-adjustable-summary/trigger">Create Accounting Adjustments</a></p>
 
-<p><a href="">View Accounting Adjustments</a></p>
+<p><a href="/business-source-adjustable-summary/list">View Accounting Adjustments</a></p>

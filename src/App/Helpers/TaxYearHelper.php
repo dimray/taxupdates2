@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use DateTime;
+use DateTimeZone;
 
 class TaxYearHelper
 {
@@ -77,5 +78,40 @@ class TaxYearHelper
         $next_end_year = substr((string) ($next_start_year + 1), -2);
 
         return sprintf('%d-%s', $next_start_year, $next_end_year);
+    }
+
+    public static function getDeadlinesFromTaxYear(string $taxYear): array
+    {
+        // Example: "2022-23"
+        [$startYear, $endShort] = explode('-', $taxYear);
+
+        // Convert to full year (e.g., 23 → 2023)
+        $endYear = (int)('20' . $endShort);
+
+        // Define UK timezone
+        $ukTimeZone = new DateTimeZone('Europe/London');
+
+        // Filing deadline: 31 Jan (endYear + 1) at 23:59:59 UK time
+        $filingDeadline = new DateTime("31 January " . ($endYear + 1) . " 23:59:59", $ukTimeZone);
+
+        // Amendment deadline: 1 year after the filing deadline
+        $amendmentDeadline = clone $filingDeadline;
+        $amendmentDeadline->modify('+1 year');
+
+        return [
+            'filing_deadline' => $filingDeadline->getTimestamp(),
+            'amendment_deadline' => $amendmentDeadline->getTimestamp()
+        ];
+    }
+
+    public static function beforeCurrentYear(string $input_tax_year): bool
+    {
+        $current_tax_year = self::getCurrentTaxYear();
+
+        $input_start_year = (int) substr($input_tax_year, 0, 4);
+
+        $current_start_year = (int) substr($current_tax_year, 0, 4);
+
+        return $input_start_year < $current_start_year;
     }
 }

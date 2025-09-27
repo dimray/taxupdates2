@@ -30,7 +30,7 @@ class ApiFraudPreventionHeaders
         $govClientMultiFactor = $this->getGovClientMultiFactor($device_data['deviceID']);
         $publicIp = $this->getPublicIp();
         $timestamp = $this->getTimestamp();
-        $clientPublicPort = $_SERVER['REMOTE_PORT'] ?? 'Unknown';
+        $clientPublicPort =  $clientPublicPort = !empty($_SERVER['REMOTE_PORT']) ? $_SERVER['REMOTE_PORT'] : ($_SESSION['user_port'] ?? '');
         // gov-client-screens
         $screenWidth = abs(intval($device_data['screenWidth'])) ?? 1;
         $screenHeight = abs(intval($device_data['screenHeight'])) ?? 1;
@@ -42,9 +42,9 @@ class ApiFraudPreventionHeaders
         // gov-client-windowsize
         $windowWidth = abs(intval($device_data['windowWidth'] ?? 1));
         $windowHeight = abs(intval($device_data['windowHeight'] ?? 1));
-        // gov-client-windowsize
-        $govVendorForwarded = $this->getGovVendorForwarded();
+        // gov-client-windowsize       
         $vendorIp = $this->getVendorIp();
+        $govVendorForwarded = $this->getGovVendorForwarded($publicIp, $vendorIp);
 
         // User ID, percent encoded
         $email = rawurlencode($_SESSION['email']);
@@ -80,31 +80,19 @@ class ApiFraudPreventionHeaders
         return $govHeaders;
     }
 
-    // need to set nginx to get this
-    private function getPublicIp(): ?string
+    private function getPublicIp(): string
     {
-        // Try various headers in order of preference
-        $headers = [
-            'HTTP_CF_CONNECTING_IP',     // Cloudflare
-            'HTTP_X_REAL_IP',            // Some proxies
-            'HTTP_X_FORWARDED_FOR',      // Standard proxy header (may contain multiple IPs)
-            'REMOTE_ADDR'                // Direct connection
-        ];
+        $remoteAddr = $_SERVER['REMOTE_ADDR'] ?? '';
 
-        foreach ($headers as $header) {
-            if (!empty($_SERVER[$header])) {
-                $ip = $_SERVER[$header];
+        if (!empty($remoteAddr) && $this->isPublicIp($remoteAddr)) {
+            return $remoteAddr;
+        }
 
+        // Fallback to the IP saved on login
+        $userIp = $_SESSION['user_ip'] ?? '';
 
-                // Handle X-Forwarded-For which may contain multiple IPs
-                if ($header === 'HTTP_X_FORWARDED_FOR') {
-                    $ip = trim(explode(',', $ip)[0]);
-                }
-
-                if ($this->isPublicIp($ip)) {
-                    return $ip;
-                }
-            }
+        if (!empty($userIp) && $this->isPublicIp($userIp)) {
+            return $userIp;
         }
 
         return '';
@@ -112,35 +100,29 @@ class ApiFraudPreventionHeaders
 
     private function getTimestamp(): string
     {
-        $now = new DateTime("now", new DateTimeZone("UTC")); // Get current time in UTC
-        $micro = microtime(true); // Get current timestamp with microseconds
-        $milliseconds = sprintf("%03d", ($micro - floor($micro)) * 1000); // Extract milliseconds
-        return $now->format("Y-m-d\TH:i:s") . ".$milliseconds" . "Z"; // Format correctly
+        $micro = microtime(true);
+        $seconds = floor($micro);
+        $milliseconds = sprintf("%03d", ($micro - $seconds) * 1000);
+        $dt = new DateTime("@$seconds");   // "@$seconds" makes it UTC timestamp
+        $dt->setTimezone(new DateTimeZone("UTC"));
+        return $dt->format("Y-m-d\TH:i:s") . ".$milliseconds" . "Z";
     }
 
-    private function getGovVendorForwarded()
+    private function getGovVendorForwarded(string $public_ip, string $vendor_ip)
     {
-        $serverPublicIp = $this->getVendorIp();
+        $clientIp = $public_ip;
+        $vendorIp = $vendor_ip;
 
-        $senderIp = $this->getPublicIp() ?? $_SERVER['REMOTE_ADDR'] ?? null;
-        if (!$senderIp) {
-            // Cannot determine sender's IP
-            return $_SERVER['HTTP_GOV_VENDOR_FORWARDED'] ?? '';
+        $hops = [];
+
+        // Log the hop from the client to your vendor server.
+        // "by" is the server that received the request (your vendor IP).
+        // "for" is the client that sent the request.
+        if (!empty($clientIp) && !empty($vendorIp)) {
+            $hops[] = 'by=' . rawurlencode($vendorIp) . '&for=' . rawurlencode($clientIp);
         }
 
-        // Check if both IPs are public
-        if ($serverPublicIp && $this->isPublicIp($senderIp)) {
-            $existingHeader = $_SERVER['HTTP_GOV_VENDOR_FORWARDED'] ?? '';
-            $newHop = 'by=' . urlencode($serverPublicIp) . '&for=' . urlencode($senderIp);
-            if ($existingHeader) {
-                return $existingHeader . ',' . $newHop;
-            } else {
-                return $newHop;
-            }
-        } else {
-            // Do not add this hop
-            return $_SERVER['HTTP_GOV_VENDOR_FORWARDED'] ?? '';
-        }
+        return implode(',', $hops);
     }
 
     private function getUserIds()
@@ -161,20 +143,17 @@ class ApiFraudPreventionHeaders
 
     private function getVendorIp()
     {
-        $domain = 'taxupdates.co.uk';
-        $records = dns_get_record($domain, DNS_A);
-
-        if (!empty($records[0]['ip'])) {
-            return $records[0]['ip'];
-        }
-
-        return '';
+        return '77.37.65.79';
     }
 
     // Helper function to check if IP is public
     private function isPublicIp($ip)
     {
-        return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false;
+        return (bool) filter_var(
+            $ip,
+            FILTER_VALIDATE_IP,
+            FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
+        );
     }
 
     private function getGovClientMultiFactor(string $device_id)

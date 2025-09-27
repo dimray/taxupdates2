@@ -80,10 +80,11 @@
                                     <li><a class="navLink subLink "
                                             href="/business-details/list-all-businesses?year-end=true">Business
                                             Adjustments</a></li>
-                                    <li><a class="navLink subLink " href="">Other Income</a></li>
+                                    <li><a class="navLink subLink" href="">Other Income</a></li>
                                     <li><a class="navLink subLink" href="">Capital Gains</a></li>
                                     <li><a class="navLink subLink" href="">Tax Reliefs</a></li>
-                                    <li><a class="navLink subLink" href="">Final Declaration</a></li>
+                                    <li><a class="navLink subLink" href="/obligations/final-declaration">Final Declaration</a>
+                                    </li>
                                 </ul>
                             </details>
                         </li>

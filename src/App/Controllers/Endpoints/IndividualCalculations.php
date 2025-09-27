@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controllers\Endpoints;
 
+use DateTime;
 use App\Flash;
 use App\Helpers\Helper;
+use App\Helpers\SubmissionsHelper;
 use App\Helpers\TaxYearHelper;
 use App\HmrcApi\Endpoints\ApiIndividualCalculations;
 use App\Models\Submission;
@@ -122,34 +124,43 @@ class IndividualCalculations extends Controller
 
 
 
-            // ********** this is submitted calculation. Not used at the moment. **********
+            // ********** VIEW SUBMITTED CALC **********
             if ($calculation_type === "final-declaration" || $calculation_type === "confirm-amendment") {
+
                 $heading = "Final HMRC Tax Calculation";
 
                 $hide_tax_year = true;
 
+                $hide_calculation_options = true;
+
                 return $this->view(
-                    "Endpoints/IndividualCalculations/show-submitted-final-calculation.php",
-                    compact("heading", "hide_tax_year", "calculation_details", "summary", "inputs", "calculation", "messages", "calculation_type", "calculation_id")
+                    "Endpoints/IndividualCalculations/show.php",
+                    compact("heading", "hide_tax_year",  "calculation_details", "summary", "inputs", "calculation", "messages", "hide_calculation_options")
                 );
             }
 
+            // ***************** FINAL CALC FOR SUBMISSION ***********************
 
-            //*** this has final declaration included and form to submit final calc. Not yet used ******
+            //*** this has final declaration included and form to submit final calc. Needs to pass through calc id and type for the submission function ******
             if ($calculation_type === "intent-to-finalise" || $calculation_type === "intent-to-amend") {
 
                 $heading = "Final HMRC Tax Calculation";
 
-                $errors = $this->flashErrors();
-
                 $hide_tax_year = true;
 
+                $hide_calculation_options = true;
+
+                $show_submit = true;
+
+                $errors = $this->flashErrors();
+
                 return $this->view(
-                    "Endpoints/IndividualCalculations/show-final-calculation.php",
-                    compact("heading", "hide_tax_year", "calculation_details", "summary", "inputs", "calculation", "messages", "calculation_type", "calculation_id", "errors")
+                    "Endpoints/IndividualCalculations/show.php",
+                    compact("heading", "hide_tax_year", "calculation_details", "summary", "inputs", "calculation", "messages", "errors", "show_submit", "hide_calculation_options", "calculation_id", "calculation_type")
                 );
             }
 
+            // ********************* IN YEAR CALC ************************
 
             $heading = "HMRC Tax Calculation";
 
@@ -161,6 +172,8 @@ class IndividualCalculations extends Controller
             );
         }
     }
+
+
 
     // redirects here if retrieve-calculation returns 404 
     public function waitForCalculation()
@@ -178,5 +191,196 @@ class IndividualCalculations extends Controller
         }
 
         return $this->view("Endpoints/individual-calculations/wait-for-calculation.php", compact("heading", "calculation_id"));
+    }
+
+    // ********************************************************************************
+
+    // FINAL DECLARATION
+
+    // ********************************************************************************
+
+    public function retrieveFinalCalculation()
+    {
+        $tax_year = $_SESSION['tax_year'];
+
+        $nino = Helper::getNino();
+
+        $calculation_type = "";
+
+        $response = $this->apiIndividualCalculations->listSelfAssessmentTaxCalculations($nino, $tax_year, $calculation_type);
+
+        $final_calculation = $this->findFinalCalculation($response['calculations'] ?? []);
+
+        // return flash message if no final calculation
+        if (empty($final_calculation)) {
+
+            Flash::addMessage("Unable to display Final Calculation for the selected year", Flash::WARNING);
+            return $this->redirect("/obligations/final-declaration");
+        }
+
+        $calculation_id = $final_calculation['calculationId'] ?? "";
+        $calculation_type = $final_calculation['calculationType'] ?? "";
+
+        $query_string = http_build_query(compact("calculation_id", "calculation_type"));
+
+        return $this->redirect("/individual-calculations/retrieve-calculation?" . $query_string);
+    }
+
+    public function prepareFinalDeclaration()
+    {
+        $calculation_type = $this->request->get['calculation_type'];
+
+        $tax_year = $_SESSION['tax_year'];
+
+        $hide_tax_year = true;
+
+        $heading = "Prepare Your Final Declaration for {$tax_year}";
+
+        $errors = $this->flashErrors();
+
+        return $this->view(
+            "Endpoints/IndividualCalculations/prepare-final-declaration.php",
+            compact("heading", "calculation_type", "errors", "hide_tax_year")
+        );
+    }
+
+    public function confirmPrepareFinalDeclaration()
+    {
+        $data = $this->request->post;
+
+        $confirm_statements = $data['confirm_statements'] ?? false;
+
+        $calculation_type = $this->request->post['calculation_type'];
+
+        $query_string = http_build_query(compact("calculation_type"));
+
+        if (!$confirm_statements) {
+
+            $this->addError("Please confirm all your tax information is complete before preparing the Final Declaration");
+
+            return $this->redirect("/individual-calculations/prepare-final-declaration?" . $query_string);
+        }
+
+        return $this->redirect("/individual-calculations/trigger-calculation?" . $query_string);
+    }
+
+    public function submitFinalDeclaration()
+    {
+        $confirm_submit = $this->request->post['confirm_submit'] ?? null;
+        $calculation_id = $this->request->post['calculation_id'] ?? null;
+        $calculation_type = $this->request->post['calculation_type'] ?? null;
+
+        if (!$calculation_type || !$calculation_id) {
+
+            Flash::addMessage("Unable to retrieve final tax calculation. Please try again.");
+            return $this->redirect("/obligations/final-declaration");
+        }
+
+        if (!$confirm_submit) {
+
+            $this->addError("You must tick the box to confirm the statement before your Final Declaration can be submitted.");
+
+            $query_string = http_build_query([
+                "calculation_type" => $calculation_type,
+                "calculation_id" => $calculation_id
+            ]);
+
+            return $this->redirect("/individual-calculations/retrieve-calculation?" . $query_string);
+        }
+
+        if ($calculation_type === "intent-to-finalise") {
+            $calculation_type = "final-declaration";
+        }
+
+        if ($calculation_type === "intent-to-amend") {
+            $calculation_type = "confirm-amendment";
+        }
+
+        $nino = Helper::getNino();
+
+        $tax_year = $_SESSION['tax_year'];
+
+        $response = $this->apiIndividualCalculations->submitASelfAssessmentFinalDeclaration($nino, $tax_year, $calculation_id, $calculation_type);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        if ($response['submission_id'] !== "") {
+
+            $submission_data = SubmissionsHelper::createSubmission("final_declaration", $response['submission_id']);
+
+            $submission_data['submission_payload'] = null;
+
+            $this->submission->insert($submission_data);
+
+            Flash::addMessage("Your Final Declaration has been submitted to HMRC", Flash::SUCCESS);
+        }
+
+        $query_string = http_build_query(compact("calculation_id", "calculation_type"));
+
+        return $this->redirect("/individual-calculations/retrieve-calculation" . "?" .  $query_string);
+    }
+
+    private function findFinalCalculation(array $calculations): array
+    {
+        $amended_calculations = [];
+
+        foreach ($calculations as $calculation) {
+            if (
+                strtolower($calculation['calculationOutcome']) === "processed" && strtolower($calculation['calculationType']) === "confirm-amendment"
+            ) {
+                $amended_calculations[] = $calculation;
+            }
+        }
+
+        if (!empty($amended_calculations)) {
+            if (count($amended_calculations) === 1) {
+                return $amended_calculations[0];
+            } else {
+                return $this->getLatestTaxCalculation($amended_calculations);
+            }
+        }
+
+        $final_calculations = [];
+
+        foreach ($calculations as $calculation) {
+            if (strtolower($calculation['calculationOutcome']) === "processed" && strtolower($calculation['calculationType']) === "final-declaration") {
+                $final_calculations[] = $calculation;
+            }
+        }
+
+        if (!empty($final_calculations)) {
+            if (count($final_calculations) === 1) {
+                return $final_calculations[0];
+            } else {
+                return $this->getLatestTaxCalculation($final_calculations);
+            }
+        }
+
+        return [];
+    }
+
+    private function getLatestTaxCalculation(array $calculations): ?array
+    {
+        if (empty($calculations)) {
+            return null;
+        }
+
+        $latestCalculation = null;
+        $latestTimestamp = null;
+
+        foreach ($calculations as $calculation) {
+            if (isset($calculation["calculationTimestamp"])) {
+
+                $currentTimestamp = new DateTime($calculation["calculationTimestamp"]);
+                if ($latestTimestamp === null || $currentTimestamp > $latestTimestamp) {
+                    $latestTimestamp = $currentTimestamp;
+                    $latestCalculation = $calculation;
+                }
+            }
+        }
+
+        return $latestCalculation;
     }
 }
