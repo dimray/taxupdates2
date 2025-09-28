@@ -38,17 +38,17 @@
     <?php if ($type_of_business === "self-employment"): ?>
 
         <p><a href="https://docs.google.com/spreadsheets/d/1PBl34xhQ4-LhrnuHd3HY01Q8tSvCM16K8SOlehACyck/edit?usp=sharing"
-                target="_blank">Self-Employment MTD Spreadsheet</a></p>
+                target="_blank">Get Self-Employment MTD Spreadsheet</a></p>
 
     <?php elseif ($type_of_business === "uk-property"): ?>
 
         <p><a href="https://docs.google.com/spreadsheets/d/1rgeGLCe2i72idvIeFBiUe_taRUZRm5lI_T_n35CFaK0/edit?usp=sharing"
-                target="_blank">UK Property MTD Spreadsheet</a></p>
+                target="_blank">Get UK Property MTD Spreadsheet</a></p>
 
     <?php elseif ($type_of_business === "foreign-property"): ?>
 
         <p><a href="https://docs.google.com/spreadsheets/d/1lqLZuJStvGOb4LwPrlcWFWIyxOx80uJ4KXIGfPabzBc/edit?usp=sharing"
-                target="_blank">Foreign Property MTD Spreadsheet</a></p>
+                target="_blank">Get Foreign Property MTD Spreadsheet</a></p>
 
     <?php endif; ?>
 

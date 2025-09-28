@@ -98,7 +98,7 @@
                             <form action="/clients/confirm-delete" method="POST">
                                 <input type="hidden" name="client_id" value="<?= esc($client['client_id']) ?>">
                                 <input type="hidden" name="client_name" value="<?= esc($client['client_name']) ?>">
-                                <button type="submit" class="x-delete">Delete</button>
+                                <button type="submit" class="delete">Delete</button>
                             </form>
 
 
@@ -181,7 +181,7 @@
 
     <p>Find a specific client by NI Number</p>
 
-    <form class="inline-form end gap-0" method="POST" action="/clients/find-client">
+    <form class="inline-form" method="POST" action="/clients/find-client">
         <div class="form-input width-200">
             <label for="search_nino">NI Number</label>
             <input type="text" name="search_nino" id="search_nino">

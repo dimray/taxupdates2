@@ -130,30 +130,6 @@ input[type="password"],
   font-weight: 600;
 }
 
-.form-button {
-  background-color: hsl(0, 0%, 19%);
-  color: white;
-  border-radius: 5px;
-  padding-block: 0.3rem;
-  font-weight: 500;
-  font-size: 1.05em;
-  text-transform: uppercase;
-  border: 2px solid hsl(0, 0%, 0%);
-}
-
-.form-button:disabled {
-  background-color: #ccc; /* Light grey background */
-  color: #666; /* Muted text */
-  border-color: #aaa; /* Soft border */
-  cursor: not-allowed;
-  opacity: 0.6; /* Visually dim it */
-}
-
-.form-button:not(:disabled):hover {
-  background-color: hsla(0, 0%, 12%);
-  cursor: pointer;
-}
-
 .show-clients {
   display: flex;
   align-items: center;
@@ -176,7 +152,6 @@ input[type="password"],
 .inline-form button {
   height: 2rem;
   vertical-align: bottom;
-  margin-block-end: 5px;
 }
 
 .inline-form input {
@@ -189,11 +164,10 @@ input[type="password"],
 }
 
 .inline-form button:not(.link) {
-  padding-block-start: 3px;
   font-size: 1rem;
   text-transform: uppercase;
   border: none;
-  border-radius: 5px;
+
   /* background-color: hsla(0, 0%, 0%, 65%);
   color: white; */
 }
@@ -277,7 +251,7 @@ input[type="checkbox"] {
   display: inline-flex;
   padding-inline: 2rem;
   padding-block: 0.5rem;
-  border-radius: 5px;
+  border-radius: 0;
 }
 
 #change_tax_year label {

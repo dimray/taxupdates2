@@ -13,15 +13,15 @@ summary:not(.navLink) {
   display: flex;
   align-items: center;
   gap: 0.5em;
-  font-weight: 400;
-  font-size: 1rem;
+  font-weight: 300;
+  font-size: 1.1rem;
   line-height: 1;
-  font-family: monospace;
+
   color: black;
-  background-color: hsla(240, 100%, 27%, 10%);
+  background-color: hsla(0, 0%, 90%, 100%);
   padding-inline: 0.5rem;
 
-  border-radius: 2px;
+  border-radius: 0;
 
   cursor: pointer;
   width: fit-content;
@@ -31,15 +31,20 @@ summary:not(.navLink) {
 
 summary::after {
   content: "+";
-  font-family: monospace;
+
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 300;
   /* This ensures the icon stays close to the text */
   flex-shrink: 0;
 }
 
 details[open] summary::after {
   content: "-";
+}
+
+details[open] {
+  background-color: hsla(0, 0%, 90%, 100%);
+  padding: 0.5rem;
 }
 
 /* Optional: Add a transition for a smoother change */

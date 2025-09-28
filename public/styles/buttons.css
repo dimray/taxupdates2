@@ -1,25 +1,47 @@
 button {
   cursor: pointer;
+  border-radius: 0;
+  border: 0;
+  background-color: hsl(0, 0%, 90%);
+  padding: 0;
+  padding-inline: 0.5rem;
+}
+
+button:hover,
+button:focus {
+  background-color: hsl(0, 0%, 70%);
+}
+
+.form-button {
+  background-color: hsl(248, 39%, 29%);
+  color: white;
+  padding-block: 0.3rem;
+  font-weight: 500;
+  font-size: 1.05em;
+  text-transform: uppercase;
+  border: 2px solid hsl(248, 39%, 29%);
+}
+
+.form-button:disabled {
+  background-color: #ccc; /* Light grey background */
+  color: #666; /* Muted text */
+  border-color: #aaa; /* Soft border */
+  cursor: not-allowed;
+  opacity: 0.6; /* Visually dim it */
+}
+
+.form-button:not(:disabled):hover {
+  background-color: hsl(248, 39%, 19%);
+  border: 2px solid hsl(248, 39%, 19%);
+  cursor: pointer;
 }
 
 .button {
-  text-decoration: none;
-  text-transform: uppercase;
-  border: 1px solid hsla(0, 0%, 0%, 80%);
-  padding-inline: 0.8rem;
-  padding-block: 0.3rem;
-  background-color: hsla(0, 0%, 0%, 70%);
-  color: white;
-  border-radius: 5px;
-  line-height: 1rem;
-  width: fit-content;
+  border-block-end: 2px solid #999;
 }
 
 .button:hover,
 .button:focus {
-  cursor: pointer;
-  background-color: hsla(0, 0%, 0%, 80%);
-  color: white;
 }
 
 .button:disabled {
@@ -38,7 +60,6 @@ button {
   line-height: 1.2rem;
   padding-inline: 1rem;
   padding-block-end: 0.2rem;
-  border-radius: 5px;
 }
 
 .confirm-delete-small {
@@ -50,7 +71,6 @@ button {
   line-height: 1.2rem;
   padding-inline: 0.5rem;
   padding-block-end: 0.2rem;
-  border-radius: 5px;
 }
 
 .confirm-delete:hover,
@@ -62,17 +82,17 @@ button {
   color: hsla(0, 100%, 15%, 0.9);
 }
 
-.x-delete {
+.delete {
   border: none;
   color: red;
-  background: hsla(0, 100%, 50%, 5%);
-  border-radius: 5px;
+  background: none;
   line-height: 1rem;
+  font-weight: 300;
 }
 
-.x-delete:hover,
-.x-delete:focus {
-  background: hsla(0, 100%, 50%, 30%);
+.delete:hover,
+.delete:focus {
+  background: hsla(0, 100%, 50%, 10%);
   cursor: pointer;
 }
 

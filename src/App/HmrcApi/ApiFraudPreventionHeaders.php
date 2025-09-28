@@ -16,14 +16,19 @@ class ApiFraudPreventionHeaders
 
     public function setHeaders()
     {
-
         if (isset($_SESSION['device_data']) && !empty($_SESSION['device_data'])) {
             $device_data = json_decode($_SESSION['device_data'], true);
         } else {
-
             throw new Exception("Session['device_data'] not set");
         }
 
+        if (!empty($_SERVER['REMOTE_ADDR'])) {
+            $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+        }
+
+        if (!empty($_SERVER['REMOTE_PORT'])) {
+            $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
+        }
 
         $jsUserAgent = $device_data['userAgent'] ?? 'MISSING_HEADER';
         $deviceID = $device_data['deviceID'];

@@ -75,7 +75,7 @@
 
         </details>
 
-        <br>
+
 
     <?php endif; ?>
 

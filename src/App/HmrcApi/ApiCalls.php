@@ -113,15 +113,6 @@ class  ApiCalls extends ApiTokens
 
     public function sendGetRequest(string $url, array $headers, int $retry_count = 0)
     {
-        // fraud prevention headers
-        if (!empty($_SERVER['REMOTE_ADDR'])) {
-            $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
-        }
-
-        if (!empty($_SERVER['REMOTE_PORT'])) {
-            $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
-        }
-
         $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
 
         $headers = array_merge($headers, $gov_headers);
@@ -137,15 +128,6 @@ class  ApiCalls extends ApiTokens
 
     public function sendPostRequest(string $url, string $payload, array $headers, int $retry_count = 0)
     {
-        // fraud prevention headers
-        if (!empty($_SERVER['REMOTE_ADDR'])) {
-            $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
-        }
-
-        if (!empty($_SERVER['REMOTE_PORT'])) {
-            $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
-        }
-
         $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
 
         $headers = array_merge($headers, $gov_headers);
@@ -161,15 +143,6 @@ class  ApiCalls extends ApiTokens
 
     public function sendPutRequest(string $url, string $payload, array $headers,  int $retry_count = 0)
     {
-        // fraud prevention headers
-        if (!empty($_SERVER['REMOTE_ADDR'])) {
-            $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
-        }
-
-        if (!empty($_SERVER['REMOTE_PORT'])) {
-            $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
-        }
-
         $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
 
         $headers = array_merge($headers, $gov_headers);
@@ -185,15 +158,6 @@ class  ApiCalls extends ApiTokens
 
     public function sendDeleteRequest(string $url, array $headers,  int $retry_count = 0)
     {
-        // fraud prevention headers
-        if (!empty($_SERVER['REMOTE_ADDR'])) {
-            $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
-        }
-
-        if (!empty($_SERVER['REMOTE_PORT'])) {
-            $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
-        }
-
         $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
 
         $headers = array_merge($headers, $gov_headers);

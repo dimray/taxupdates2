@@ -63,5 +63,9 @@ class UserLogin
 
             $_SESSION['access_token'] = $access_token;
         }
+
+        $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+
+        $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
     }
 }
