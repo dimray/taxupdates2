@@ -9,6 +9,7 @@
     <meta name="description"
         content="One-stop site for Making Tax Digital for Income Tax for both landlords and sole traders">
     <link rel="stylesheet" href="/styles/reset.css">
+    <link rel="stylesheet" href="/styles/light-dark.css">
     <link rel="stylesheet" href="/styles/base.css">
     <link rel="stylesheet" href="/styles/grid.css">
     <link rel="stylesheet" href="/styles/navigation.css">
@@ -21,6 +22,7 @@
     <link rel="stylesheet" href="/styles/details-summary.css">
     <link rel="stylesheet" href="/styles/clients.css">
     <link rel="stylesheet" href="/styles/print.css">
+
 
 </head>
 
@@ -76,16 +78,19 @@
                             <details class="details-menu prevent-select">
                                 <summary class="navLink topLink <?= $is_year_end_active ? 'active' : '' ?>">
                                     Year End</summary>
-                                <ul class="submenu">
-                                    <li><a class="navLink subLink "
-                                            href="/business-details/list-all-businesses?year-end=true">Business
-                                            Adjustments</a></li>
-                                    <li><a class="navLink subLink" href="">Other Income</a></li>
-                                    <li><a class="navLink subLink" href="">Capital Gains</a></li>
-                                    <li><a class="navLink subLink" href="">Tax Reliefs</a></li>
-                                    <li><a class="navLink subLink" href="/obligations/final-declaration">Final Declaration</a>
-                                    </li>
-                                </ul>
+                                <div class="submenu-container">
+                                    <ul class="submenu">
+                                        <li><a class="navLink subLink "
+                                                href="/business-details/list-all-businesses?year-end=true">Business
+                                                Adjustments</a></li>
+                                        <li><a class="navLink subLink" href="">Other Income</a></li>
+                                        <li><a class="navLink subLink" href="">Capital Gains</a></li>
+                                        <li><a class="navLink subLink" href="">Tax Reliefs</a></li>
+                                        <li><a class="navLink subLink" href="/obligations/final-declaration">Final
+                                                Declaration</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </details>
                         </li>
                     <?php endif; ?>

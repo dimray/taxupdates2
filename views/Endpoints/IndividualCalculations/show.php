@@ -21,7 +21,7 @@
 
         <details>
 
-            <summary>View Detailed Tax Calculation</summary>
+            <summary>Detailed Tax Calculation</summary>
 
             <div class="print-container">
 
@@ -42,7 +42,7 @@
 
         <details>
 
-            <summary>View Calculation Inputs</summary>
+            <summary>Calculation Inputs</summary>
 
             <div class="print-container">
 
@@ -63,7 +63,7 @@
 
         <details>
 
-            <summary>View HMRC Messages</summary>
+            <summary>HMRC Messages</summary>
 
             <div class="print-container">
 

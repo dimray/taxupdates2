@@ -1,0 +1,62 @@
+html {
+  color-scheme: dark-light;
+
+  --background-color: hsl(0, 0%, 92%);
+  --text-color: hsl(0, 0%, 5%);
+  --header-color: hsl(0, 0%, 15%);
+  --header-text: hsl(0, 0%, 95%);
+  --link-color: hsl(240, 100%, 50%);
+  --link-hover-bg: hsla(240, 100%, 50%, 10%);
+  --table-stripe-color: hsla(0, 0%, 0%, 4%);
+  --button-bg: hsl(0, 0%, 90%);
+  --button-bg-hover: hsl(0, 0%, 70%);
+  --button-disabled-color: hsla(0, 0%, 50%, 70%);
+  --button-disabled-bg: hsla(0, 0%, 50%, 20%);
+  --form-button-bg: hsl(120, 100%, 20%);
+  --form-button-hover: hsl(120, 100%, 15%);
+  --form-input-disabled-bg: hsla(0, 0%, 50%, 20%);
+  --input-bg: hsl(0, 0%, 100%);
+  --focus-border: hsl(60, 100%, 50%);
+  --card-border: hsl(0, 0%, 80%);
+  --tax-year-bg: hsl(60, 100%, 45%);
+  --tax-year-text: hsl(0, 0%, 10%);
+  --tax-year-select: hsl(0, 0%, 100%);
+  --details-bg: hsla(0, 0%, 90%, 100%);
+  --delete-text: hsl(0, 100%, 50%);
+  --delete-bg: hsla(0, 100%, 50%, 10%);
+  --delete-bg-hover: hsla(0, 100%, 50%, 15%);
+}
+
+body.dark-theme {
+  color-scheme: dark;
+
+  --background-color: hsl(0, 0%, 30%);
+  --text-color: hsl(0, 0%, 90%);
+  --link-color: hsl(215, 47%, 80%);
+  --link-hover-bg: hsla(215, 47%, 70%, 40%);
+  --table-stripe-color: hsla(0, 0%, 0%, 15%);
+  --button-bg: hsl(0, 0%, 22%);
+  --button-bg-hover: hsl(0, 0%, 12%);
+  --button-disabled-bg: hsl(0, 0%, 0%);
+  --form-button-bg: hsl(0, 0%, 10%);
+  --form-button-hover: hsl(0, 0%, 5%);
+  --form-input-disabled-bg: hsla(0, 0%, 0%, 20%);
+  --input-bg: hsl(0, 0%, 20%);
+  --focus-border: hsl(60, 100%, 40%);
+  --card-border: hsl(0, 0%, 25%);
+  --details-bg: hsla(0, 0%, 20%, 100%);
+  --tax-year-select: hsl(0, 0%, 90%);
+  --delete-text: hsl(0, 100%, 40%);
+}
+
+body {
+  color-scheme: light;
+
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+footer .dark-light {
+  height: 1.5rem;
+  width: 1.5rem;
+}

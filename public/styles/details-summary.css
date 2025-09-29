@@ -42,12 +42,15 @@ details[open] summary::after {
   content: "-";
 }
 
-details[open] {
-  background-color: hsla(0, 0%, 90%, 100%);
-  padding: 0.5rem;
+/* details[open] summary {
+  outline: none;
 }
 
-/* Optional: Add a transition for a smoother change */
-summary::after {
-  transition: content 0.2s ease-in-out;
+details[open] {
+  outline: none;
+} */
+
+details:not(.details-menu)[open] {
+  background-color: var(--details-bg);
+  padding: 0.5rem;
 }

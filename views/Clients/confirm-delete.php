@@ -3,7 +3,7 @@
 
 <form action="/clients/delete" method="POST">
     <input type="hidden" name="client_id" value="<?= $client_id ?>">
-    <button class="confirm-delete" type="submit" autofocus>Delete</button>
+    <button class="confirm-delete" type="submit">Delete</button>
 </form>
 
 <br>

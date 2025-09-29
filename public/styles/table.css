@@ -32,7 +32,7 @@ th.subheading {
 }
 
 table tbody tr:has(td):nth-of-type(odd) {
-  background-color: hsla(0, 0%, 0%, 5%);
+  background-color: var(--table-stripe-color);
 }
 
 table .center-element {
@@ -95,7 +95,7 @@ table .table-subheading {
 }
 
 .mobile-view .card {
-  border: 1px solid #ccc;
+  border: 1px solid var(--card-border);
   border-radius: 5px;
   padding-block: 0.5rem;
   padding-inline: 0.5rem;
@@ -115,7 +115,7 @@ table .table-subheading {
 }
 
 .mobile-view .data-row:nth-of-type(odd) {
-  background-color: hsla(0, 0%, 0%, 4%);
+  background-color: var(--table-stripe-color);
 }
 
 .mobile-view form {
@@ -135,89 +135,3 @@ table .table-subheading {
   justify-content: center;
   gap: 1rem;
 }
-
-/* @media (max-width: 1000px) {
-  .long-table .desktop-view {
-    display: none;
-  }
-
-  .long-table table thead {
-    display: none;
-  }
-
-  .long-table .mobile-view {
-    display: block;
-  }
-
-  .long-table table,
-  .long-table tbody,
-  .long-table tr {
-    display: block;
-    width: 100%;
-  }
-
-  .long-table tr:not(:has(.subheading)) {
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    max-width: 500px;
-  }
-
-  .long-table td {
-    display: block;
-    text-align: right;
-    padding-inline: 0.5rem;
-    padding-block: 0.25rem;
-  }
-
-  .long-table td::before {
-    content: attr(data-label);
-    float: left;
-    text-align: left;
-  }
-}
-
-@media (max-width: 800px) {
-  .regular-table .desktop-view {
-    display: none;
-  }
-
-  .regular-table table thead {
-    display: none;
-  }
-
-  .regular-table .mobile-view {
-    display: block;
-  }
-
-  .regular-table table,
-  .regular-table tbody,
-  .regular-table tr {
-    display: block;
-    width: 100%;
-  }
-
-  .regular-table tr:not(:has(.subheading)) {
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    display: flex;
-    flex-direction: column;
-    max-width: 500px;
-  }
-
-  .regular-table td {
-    display: block;
-    text-align: right;
-    padding-inline: 0.5rem;
-    padding-block: 0.25rem;
-  }
-
-  .regular-table td::before {
-    content: attr(data-label);
-    float: left;
-    text-align: left;
-  }
-} */

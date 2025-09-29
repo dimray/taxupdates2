@@ -1,5 +1,9 @@
 <footer>
 
+    <div id="light-dark" class="dark-light">
+        <?php include ROOT_PATH . "/public/icons/light-dark.svg"; ?>
+    </div>
+
     <?php
 
     echo '<pre>';
@@ -65,6 +69,7 @@
 <!-- always runs as needed for header menu -->
 <script src="/scripts/details-summary.js"></script>
 <script src="/scripts/mobile-nav.js"></script>
+<script src="/scripts/light-dark.js"></script>
 
 </body>
 

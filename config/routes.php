@@ -2,7 +2,7 @@
 
 $router = new Framework\Router;
 
-$router->group(["middleware" => "auth"], function ($router) {
+$router->group(["middleware" => "auth|hide_tax_year"], function ($router) {
     $router->add("/profile/{action}", ["controller" => "profile"]);
     $router->add("/logout", ["controller" => "session", "action" => "destroy"]);
 });

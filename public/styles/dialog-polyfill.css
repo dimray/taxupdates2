@@ -11,8 +11,8 @@ dialog {
   margin: auto;
   border: solid;
   /* padding: 1em; */
-  background: white;
-  color: black;
+  background: var(--background-color);
+  color: var(--text-color);
   display: block;
   padding: 5rem;
   max-height: 80vh;

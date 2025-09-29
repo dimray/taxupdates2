@@ -26,8 +26,9 @@ input[type="password"],
   box-sizing: border-box; /* ensures padding doesn't affect height */
   font-size: 1rem; /* normalize font size */
   line-height: 1.2;
+  font-weight: 300;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  background-color: var(--input-bg);
 }
 
 .generic-form {
@@ -66,12 +67,16 @@ input[type="password"],
 
 .cumulative-data-form textarea:focus,
 .cumulative-data-form textarea:active {
-  border: 5px solid yellow;
+  border: 5px solid var(--focus-border);
   outline: 3px solid black;
 }
 
+label {
+  color: var(--text-color);
+}
+
 .form-input {
-  color: black;
+  color: var(--text-color);
   margin-block-end: 2px;
   margin-inline: 0;
   padding: 0;
@@ -92,13 +97,13 @@ input[type="password"],
 .form-input input:active,
 .form-input select:focus,
 .form-input select:active {
-  border: 5px solid yellow;
+  border: 5px solid var(--focus-border);
   outline: 3px solid black;
 }
 
 .form-input input:disabled {
-  border: 2px solid hsla(0, 0%, 60%, 50%);
-  background-color: hsla(0, 0%, 84%, 50%);
+  border: 2px solid var(--form-input-disabled-bg);
+  background-color: var(--form-input-disabled-bg);
 }
 
 /* used in show clients - for small form with just one input */
@@ -116,7 +121,7 @@ input[type="password"],
 }
 
 .nested-input {
-  color: black;
+  color: var(--text-color);
   margin-block-end: 2px;
 }
 
@@ -160,7 +165,7 @@ input[type="password"],
   appearance: none;
   padding: 0;
   margin: 0;
-  background: none;
+  background: var(--input-bg);
 }
 
 .inline-form button:not(.link) {
@@ -175,7 +180,6 @@ input[type="password"],
 .inline-form button:not(.link):hover,
 .inline-form button:not(.link):focus {
   cursor: pointer;
-  /* background-color: hsla(0, 0%, 0%, 70%); */
 }
 
 .inline-checkbox {
@@ -213,7 +217,7 @@ input[type="checkbox"] {
   overflow: hidden;
   position: absolute;
   z-index: -1;
-  background-color: blue;
+  background-color: var(--link-color);
 }
 
 .csv_upload_label {
@@ -223,13 +227,14 @@ input[type="checkbox"] {
   font: inherit;
   text-decoration: underline;
   cursor: pointer;
-  color: blue;
+  color: var(--link-color);
   text-align: left;
 }
 
 .csv_upload_label:hover,
 .csv_upload_label:focus {
-  color: hsl(240, 100%, 40%);
+  color: var(--link-color);
+  background-color: var(--link-hover-bg);
 }
 
 #csv_filename {
@@ -247,7 +252,7 @@ input[type="checkbox"] {
   margin-block-start: 1rem;
   align-items: center;
   gap: 1rem;
-  background-color: lightskyblue;
+  background-color: var(--tax-year-bg);
   display: inline-flex;
   padding-inline: 2rem;
   padding-block: 0.5rem;
@@ -257,11 +262,15 @@ input[type="checkbox"] {
 #change_tax_year label {
   text-transform: uppercase;
   font-weight: 800;
+  color: var(--tax-year-text);
 }
 
 #change_tax_year select {
   border: 1px solid black;
   height: 2rem;
+  background-color: var(--tax-year-select);
+  color: var(--tax-year-text);
+  font-weight: 500;
 }
 
 /* end change tax year */
