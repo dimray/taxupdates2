@@ -33,8 +33,11 @@
         <div class="logo">TaxUpdates</div>
 
         <button class="menu-toggle" aria-controls="primary-navigation" aria-expanded="false" type="button">
-            <!-- <span>Menu</span> -->
-            <div class="hamburger" aria-hidden="true"></div>
+            <!-- for screen readers -->
+            <span class="sr-only">Menu</span>
+            <div class="hamburger" aria-hidden="true">
+                <div></div>
+            </div>
         </button>
 
         <nav>
@@ -75,23 +78,8 @@
                         <?= str_starts_with($current_path, '/business-details/list-all-businesses?updates=true') ? 'active' : '' ?>"
                                 href="/business-details/list-all-businesses?updates=true">Updates</a></li>
                         <li>
-                            <details class="details-menu prevent-select">
-                                <summary class="navLink topLink <?= $is_year_end_active ? 'active' : '' ?>">
-                                    Year End</summary>
-                                <div class="submenu-container">
-                                    <ul class="submenu">
-                                        <li><a class="navLink subLink "
-                                                href="/business-details/list-all-businesses?year-end=true">Business
-                                                Adjustments</a></li>
-                                        <li><a class="navLink subLink" href="">Other Income</a></li>
-                                        <li><a class="navLink subLink" href="">Capital Gains</a></li>
-                                        <li><a class="navLink subLink" href="">Tax Reliefs</a></li>
-                                        <li><a class="navLink subLink" href="/obligations/final-declaration">Final
-                                                Declaration</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </details>
+                            <a class="navLink topLink <?= str_starts_with($current_path, '/year-end') ? 'active' : '' ?>"
+                                href="/year-end/index">Year End</a>
                         </li>
                     <?php endif; ?>
 

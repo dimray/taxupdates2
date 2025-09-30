@@ -10,7 +10,7 @@
 
     <br>
 
-    <button class="button" type="submit">Submit</button>
+    <button class="form-button" type="submit">Submit</button>
 
 </form>
 

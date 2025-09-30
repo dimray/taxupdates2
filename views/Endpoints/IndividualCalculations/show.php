@@ -82,6 +82,8 @@
     <!-- if submitting -->
     <?php if (isset($show_submit) && $show_submit === true): ?>
 
+        <br>
+
         <?php if ($calculation_details['calculationType'] === "intent-to-finalise"): ?>
 
             <h2>Submit Your Final Declaration to HMRC</h2>

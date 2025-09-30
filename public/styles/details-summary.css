@@ -13,12 +13,13 @@ summary:not(.navLink) {
   display: flex;
   align-items: center;
   gap: 0.5em;
-  font-weight: 300;
+  font-weight: 400;
   font-size: 1.1rem;
   line-height: 1;
 
-  color: black;
-  background-color: hsla(0, 0%, 90%, 100%);
+  color: hsl(0, 0%, 10%);
+  background-color: var(--summary-bg);
+  border-inline-start: 5px solid hsl(0, 0%, 40%);
   padding-inline: 0.5rem;
 
   border-radius: 0;
@@ -33,9 +34,14 @@ summary::after {
   content: "+";
 
   font-size: 1rem;
-  font-weight: 300;
+  font-weight: 400;
   /* This ensures the icon stays close to the text */
   flex-shrink: 0;
+}
+
+details[open] summary {
+  background-color: var(--details-bg);
+  color: var(--text-color);
 }
 
 details[open] summary::after {
