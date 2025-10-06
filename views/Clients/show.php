@@ -62,7 +62,7 @@
 
                                     <input type="hidden" name="show_submissions" value="true">
 
-                                    <button class="link" type="submit">Submissions</button>
+                                    <button class="link light" type="submit">Submissions</button>
 
                                 </form>
 
@@ -84,7 +84,7 @@
 
                                 <input type="hidden" name="update_status" value="true">
 
-                                <button class="link" type="submit">Update Status</button>
+                                <button class="link light" type="submit">Update Status</button>
                             </form>
                         </td>
 

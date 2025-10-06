@@ -215,4 +215,60 @@ class Helper
         unset($_SESSION['annual_submission']);
         unset($_SESSION['bsas']);
     }
+
+    public static function validateAndFormatAmount(string $value, float $min = 0.0, float $max = PHP_FLOAT_MAX): ?float
+    {
+        // Remove commas, whitespace, etc.
+        $clean = trim(str_replace(',', '', $value));
+
+        // Check if it's numeric
+        if (!is_numeric($clean)) {
+            return null;
+        }
+
+        $float = (float) $clean;
+
+        if ($float < $min || $float > $max) {
+            return null;
+        }
+
+        return $float;
+    }
+
+    public static function cleanupEmptySubArrays(array $array): array
+    {
+        foreach ($array as $key => $value) {
+            if (is_array($value) && self::recursiveArrayEmpty($value)) {
+                unset($array[$key]);
+            }
+        }
+        return $array;
+    }
+
+    public static function recursiveArrayEmpty(array $array): bool
+    {
+        foreach ($array as $value) {
+            if (is_array($value)) {
+                if (!self::recursiveArrayEmpty($value)) {
+                    return false;
+                }
+            } else {
+                if (trim((string)$value) !== '') {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public static function formatCamelCase(string $string)
+    {
+
+        // Insert space before each uppercase letter, except the first character
+        $withSpaces = preg_replace('/(?<!^)([A-Z])/', ' $1', $string);
+
+        // Capitalize first letter of each word
+        return ucwords($withSpaces);
+    }
 }

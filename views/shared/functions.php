@@ -88,17 +88,34 @@ function displayArrayAsList(array $array, int $level = 0): void
 
         // Handle array values
         if (is_array($value)) {
-            if (!$is_numeric_key) {
-                echo "<li><div class='list-header'>" . esc(ucwords($display_key)) . "</div>";
+            // Skip empty arrays
+            if (empty($value)) {
+                continue;
             }
 
-            displayArrayAsList($value, $level + 1);
+            // Detect and flatten single-item numeric arrays (e.g. [0] => [...])
+            if (!$is_numeric_key && array_keys($value) === [0] && is_array($value[0])) {
+                echo "<li><h4 class='list-header'>" . esc(ucwords($display_key)) . "</h4>";
+                displayArrayAsList($value[0], $level + 1);
+                echo "</li>";
 
-            if (!$is_numeric_key) {
+                continue;
+            }
+
+            // Standard array handling
+            if ($is_numeric_key) {
+                echo "<li class='list-group-item'>";
+                displayArrayAsList($value, $level + 1);
+                echo "</li>";
+            } else {
+                echo "<li><h4 class='list-header'>" . esc(ucwords($display_key)) . "</h4>";
+                displayArrayAsList($value, $level + 1);
                 echo "</li>";
             }
             continue;
         }
+
+
 
         // Format different value types
         $value_output = "";

@@ -42,11 +42,6 @@ li {
   list-style: none;
 }
 
-.list-header {
-  margin-block: 1rem;
-  font-weight: 600;
-}
-
 .list ul {
   margin-inline: 1rem;
   padding-block-end: 0.5rem;
@@ -59,6 +54,36 @@ li {
 
 .list ul ul li {
   list-style-type: circle;
+}
+
+.api-list ul {
+  margin-inline: 1rem;
+  padding-block-end: 0rem;
+}
+
+/* formatting lists from displayArrayAsList function */
+.api-list li {
+  list-style-type: disc;
+  margin-inline-start: 1rem;
+}
+
+.api-list ul ul li {
+  list-style-type: none;
+  margin-inline-start: 0;
+}
+
+.api-list ul li ul {
+  margin-inline-start: 0;
+}
+
+.list-header {
+  margin-block-start: 0.5rem;
+  margin-block-end: 0.5rem;
+  font-weight: 600;
+}
+
+.list-group-item {
+  margin-bottom: 1rem;
 }
 
 /* remove padding and margin on mobile view */

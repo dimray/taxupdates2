@@ -13,8 +13,8 @@ html {
   --button-bg-hover: hsl(0, 0%, 70%);
   --button-disabled-color: hsla(0, 0%, 50%, 70%);
   --button-disabled-bg: hsla(0, 0%, 50%, 20%);
-  --form-button-bg: hsl(120, 100%, 20%);
-  --form-button-hover: hsl(120, 100%, 15%);
+  --form-button-bg: hsl(240, 100%, 25%);
+  --form-button-hover: hsl(240, 100%, 15%);
   --form-input-disabled-bg: hsla(0, 0%, 50%, 20%);
   --input-bg: hsl(0, 0%, 100%);
   --focus-border: hsl(60, 100%, 50%);

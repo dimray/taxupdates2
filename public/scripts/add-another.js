@@ -37,12 +37,11 @@ document.addEventListener("DOMContentLoaded", function () {
       if (field) input.name = convertFieldToName(field, groupName, currentIndex);
     });
 
-    // Remove old buttons
-    clone.querySelectorAll(".remove-group, .add-group").forEach((btn) => btn.remove());
+    // Remove old buttons and dividers
+    clone.querySelectorAll(".remove-group, .add-group, .group-divider").forEach((el) => el.remove());
 
     container.appendChild(clone);
 
-    // Reassign indexes
     reassignGroupNames(containerId, groupClass, groupName);
     showButtonsOnlyOnLast(containerId, groupClass, groupName, buttonLabel);
   }
@@ -60,19 +59,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function showButtonsOnlyOnLast(containerId, groupClass, groupName, buttonLabel) {
     const container = document.getElementById(containerId);
+    if (!container) return;
     const groups = container.querySelectorAll(`.${groupClass}`);
 
     groups.forEach((group, index) => {
-      group.querySelectorAll(".remove-group, .add-group").forEach((btn) => btn.remove());
+      // Remove any leftover buttons or dividers
+      group.querySelectorAll(".remove-group, .add-group, .group-divider").forEach((el) => el.remove());
 
+      // Add buttons only on the last group
       if (index === groups.length - 1) {
         const addBtn = document.createElement("button");
         addBtn.type = "button";
         addBtn.textContent = buttonLabel;
         addBtn.className = "add-group";
-        addBtn.addEventListener("click", () => {
-          addGroup(containerId, groupClass, groupName, buttonLabel);
-        });
         group.appendChild(addBtn);
 
         if (groups.length > 1) {
@@ -80,32 +79,58 @@ document.addEventListener("DOMContentLoaded", function () {
           removeBtn.type = "button";
           removeBtn.textContent = "Remove";
           removeBtn.className = "remove-group";
-          removeBtn.addEventListener("click", () => {
-            group.remove();
-            reassignGroupNames(containerId, groupClass, groupName);
-            showButtonsOnlyOnLast(containerId, groupClass, groupName, buttonLabel);
-          });
           group.appendChild(removeBtn);
         }
       }
+
+      // Divider (each group gets exactly one)
+      const divider = document.createElement("hr");
+      divider.className = "group-divider";
+      group.appendChild(divider);
     });
   }
 
-  function setupInitialButton(containerId, groupClass, groupName, buttonLabel) {
-    showButtonsOnlyOnLast(containerId, groupClass, groupName, buttonLabel);
-  }
-
-  function setupIfExists(containerId, groupClass, groupName, buttonLabel) {
+  // 🧩 One listener handles both "Add" and "Remove"
+  function attachDelegatedHandlers(containerId, groupClass, groupName, buttonLabel) {
     const container = document.getElementById(containerId);
-    if (container) {
-      setupInitialButton(containerId, groupClass, groupName, buttonLabel);
-    }
+    if (!container) return;
+
+    container.addEventListener("click", (e) => {
+      if (e.target.matches(".add-group")) {
+        e.preventDefault();
+        addGroup(containerId, groupClass, groupName, buttonLabel);
+      }
+
+      if (e.target.matches(".remove-group")) {
+        e.preventDefault();
+        const groupToRemove = e.target.closest(`.${groupClass}`);
+        if (!groupToRemove) return;
+        groupToRemove.remove();
+        reassignGroupNames(containerId, groupClass, groupName);
+        showButtonsOnlyOnLast(containerId, groupClass, groupName, buttonLabel);
+      }
+    });
   }
 
   // Assign names on load
   assignNamesOnLoad();
 
-  // Setup for each view using function
-  // not used:
-  // setupIfExists("foreign-property-annual-submission-container", "foreign-property-annual-submission-group", "foreignPropertyAnnualSubmission", "Add Another Country");
+  // Set up all dynamic containers
+  const setups = [
+    // employment income
+    ["share-options-container", "share-options-group", "shareOption", "Add Another"],
+    ["share-award-container", "share-award-group", "sharesAwardedOrReceived", "Add Another"],
+    ["lump-sum-container", "lump-sum-group", "lumpSums", "Add Another"],
+    // dividend income
+    ["foreign-dividend-container", "foreign-dividend-group", "foreignDividend", "Add Another"],
+    ["dividend-income-received-whilst-abroad-container", "dividend-income-received-whilst-abroad-group", "dividendIncomeReceivedWhilstAbroad", "Add Another"],
+  ];
+
+  setups.forEach(([containerId, groupClass, groupName, buttonLabel]) => {
+    const container = document.getElementById(containerId);
+    if (container) {
+      attachDelegatedHandlers(containerId, groupClass, groupName, buttonLabel);
+      showButtonsOnlyOnLast(containerId, groupClass, groupName, buttonLabel);
+    }
+  });
 });

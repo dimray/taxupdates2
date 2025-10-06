@@ -26,7 +26,7 @@ input[type="password"],
   box-sizing: border-box; /* ensures padding doesn't affect height */
   font-size: 1rem; /* normalize font size */
   line-height: 1.2;
-  font-weight: 300;
+  font-weight: 400;
   border: 1px solid #ccc;
   background-color: var(--input-bg);
 }
@@ -52,6 +52,13 @@ input[type="password"],
   margin-block: 0;
 }
 
+.generic-form .required {
+  display: inline;
+  font-weight: 300;
+  font-size: 0.8rem;
+  color: grey;
+}
+
 .cumulative-data-form {
   max-width: 500px;
 }
@@ -67,7 +74,7 @@ input[type="password"],
 
 .cumulative-data-form textarea:focus,
 .cumulative-data-form textarea:active {
-  border: 5px solid var(--focus-border);
+  border: 4px solid var(--focus-border);
   outline: 3px solid black;
 }
 
@@ -83,13 +90,13 @@ label {
   display: flex;
   flex-direction: column;
   font-weight: 500;
-  gap: 0.3rem;
+  /* gap: 0.3rem; */
   margin-block-end: 0;
 }
 
 .form-input input,
 .form-input select {
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 0px;
 }
 
@@ -97,8 +104,8 @@ label {
 .form-input input:active,
 .form-input select:focus,
 .form-input select:active {
-  border: 5px solid var(--focus-border);
-  outline: 3px solid black;
+  border: 4px solid var(--focus-border);
+  outline: 2px solid black;
 }
 
 .form-input input:disabled {
@@ -191,21 +198,22 @@ label {
 
 .inline-checkbox input[type="checkbox"] {
   flex: 0 0 1.2rem; /* fixed width column for checkbox */
-  height: 1rem;
-  width: 1rem;
+  height: 2rem;
+  width: 2rem;
 }
 
 .inline-checkbox label {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0.2rem;
+  gap: 0.5rem;
   flex: 1;
 }
 
 input[type="checkbox"] {
   height: 1rem;
   width: 1rem;
+  border: 1px solid black;
 }
 
 /* csv upload */

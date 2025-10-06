@@ -60,3 +60,16 @@ details:not(.details-menu)[open] {
   background-color: var(--details-bg);
   padding: 0.5rem;
 }
+
+details.reduced-styling summary {
+  font-size: 1rem;
+
+  color: var(--text-color);
+  background-color: transparent;
+  border-inline-start: none;
+  padding-inline: 0;
+}
+
+details.reduced-styling[open] summary {
+  background-color: transparent;
+}

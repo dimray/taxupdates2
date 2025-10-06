@@ -14,22 +14,33 @@ class ApiErrors
         $response_code = $response['code'] ?? '';
         $response_message = $response['message'] ?? '';
 
-        if (!empty($response_message)) {
-            Flash::addMessage("HMRC Message: " . $response_message, Flash::WARNING);
-        } elseif (!empty($response_code)) {
-            Flash::addMessage("HMRC Message: " . $response_code, Flash::WARNING);
+        // check if there is anything other than code and message:
+        $extra_data = $response;
+        unset($extra_data['code'], $extra_data['message']);
+
+        $msg = "HMRC Message: ";
+
+        if ($response_message !== '') {
+            $msg .= $response_message;
+        } elseif ($response_code !== '') {
+            $msg .= $response_code;
         } else {
-            Flash::addMessage("An error has occurred. Please try again", Flash::WARNING);
+            $msg .= "An error has occurred. Please try again";
         }
 
-        // if calculation not yet ready
-        if ($code === 404 && $api === "individual-calculations" && $endpoint === "retrieve-calculation") {
-            // no flash message
-            return [
-                'type' => 'redirect',
-                'location' => '/individual-calculations/wait-for-calculation'
-            ];
+        // add extra data (missing paths or fields)
+        if (!empty($extra_data)) {
+            foreach ($extra_data as $key => $value) {
+                if (is_array($value)) {
+                    $value = implode(", ", $value);
+                }
+                $msg .= " | {$key}: {$value}";
+            }
         }
+
+        Flash::addMessage($msg, Flash::WARNING);
+
+
 
         // if agent and not authorised
         if ($code === 403 && strtoupper($response_code) === "CLIENT_OR_AGENT_NOT_AUTHORISED") {

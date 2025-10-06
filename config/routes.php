@@ -37,6 +37,13 @@ $router->group(["namespace" => "Endpoints"], function ($router) {
     $router->add("/business-source-adjustable-summary/{action}", ["controller" => "business-source-adjustable-summary"]);
 });
 
+$router->group(["namespace" => "Endpoints\Other"], function ($router) {
+    $router->add("/employments-income/{action}", ["controller" => "employments-income"]);
+    $router->add("/dividends-income/{action}", ["controller" => "dividends-income"]);
+});
+
+
+
 $router->add("/", ["controller" => "home", "action" => "index"]);
 
 

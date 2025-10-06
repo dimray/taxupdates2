@@ -17,4 +17,12 @@ class YearEnd extends Controller
 
         return $this->view("YearEnd/index.php", compact("hide_tax_year", "heading"));
     }
+
+    public function otherIncome()
+    {
+
+        $heading = "Other Income";
+
+        return $this->view("YearEnd/other-income.php", compact("heading"));
+    }
 }

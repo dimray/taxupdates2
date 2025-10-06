@@ -67,6 +67,7 @@ class ApiIndividualCalculations extends ApiCalls
 
         $response_array = $this->sendGetRequest($url, $headers);
 
+
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];
         $response_headers = $response_array['headers'] ?? [];
@@ -76,6 +77,11 @@ class ApiIndividualCalculations extends ApiCalls
             return [
                 'type' => 'success',
                 'calculation' => $response ?? []
+            ];
+        } elseif ($response_code === 404) {
+            return [
+                'type' => 'redirect',
+                'location' => '/individual-calculations/wait-for-calculation'
             ];
         } else {
             return ApiErrors::dealWithError($response_code, $response, "individual-calculations", "retrieve-calculation");

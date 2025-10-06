@@ -30,7 +30,7 @@
 
     <header class="primary-header">
 
-        <div class="logo">TaxUpdates</div>
+        <p class="logo">TaxUpdates</p>
 
         <button class="menu-toggle" aria-controls="primary-navigation" aria-expanded="false" type="button">
             <!-- for screen readers -->

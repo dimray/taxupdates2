@@ -19,6 +19,7 @@ summary,
   font-size: 2rem;
   font-weight: bold;
   color: var(--header-text);
+  margin-block: 0;
 }
 
 .primary-navigation {
@@ -52,12 +53,14 @@ summary,
 }
 
 .navLink.active {
-  background-color: hsla(0, 0%, 37%, 100%);
+  color: black;
+  background-color: hsl(0, 0%, 95%);
 }
 
-.navLink.active:hover {
-  background-color: hsla(0, 0%, 32%, 100%);
-}
+/* .navLink.active:hover {
+  color: black;
+  background-color: white;
+} */
 
 .topLink {
   border-radius: 0;
