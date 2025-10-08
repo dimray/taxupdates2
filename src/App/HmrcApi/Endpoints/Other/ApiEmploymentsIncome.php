@@ -67,7 +67,7 @@ class ApiEmploymentsIncome extends ApiCalls
         ];
 
         $test_headers = [
-            'Gov-Test-Scenario: STATEFUL'
+            // 'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);
@@ -103,7 +103,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
         $test_headers = [
             // 'Gov-Test-Scenario: STATEFUL'
-            'Gov-Test-Scenario: HMRC_EMPLOYMENT'
+            // 'Gov-Test-Scenario: HMRC_EMPLOYMENT'
         ];
 
         $headers = array_merge($headers, $test_headers);
@@ -140,7 +140,7 @@ class ApiEmploymentsIncome extends ApiCalls
         ];
 
         $test_headers = [
-            'Gov-Test-Scenario: STATEFUL'
+            // 'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);

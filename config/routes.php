@@ -40,12 +40,13 @@ $router->group(["namespace" => "Endpoints"], function ($router) {
 $router->group(["namespace" => "Endpoints\Other"], function ($router) {
     $router->add("/employments-income/{action}", ["controller" => "employments-income"]);
     $router->add("/dividends-income/{action}", ["controller" => "dividends-income"]);
+    $router->add("/foreign-income/{action}", ["controller" => "foreign-income"]);
+    $router->add("/insurance-income/{action}", ["controller" => "insurance-income"]);
+    $router->add("/pensions-income/{action}", ["controller" => "pensions-income"]);
+    $router->add("/other-income/{action}", ["controller" => "other-income"]);
 });
 
-
-
 $router->add("/", ["controller" => "home", "action" => "index"]);
-
 
 $router->add("/{controller}/{action}");
 

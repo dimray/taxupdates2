@@ -127,8 +127,22 @@ label {
   font-weight: 500;
 }
 
+.nested-input input:focus,
+.nested-input input:active,
+.nested-input select:focus,
+.nested-input select:active {
+  border: 4px solid var(--focus-border);
+  outline: 2px solid black;
+}
+
+.nested-input input,
+.nested-input select {
+  border: 1px solid black;
+  border-radius: 0px;
+}
+
 .nested-input {
-  color: var(--text-color);
+  /* color: var(--text-color); */
   margin-block-end: 2px;
 }
 
@@ -194,6 +208,8 @@ label {
   align-items: center;
   justify-content: flex-start;
   gap: 0.5rem;
+  margin-block: 1rem;
+  font-weight: 500;
 }
 
 .inline-checkbox input[type="checkbox"] {

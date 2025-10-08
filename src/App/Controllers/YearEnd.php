@@ -13,7 +13,7 @@ class YearEnd extends Controller
     {
         $hide_tax_year = true;
 
-        $heading = "Year-End Tasks";
+        $heading = "Year-End";
 
         return $this->view("YearEnd/index.php", compact("hide_tax_year", "heading"));
     }
@@ -21,7 +21,7 @@ class YearEnd extends Controller
     public function otherIncome()
     {
 
-        $heading = "Other Income";
+        $heading = "Non-MTD Income";
 
         return $this->view("YearEnd/other-income.php", compact("heading"));
     }

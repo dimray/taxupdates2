@@ -1,15 +1,18 @@
+<p>Fields marked <span class="asterisk">*</span> are required.
+</p>
+
 <form class="generic-form" action="/employments-income/process-create-amend-employment-financial-details" method="POST">
 
     <h2>Salary</h2>
 
     <div class="form-input">
-        <label for="taxablePayToDate">Taxable Pay</label>
+        <label for="taxablePayToDate">Taxable Pay <span class="asterisk">*</span></label>
         <input type="number" min="0" max="999999999999.99" step="0.01" name="pay[taxablePayToDate]"
             is="taxablePayToDate" value="<?= esc($pay['taxablePayToDate'] ?? '') ?>" required>
     </div>
 
     <div class="form-input">
-        <label for="totalTaxToDate">Total Tax</label>
+        <label for="totalTaxToDate">Total Tax <span class="asterisk">*</span></label>
         <input type="number" min="-999999999999.99" max="999999999999.99" step="0.01" name="pay[totalTaxToDate]"
             id="totalTaxToDate" value="<?= esc($pay['totalTaxToDate'] ?? '') ?>" required>
     </div>

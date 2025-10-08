@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // 🧩 One listener handles both "Add" and "Remove"
+  // One listener handles both "Add" and "Remove"
   function attachDelegatedHandlers(containerId, groupClass, groupName, buttonLabel) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -124,6 +124,21 @@ document.addEventListener("DOMContentLoaded", function () {
     // dividend income
     ["foreign-dividend-container", "foreign-dividend-group", "foreignDividend", "Add Another"],
     ["dividend-income-received-whilst-abroad-container", "dividend-income-received-whilst-abroad-group", "dividendIncomeReceivedWhilstAbroad", "Add Another"],
+    // foreign income
+    ["unremittable-foreign-income-container", "unremittable-foreign-income-group", "unremittableForeignIncome", "Add Another"],
+    // insurance income
+    ["life-insurance-container", "life-insurance-group", "lifeInsurance", "Add Another"],
+    ["capital-redemption-container", "capital-redemption-group", "capitalRedemption", "Add Another"],
+    ["life-annuity-container", "life-annuity-group", "lifeAnnuity", "Add Another"],
+    ["voided-isa-container", "voided-isa-group", "voidedIsa", "Add Another"],
+    ["foreign-container", "foreign-group", "foreign", "Add Another"],
+    // pension income
+    ["foreign-pensions-container", "foreign-pensions-group", "foreignPensions", "Add Another"],
+    ["overseas-pension-contributions-container", "overseas-pension-contributions-group", "overseasPensionContributions", "Add Another"],
+    // other income
+    ["post-cessation-receipts-container", "post-cessation-receipts-group", "postCessationReceipts", "Add Another"],
+    ["business-receipts-container", "business-receipts-group", "businessReceipts", "Add Another"],
+    ["all-other-income-received-whilst-abroad-container", "all-other-income-received-whilst-abroad-group", "allOtherIncomeReceivedWhilstAbroad", "Add Another"],
   ];
 
   setups.forEach(([containerId, groupClass, groupName, buttonLabel]) => {

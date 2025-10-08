@@ -27,7 +27,7 @@ html {
 
   --delete-text: hsl(0, 100%, 50%);
   --delete-bg: hsla(0, 100%, 50%, 10%);
-  --delete-bg-hover: hsla(0, 100%, 50%, 15%);
+  --delete-bg-hover: hsla(0, 100%, 50%, 20%);
 }
 
 body.dark-theme {

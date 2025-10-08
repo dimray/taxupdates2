@@ -115,17 +115,37 @@ class EmploymentsHelper extends Controller
 
     private static function validateAndFormatShareOptions(array $share_options): array
     {
+
+
         $number_fields = [
             'amountOfConsiderationReceived',
             'exercisePrice',
             'amountPaidForOption',
-            'marketValueOfSharesOnExercise',
+            'marketValueOfSharesOnExcise',
             'profitOnOptionExercised',
-            'employerNicPaid',
+            'employersNicPaid',
+            'taxableAmount'
+        ];
+
+        $mandatory_fields = [
+            'employerName',
+            'schemePlanType',
+            'dateOfOptionGrant',
+            'dateOfEvent',
+            'amountOfConsiderationReceived',
+            'noOfSharesAcquired',
+            'exercisePrice',
+            'amountPaidForOption',
+            'marketValueOfSharesOnExcise',
+            'profitOnOptionExercised',
+            'employersNicPaid',
             'taxableAmount'
         ];
 
         foreach ($share_options as $key => $option) {
+
+            $option = self::removeEmptyRows($option);
+
             if (Helper::recursiveArrayEmpty($option)) {
                 unset($share_options[$key]);
                 continue;
@@ -138,28 +158,31 @@ class EmploymentsHelper extends Controller
 
             $rowNumber = $key + 1;
 
-            foreach ($option as $field => $value) {
-                if (trim((string)$value) === '') {
-                    self::saveError("Share Options #{$rowNumber} - if Taxable Amount is entered, all fields must be completed");
+            foreach ($mandatory_fields as $field) {
+                if (!isset($option[$field]) || trim((string)$option[$field]) === '') {
+
+                    self::saveError("Share Options item {$rowNumber} - if Employer Name or Taxable Amount is entered, all required fields must be completed");
                     continue;
                 }
             }
 
-            if (!preg_match("/^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,105}$/u", $option['employerName'])) {
-                self::saveError("Share Options #{$rowNumber} - Employer Name must be text between 1 and 105 characters");
+            if (isset($option['employerName'])) {
+                if (!preg_match("/^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,105}$/u", $option['employerName'])) {
+                    self::saveError("Share Options item {$rowNumber} - Employer Name must be text between 1 and 105 characters");
+                }
             }
 
             $allowedSchemes = ['emi', 'csop', 'saye', 'other'];
             if (empty($option['schemePlanType']) || !in_array($option['schemePlanType'], $allowedSchemes, true)) {
-                self::saveError("Share Options #{$rowNumber} - select Plan Type from the dropdown list");
+                self::saveError("Share Options item {$rowNumber} - select Plan Type from the dropdown list");
             }
 
             if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $option['dateOfOptionGrant'])) {
-                self::saveError("Share Options #{$rowNumber} - Grant Date is invalid or missing");
+                self::saveError("Share Options item {$rowNumber} - Grant Date is invalid or missing");
             }
 
             if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $option['dateOfEvent'])) {
-                self::saveError("Share Options #{$rowNumber} - Event Date is invalid or missing");
+                self::saveError("Share Options item {$rowNumber} - Event Date is invalid or missing");
             }
 
             // validate number of shares and round to integer if necessary
@@ -167,7 +190,7 @@ class EmploymentsHelper extends Controller
                 $numShares = $option['noOfSharesAcquired'];
 
                 if (!is_numeric($numShares) || $numShares < 0) {
-                    self::saveError("Share Options #{$rowNumber} - Number Of Shares Acquired must be 0 or more and a whole number");
+                    self::saveError("Share Options item {$rowNumber} - Number Of Shares Acquired must be 0 or more and a whole number");
                 } else {
                     // Force integer conversion (floor to get whole number)
                     $option['noOfSharesAcquired'] = (int) floor((float) $numShares);
@@ -180,12 +203,29 @@ class EmploymentsHelper extends Controller
             foreach ($number_fields as $field) {
                 if (isset($option[$field])) {
                     $value = $option[$field];
-                    if (!is_numeric($value) || $value < 0 || $value > 999999999999.99) {
+                    if (!is_numeric($value) || $value < 0 || $value > 99999999999.99) {
                         $field_label = Helper::formatCamelCase($field);
-                        self::saveError("Share Options #{$rowNumber} - {$field_label} must be a number between 0 and 999999999999.99");
+                        self::saveError("Share Options item {$rowNumber} - {$field_label} must be a number between 0 and 99999999999.99");
                     } else {
                         $option[$field] = round((float)$value, 2);
                     }
+                }
+            }
+
+            // optional fields
+            if (isset($option['employerRef'])) {
+                if (!preg_match("/^[0-9]{3}\/[^ ].{0,9}$/u", $option['employerRef'])) {
+                    self::saveError("Share Options item {$rowNumber} - Employer Reference is not in the correct format");
+                }
+            }
+
+            if (isset($option['optionNotExercisedButConsiderationReceived'])) {
+                $option['optionNotExercisedButConsiderationReceived'] = true;
+            }
+
+            if (isset($option['classOfSharesAcquired'])) {
+                if (!preg_match("/^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$/u", $option['classOfSharesAcquired'])) {
+                    self::saveError("Share Options item {$rowNumber} - Class Of Shares cannot be longer than 90 characters or contain invalid characters");
                 }
             }
 
@@ -211,7 +251,27 @@ class EmploymentsHelper extends Controller
             'electionEnteredIgnoreRestrictions'
         ];
 
+        $mandatory_fields = [
+            'employerName',
+            'schemePlanType',
+            'dateSharesCeasedToBeSubjectToPlan',
+            'noOfShareSecuritiesAwarded',
+            'classOfShareAwarded',
+            'dateSharesAwarded',
+            'sharesSubjectToRestrictions',
+            'electionEnteredIgnoreRestrictions',
+            'actualMarketValueOfSharesOnAward',
+            'unrestrictedMarketValueOfSharesOnAward',
+            'amountPaidForSharesOnAward',
+            'marketValueAfterRestrictionsLifted',
+            'taxableAmount'
+        ];
+
+
         foreach ($share_awards as $key => $award) {
+
+            $award = self::removeEmptyRows($award);
+
             $rowNumber = $key + 1;
             if (Helper::recursiveArrayEmpty($award)) {
                 unset($share_awards[$key]);
@@ -223,19 +283,21 @@ class EmploymentsHelper extends Controller
                 continue;
             }
 
-            foreach ($award as $field => $value) {
-                if (trim((string)$value) === '') {
-                    self::saveError("Share Awards #{$rowNumber} - if Taxable Amount is entered, all fields must be completed.");
-                    continue 2;
+            foreach ($mandatory_fields as $field) {
+                if (!isset($award[$field]) || trim((string)$award[$field]) === '') {
+
+                    self::saveError("Share Awards item {$rowNumber} - if Employer Name or Taxable Amount is entered, all required fields must be completed");
+                    continue;
                 }
             }
 
+
             if (!preg_match("/^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,105}$/u", $award['employerName'])) {
-                self::saveError("Share Awards #{$rowNumber} - Employer Name must be text between 1 and 105 characters");
+                self::saveError("Share Awards item {$rowNumber} - Employer Name must be text between 1 and 105 characters");
             }
 
             if (!preg_match("/^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,90}$/u", $award['classOfShareAwarded'])) {
-                self::saveError("Share Awards #{$rowNumber} - Class Of Shares must be text between 1 and 90 characters");
+                self::saveError("Share Awards item {$rowNumber} - Class Of Shares must be text between 1 and 90 characters");
             }
 
             // validate number of shares and round to integer if necessary
@@ -243,34 +305,34 @@ class EmploymentsHelper extends Controller
                 $numShares = $award['noOfShareSecuritiesAwarded'];
 
                 if (!is_numeric($numShares) || $numShares < 0) {
-                    self::saveError("Share Awards #{$rowNumber} - Number Of Shares Acquired must be 0 or more and a whole number.");
+                    self::saveError("Share Awards item {$rowNumber} - Number Of Shares Acquired must be 0 or more and a whole number.");
                 } else {
                     // Force integer conversion (floor to get whole number)
                     $award['noOfShareSecuritiesAwarded'] = (int) floor((float)$numShares);
                 }
             } else {
-                self::saveError("Share Awards #{$rowNumber} - Number Of Shares Awarded is required.");
+                self::saveError("Share Awards item {$rowNumber} - Number Of Shares Awarded is required.");
             }
 
             // allowed schemes
             $allowedSchemes = ['sip', 'other'];
             if (empty($award['schemePlanType']) || !in_array($award['schemePlanType'], $allowedSchemes, true)) {
-                self::saveError("Share Awards #{$rowNumber} - select Plan Type from the dropdown list");
+                self::saveError("Share Awards item {$rowNumber} - select Plan Type from the dropdown list");
             }
 
             if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $award['dateSharesCeasedToBeSubjectToPlan'])) {
-                self::saveError("Share Awards #{$rowNumber} - Date Shares Ceased To Be Subject To Plan is invalid or missing");
+                self::saveError("Share Awards item {$rowNumber} - Date Shares Ceased To Be Subject To Plan is invalid or missing");
             }
 
             if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $award['dateSharesAwarded'])) {
-                self::saveError("Share Awards #{$rowNumber} - Date Shares Awarded is invalid or missing");
+                self::saveError("Share Awards item {$rowNumber} - Date Shares Awarded is invalid or missing");
             }
 
             foreach ($boolean_fields as $field) {
                 if (isset($award[$field])) {
                     $value = $award[$field];
                     if ($value !== "0" && $value !== "1") {
-                        self::saveError("Share Awards #{$rowNumber} - {$field} value must be 'yes' or 'no'");
+                        self::saveError("Share Awards item {$rowNumber} - {$field} value must be 'yes' or 'no'");
                     } else {
                         $award[$field] = filter_var($value, FILTER_VALIDATE_BOOL);
                     }
@@ -280,12 +342,19 @@ class EmploymentsHelper extends Controller
             foreach ($number_fields as $field) {
                 if (isset($award[$field])) {
                     $value = $award[$field];
-                    if (!is_numeric($value) || $value < 0 || $value > 999999999999.99) {
+                    if (!is_numeric($value) || $value < 0 || $value > 99999999999.99) {
                         $field_label = Helper::formatCamelCase($field);
-                        self::saveError("Share Awards #{$rowNumber} - {$field_label} must be a number between 0 and 999999999999.99");
+                        self::saveError("Share Awards item {$rowNumber} - {$field_label} must be a number between 0 and 99999999999.99");
                     } else {
                         $award[$field] = round((float)$value, 2);
                     }
+                }
+            }
+
+            // optional fields
+            if (isset($award['employerRef'])) {
+                if (!preg_match("/^[0-9]{3}\/[^ ].{0,9}$/u", $award['employerRef'])) {
+                    self::saveError("Share Awards item {$rowNumber} - Employer Reference is not in the correct format");
                 }
             }
 
@@ -297,6 +366,7 @@ class EmploymentsHelper extends Controller
 
     private static function validateAndFormatLumpSums(array $lump_sums): array
     {
+
         $nested_fields = [
             'taxableLumpSumsAndCertainIncome',
             'benefitFromEmployerFinancedRetirementScheme',
@@ -318,11 +388,11 @@ class EmploymentsHelper extends Controller
 
             $employer = "";
             if (!empty($lump_sum['employerName'])) {
-                $employer = $lump_sum['employerName'];
+                $employer = ucwords($lump_sum['employerName']);
             }
 
             if (!isset($lump_sum['employerName']) || !preg_match("/^[0-9a-zA-Z{À-˿’}\- _&`():.'^]{1,105}$/u", $lump_sum['employerName'])) {
-                self::saveError("Lump Sums #{$rowNumber} - Employer Name must be between 1 and 105 characters");
+                self::saveError("Lump Sums item {$rowNumber} - Employer Name must be between 1 and 105 characters");
             }
 
             if (!isset($lump_sum['employerRef']) || !preg_match("/^[0-9]{3}\/[^ ].{0,9}$/u", $lump_sum['employerRef'])) {
@@ -351,13 +421,46 @@ class EmploymentsHelper extends Controller
                 $value = (float) $value;
 
                 // Check bounds
-                if ($value < 0 || $value > 99999999999.99) {
+                if (!is_numeric($value) || $value < 0 || $value > 99999999999.99) {
                     self::saveError("Lump Sums - $employer: amount must be a number between 0 and 99999999999.99");
                     continue;
                 }
 
                 // Format to 2 decimal places
                 $lump_sum[$field]['amount'] = round($value, 2);
+
+                // optional fields
+                if (isset($lump_sum[$field]['taxPaid'])) {
+                    $value = $lump_sum[$field]['taxPaid'];
+
+                    if ($value === '') {
+                        unset($lump_sum[$field]['taxPaid']);
+                    } else {
+
+                        if (!is_numeric($value) || $value < 0 || $value > 99999999999.99) {
+                            self::saveError("Lump Sums - $employer: tax paid must be a number between 0 and 99999999999.99");
+                            continue;
+                        }
+                    }
+                }
+
+                if (isset($lump_sum[$field]['exemptAmount'])) {
+                    $value = $lump_sum[$field]['exemptAmount'];
+
+                    if ($value === '') {
+                        unset($lump_sum[$field]['exemptAmount']);
+                    } else {
+
+                        if (!is_numeric($value) || $value < 0 || $value > 99999999999.99) {
+                            self::saveError("Lump Sums - $employer: exempt amount must be a number between 0 and 99999999999.99");
+                            continue;
+                        }
+                    }
+                }
+
+                if (isset($lump_sum[$field]['taxTakenOffInEmployment'])) {
+                    $lump_sum[$field]['taxTakenOffInEmployment'] = true;
+                }
             }
 
             if (!$has_amount) {
@@ -385,6 +488,20 @@ class EmploymentsHelper extends Controller
         }
 
         return $amountArray;
+    }
+
+    private static function removeEmptyRows(array $data): array
+    {
+        foreach ($data as $key => $entry) {
+            if (is_array($entry) && Helper::recursiveArrayEmpty($entry)) {
+                unset($data[$key]);
+            }
+
+            if (!is_array($entry) && trim((string)$entry) === '') {
+                unset($data[$key]);
+            }
+        }
+        return $data;
     }
 
     private static function saveError(string $message): void

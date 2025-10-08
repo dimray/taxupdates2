@@ -535,6 +535,7 @@ class EmploymentsIncome extends Controller
 
         $validated = EmploymentsHelper::formatOtherEmploymentsArrays($other_employment_income);
 
+
         if (!empty($_SESSION['errors'])) {
             $_SESSION['employment_income']['other_employment_income'] = $other_employment_income;
 

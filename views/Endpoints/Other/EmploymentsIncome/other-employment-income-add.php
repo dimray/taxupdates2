@@ -1,3 +1,5 @@
+<?php require ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
+
 <form class="generic-form" action="/employments-income/process-create-amend-other-employment-income" method="POST">
 
     <?php if (isset($share_options)): ?>
@@ -11,14 +13,20 @@
                 <div class="share-options-group field-container" data-group="shareOption">
 
                     <div class="nested-input form-input">
-                        <label for="shareOptionEmployerName">Employer Name
-                            <input type="text" data-name="employerName" value="<?= esc($option['employerName'] ?? '') ?>"
-                                data-required>
+                        <label for="employerName"><span>Employer Name <span class="asterisk">*</span></span>
+                            <input type="text" data-name="employerName" value="<?= esc($option['employerName'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Plan Type
+                        <label for="employerRef">PAYE Reference
+                            <input type="text" data-name="employerRef" value="<?= esc($option['employerRef'] ?? '') ?>"
+                                maxlength="20">
+                        </label>
+                    </div>
+
+                    <div class="nested-input form-input">
+                        <label><span>Plan Type <span class="asterisk">*</span></span>
                             <select data-name="schemePlanType">
                                 <?php $scheme_plan_type = $option['schemePlanType'] ?? ''; ?>
                                 <option value="" disabled selected hidden>Pick an option</option>
@@ -34,69 +42,84 @@
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Date Of Option Grant
+                        <label><span>Date Option Granted <span class="asterisk">*</span></span>
                             <input type="date" data-name="dateOfOptionGrant"
                                 value="<?= esc($option['dateOfOptionGrant'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Date Of Event
+                        <label><span>Event Date <span class="asterisk">*</span></span>
                             <input type="date" data-name="dateOfEvent" value="<?= esc($option['dateOfEvent'] ?? '') ?>">
                         </label>
                     </div>
 
+                    <div class="inline-checkbox">
+                        <label>
+                            <input type="checkbox" data-name="optionNotExercisedButConsiderationReceived" value="1"
+                                <?= !empty($option['optionNotExercisedButConsiderationReceived']) ? "checked" : "" ?>>
+                            Tick Box If Consideration Received But Option Not Exercised
+                        </label>
+                    </div>
+
                     <div class="nested-input form-input">
-                        <label>Amount Of Consideration Received
+                        <label><span>Consideration Received <span class="asterisk">*</span></span>
                             <input type="number" data-name="amountOfConsiderationReceived" min="0" max="99999999999.99"
                                 step="0.01" value="<?= esc($option['amountOfConsiderationReceived'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Number Of Shares Acquired
+                        <label><span>Number Of Shares Acquired <span class="asterisk">*</span></span>
                             <input type="number" data-name="noOfSharesAcquired" min="0" step="1"
                                 value="<?= esc($option['noOfSharesAcquired'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Exercise Price
+                        <label>Class Of Shares Acquired
+                            <input type="number" data-name="classOfSharesAcquired" min="0" step="1"
+                                value="<?= esc($option['classOfSharesAcquired'] ?? '') ?>">
+                        </label>
+                    </div>
+
+                    <div class="nested-input form-input">
+                        <label><span>Exercise Price <span class="asterisk">*</span></span>
                             <input type="number" data-name="exercisePrice" min="0" max="99999999999.99" step="0.01"
                                 value="<?= esc($option['exercisePrice'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Amount Paid For Option
+                        <label><span>Amount Paid For Option <span class="asterisk">*</span></span>
                             <input type="number" data-name="amountPaidForOption" min="0" max="99999999999.99" step="0.01"
                                 value="<?= esc($option['amountPaidForOption'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Market Value Of Shares On Exercise
+                        <label><span>Market Value Of Shares On Exercise <span class="asterisk">*</span></span>
                             <input type="number" data-name="marketValueOfSharesOnExcise" min="0" max="99999999999.99"
                                 step="0.01" value="<?= esc($option['marketValueOfSharesOnExcise'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Profit On Option Exercised
+                        <label><span>Profit On Option Exercised <span class="asterisk">*</span></span>
                             <input type="number" data-name="profitOnOptionExercised" min="0" max="99999999999.99" step="0.01"
                                 value="<?= esc($option['profitOnOptionExercised'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Employer NIC Paid
+                        <label><span>Employer NIC Paid <span class="asterisk">*</span></span>
                             <input type="number" data-name="employersNicPaid" min="0" max="99999999999.99" step="0.01"
                                 value="<?= esc($option['employersNicPaid'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Taxable Amount
+                        <label><span>Taxable Amount <span class="asterisk">*</span></span>
                             <input type="number" data-name="taxableAmount" min="0" max="99999999999.99" step="0.01"
                                 value="<?= esc($option['taxableAmount'] ?? '') ?>">
                         </label>
@@ -122,13 +145,20 @@
                 <div class="share-award-group field-container" data-group="sharesAwardedOrReceived">
 
                     <div class="nested-input form-input">
-                        <label>Employer Name
+                        <label><span>Employer Name <span class="asterisk">*</span></span>
                             <input type="text" data-name="employerName" value="<?= esc($award['employerName'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Plan Type
+                        <label for="employerRef">PAYE Reference
+                            <input type="text" data-name="employerRef" value="<?= esc($option['employerRef'] ?? '') ?>"
+                                maxlength="20">
+                        </label>
+                    </div>
+
+                    <div class="nested-input form-input">
+                        <label><span>Plan Type <span class="asterisk">*</span></span>
                             <select data-name="schemePlanType">
                                 <?php $scheme_plan_type = $award['schemePlanType'] ?? ""; ?>
                                 <option value="" disabled selected hidden>Pick an option</option>
@@ -141,88 +171,97 @@
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Date Shares Ceased To Be Subject To
-                            Plan
+                        <label><span>Date Shares Ceased To Be Subject To Plan <span class="asterisk">*</span></span>
                             <input type="date" data-name="dateSharesCeasedToBeSubjectToPlan"
                                 value="<?= esc($award['dateSharesCeasedToBeSubjectToPlan'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Number Of Shares Awarded
+                        <label><span>Number Of Shares Awarded <span class="asterisk">*</span></span>
                             <input type="number" data-name="noOfShareSecuritiesAwarded" min="0" step="1"
                                 value="<?= esc($award['noOfShareSecuritiesAwarded'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Class Of Shares Awarded
+                        <label><span>Class Of Shares Awarded <span class="asterisk">*</span></span>
                             <input type="text" data-name="classOfShareAwarded"
                                 value="<?= esc($award['classOfShareAwarded'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Date Shares Awarded
+                        <label><span>Date Shares Awarded <span class="asterisk">*</span></span>
                             <input type="date" data-name="dateSharesAwarded"
                                 value="<?= esc($award['dateSharesAwarded'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Are The Shares Restricted?
+                        <label><span>Are The Shares Restricted? <span class="asterisk">*</span></span>
                             <?php $restrictions = $award['sharesSubjectToRestrictions'] ?? ""; ?>
                             <select data-name="sharesSubjectToRestrictions">
                                 <option value="" disabled selected hidden>Pick an option</option>
-                                <option value="0" <?= $restrictions === '0' ? 'selected' : '' ?>>No</option>
-                                <option value="1" <?= $restrictions === '1' ? 'selected' : '' ?>>Yes</option>
+                                <option value="0"
+                                    <?= $restrictions === '0' || $restrictions === 'false' || $restrictions === false ? 'selected' : '' ?>>
+                                    No</option>
+                                <option value="1"
+                                    <?= $restrictions === '1' || $restrictions === 'true' || $restrictions === true ? 'selected' : '' ?>>
+                                    Yes</option>
                             </select>
+
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Election Entered To Ignore
-                            Restrictions?
+                        <label><span>Election Entered To Ignore Restrictions? <span class="asterisk">*</span></span>
                             <?php $election = $award['electionEnteredIgnoreRestrictions'] ?? ""; ?>
                             <select data-name="electionEnteredIgnoreRestrictions">
                                 <option value="" disabled selected hidden>Pick an option</option>
-                                <option value="0" <?= $election === '0' ? 'selected' : '' ?>>No</option>
-                                <option value="1" <?= $election === '1' ? 'selected' : '' ?>>Yes</option>
+                                <option value="0"
+                                    <?= $election === '0' || $election === 'false' || $election === false ? 'selected' : '' ?>>
+                                    No</option>
+                                <option value="1"
+                                    <?= $election === '1' || $election === 'true' || $election === true ? 'selected' : '' ?>>Yes
+                                </option>
+
+
                             </select>
+
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Actual Market Value Of Shares On Award
+                        <label><span>Actual Market Value Of Shares On Award <span class="asterisk">*</span></span>
                             <input type="number" data-name="actualMarketValueOfSharesOnAward" min="0" max="99999999999.99"
                                 step="0.01" value="<?= esc($award['actualMarketValueOfSharesOnAward'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Unrestricted Market Value Of Shares On
-                            Award
+                        <label><span>Unrestricted Market Value Of Shares On Award <span class="asterisk">*</span></span>
                             <input type="number" data-name="unrestrictedMarketValueOfSharesOnAward" min="0" max="99999999999.99"
                                 step="0.01" value="<?= esc($award['unrestrictedMarketValueOfSharesOnAward'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Amount Paid On Award
+                        <label><span>Amount Paid On Award <span class="asterisk">*</span></span>
                             <input type="number" data-name="amountPaidForSharesOnAward" min="0" max="99999999999.99" step="0.01"
                                 value="<?= esc($award['amountPaidForSharesOnAward'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Market Value After Restrictions Lifted
+                        <label><span>Market Value After Restrictions Lifted <span class="asterisk">*</span></span>
                             <input type="number" data-name="marketValueAfterRestrictionsLifted" min="0" max="99999999999.99"
                                 step="0.01" value="<?= esc($award['marketValueAfterRestrictionsLifted'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Taxable Amount
+                        <label><span>Taxable Amount <span class="asterisk">*</span></span>
                             <input type="number" data-name="taxableAmount" min="0" max="99999999999.99" step="0.01"
                                 value="<?= esc($award['taxableAmount'] ?? '') ?>">
                         </label>
@@ -248,27 +287,52 @@
 
                 <div class="lump-sum-group field-container" data-group="lumpSums">
 
+                    <h3>Taxable Lump Sums</h3>
+
+                    <br>
+
                     <div class="nested-input form-input">
-                        <label>Employer Name
+                        <label><span>Employer Name <span class="asterisk">*</span></span>
                             <input type="text" data-name="employerName" value="<?= esc($lump_sum['employerName'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Employer PAYE Reference
+                        <label><span>PAYE Reference <span class="asterisk">*</span></span>
                             <input type="text" data-name="employerRef" value="<?= esc($lump_sum['employerRef'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Taxable Lump Sum Amount
+                        <label><span>Taxable Amount <span class="asterisk">*</span></span>
                             <input type="number" data-name="taxableLumpSumsAndCertainIncome.amount" min="0" max="99999999999.99"
                                 step="0.01" value="<?= esc($lump_sum['taxableLumpSumsAndCertainIncome']['amount'] ?? '') ?>">
                         </label>
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Employer Financed Retirement Scheme Amount
+                        <label>Tax Paid
+                            <input type="number" data-name="taxableLumpSumsAndCertainIncome.taxPaid" min="0"
+                                max="99999999999.99" step="0.01"
+                                value="<?= esc($lump_sum['taxableLumpSumsAndCertainIncome']['taxPaid'] ?? '') ?>">
+                        </label>
+                    </div>
+
+                    <div class="inline-checkbox">
+                        <label>
+                            <input type="checkbox" data-name="taxableLumpSumsAndCertainIncome.taxTakenOffInEmployment" value="1"
+                                <?= !empty($lump_sum['taxableLumpSumsAndCertainIncome']['taxTakenOffInEmployment']) ? "checked" : "" ?>>
+                            Tick Box If Tax Deducted By Employer
+                        </label>
+                    </div>
+
+                    <h3>Employer Financed Retirement Schemes</h3>
+
+                    <br>
+
+
+                    <div class="nested-input form-input">
+                        <label><span>Taxable Amount <span class="asterisk">*</span></span>
                             <input type="number" data-name="benefitFromEmployerFinancedRetirementScheme.amount" min="0"
                                 max="99999999999.99" step="0.01"
                                 value="<?= esc($lump_sum['benefitFromEmployerFinancedRetirementScheme']['amount'] ?? '') ?>">
@@ -276,7 +340,37 @@
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Amount Of Redundancy Payments Over Exemption
+                        <label>Exempt Amount
+                            <input type="number" data-name="benefitFromEmployerFinancedRetirementScheme.exemptAmount" min="0"
+                                max="99999999999.99" step="0.01"
+                                value="<?= esc($lump_sum['benefitFromEmployerFinancedRetirementScheme']['exemptAmount'] ?? '') ?>">
+                        </label>
+                    </div>
+
+
+                    <div class="nested-input form-input">
+                        <label>Tax Paid
+                            <input type="number" data-name="benefitFromEmployerFinancedRetirementScheme.taxPaid" min="0"
+                                max="99999999999.99" step="0.01"
+                                value="<?= esc($lump_sum['benefitFromEmployerFinancedRetirementScheme']['taxPaid'] ?? '') ?>">
+                        </label>
+                    </div>
+
+                    <div class="inline-checkbox">
+                        <label>
+                            <input type="checkbox"
+                                data-name="benefitFromEmployerFinancedRetirementScheme.taxTakenOffInEmployment" value="1"
+                                <?= !empty($lump_sum['benefitFromEmployerFinancedRetirementScheme']['taxTakenOffInEmployment']) ? "checked" : "" ?>>
+                            Tick Box If Tax Deducted By Employer
+                        </label>
+                    </div>
+
+                    <h3>Redundancy Payments</h3>
+                    <br>
+
+
+                    <div class="nested-input form-input">
+                        <label><span>Amount Over Exemption <span class="asterisk">*</span></span>
                             <input type="number" data-name="redundancyCompensationPaymentsOverExemption.amount" min="0"
                                 max="99999999999.99" step="0.01"
                                 value="<?= esc($lump_sum['redundancyCompensationPaymentsOverExemption']['amount'] ?? '') ?>">
@@ -284,7 +378,25 @@
                     </div>
 
                     <div class="nested-input form-input">
-                        <label>Amount Of Redundancy Payments Under Exemption
+                        <label>Tax Paid On Amount Over Exemption
+                            <input type="number" data-name="redundancyCompensationPaymentsOverExemption.taxPaid" min="0"
+                                max="99999999999.99" step="0.01"
+                                value="<?= esc($lump_sum['redundancyCompensationPaymentsOverExemption']['taxPaid'] ?? '') ?>">
+                        </label>
+                    </div>
+
+                    <div class="inline-checkbox">
+                        <label>
+                            <input type="checkbox"
+                                data-name="redundancyCompensationPaymentsOverExemption.taxTakenOffInEmployment" value="1"
+                                <?= !empty($lump_sum['redundancyCompensationPaymentsOverExemption']['taxTakenOffInEmployment']) ? "checked" : "" ?>>
+                            Tick Box If Tax Deducted By Employer
+                        </label>
+                    </div>
+
+
+                    <div class="nested-input form-input">
+                        <label><span>Amount Under Exemption <span class="asterisk">*</span></span>
                             <input type="number" data-name="redundancyCompensationPaymentsUnderExemption.amount" min="0"
                                 max="99999999999.99" step="0.01"
                                 value="<?= esc($lump_sum['redundancyCompensationPaymentsUnderExemption']['amount'] ?? '') ?>">
@@ -313,6 +425,8 @@
 
         </div>
 
+        <hr>
+
     <?php endif; ?>
 
     <?php if (isset($foreign_service)) : ?>
@@ -324,6 +438,8 @@
             <input type="number" name="foreignService[amountDeducted]" id="foreignServiceAmountDeducted" min="0"
                 max="99999999999.99" step="0.01" value="<?= $foreign_service['amountDeducted'] ?? '' ?>">
         </div>
+
+        <hr>
 
     <?php endif; ?>
 

@@ -103,13 +103,13 @@ button:disabled {
 .add-group:hover,
 .add-group:active {
   margin-inline-end: 1rem;
-  background-color: hsla(84, 100%, 59%);
+  background-color: hsla(84, 100%, 64%);
   color: black;
 }
 
 .remove-group,
 .remove-group:hover,
 .remove-group:active {
-  background-color: rgb(255, 192, 46);
+  background-color: hsl(42, 100%, 69%);
   color: black;
 }
