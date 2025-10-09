@@ -14,11 +14,16 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function convertFieldToName(field, groupName, index) {
-    const parts = field.split(".");
+    const isArray = field.endsWith("[]");
+    const cleanField = isArray ? field.slice(0, -2) : field;
+
+    const parts = cleanField.split(".");
     let name = `${groupName}[${index}][${parts[0]}]`;
     for (let i = 1; i < parts.length; i++) {
       name += `[${parts[i]}]`;
     }
+
+    if (isArray) name += "[]";
     return name;
   }
 
@@ -139,6 +144,10 @@ document.addEventListener("DOMContentLoaded", function () {
     ["post-cessation-receipts-container", "post-cessation-receipts-group", "postCessationReceipts", "Add Another"],
     ["business-receipts-container", "business-receipts-group", "businessReceipts", "Add Another"],
     ["all-other-income-received-whilst-abroad-container", "all-other-income-received-whilst-abroad-group", "allOtherIncomeReceivedWhilstAbroad", "Add Another"],
+    // capital gains
+    ["disposals-container", "disposals-group", "disposals", "Add Disposal"],
+    ["multiple-property-disposals-container", "multiple-property-disposals-group", "multiplePropertyDisposals", "Add Disposal"],
+    ["single-property-disposals-container", "single-property-disposals-group", "singlePropertyDisposals", "Add Disposal"],
   ];
 
   setups.forEach(([containerId, groupClass, groupName, buttonLabel]) => {

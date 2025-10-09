@@ -44,4 +44,11 @@ class Home extends Controller
             return $this->view("Home/index.php", ["heading" => "Home Page"]);
         }
     }
+
+    public function guide()
+    {
+        $heading = "How To Use This Site";
+
+        return $this->view("Home/guide.php", compact("heading"));
+    }
 }

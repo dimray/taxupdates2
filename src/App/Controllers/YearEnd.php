@@ -25,4 +25,12 @@ class YearEnd extends Controller
 
         return $this->view("YearEnd/other-income.php", compact("heading"));
     }
+
+    public function capitalGains()
+    {
+
+        $heading = "Capital Gains";
+
+        return $this->view("YearEnd/capital-gains.php", compact("heading"));
+    }
 }

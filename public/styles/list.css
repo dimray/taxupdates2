@@ -56,6 +56,10 @@ li {
   list-style-type: circle;
 }
 
+.list h3 {
+  margin-inline-start: 1rem;
+}
+
 .api-list ul {
   margin-inline: 1rem;
   padding-block-end: 0rem;

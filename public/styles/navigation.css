@@ -18,8 +18,13 @@ summary,
 .logo {
   font-size: 2rem;
   font-weight: bold;
-  color: var(--header-text);
+
   margin-block: 0;
+}
+
+.logo a {
+  color: var(--header-text);
+  text-decoration: none;
 }
 
 .primary-navigation {

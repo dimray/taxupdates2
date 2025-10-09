@@ -1,7 +1,7 @@
 html {
   color-scheme: dark-light;
 
-  --background-color: hsl(0, 0%, 92%);
+  --background-color: hsla(0, 0%, 0%, 6%);
   --text-color: hsl(0, 0%, 5%);
   --header-color: hsl(0, 0%, 15%);
   --header-text: hsl(0, 0%, 95%);
