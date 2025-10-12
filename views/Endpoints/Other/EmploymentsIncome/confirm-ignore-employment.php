@@ -2,7 +2,7 @@
 
 <form action="/employments-income/ignore-employment" method="POST">
 
-    <button type="submit">Ignore</button>
+    <button type="submit" class="delete-button confirm-delete">Ignore</button>
 </form>
 
 <p><a href="/employments-income/list-employments">Cancel</a></p>

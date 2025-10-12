@@ -41,7 +41,7 @@ class Home extends Controller
         } else {
             // if not logged in
 
-            return $this->view("Home/index.php", ["heading" => "Home Page"]);
+            return $this->view("Home/index.php", ["heading" => "Making Tax Digital For Income Tax"]);
         }
     }
 

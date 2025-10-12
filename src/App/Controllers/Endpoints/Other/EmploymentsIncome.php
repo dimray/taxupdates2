@@ -303,7 +303,7 @@ class EmploymentsIncome extends Controller
 
     public function confirmIgnoreEmployment()
     {
-        $heading = "Ignore employment " . $_SESSION['employment_income']['employer_name'];
+        $heading = "Ignore Employment " . $_SESSION['employment_income']['employer_name'];
 
         return $this->view("Endpoints/Other/EmploymentsIncome/confirm-ignore-employment.php", compact("heading"));
     }
@@ -327,7 +327,7 @@ class EmploymentsIncome extends Controller
             }
 
             if ($response['type'] === "success") {
-                Flash::addMessage("Employment has been ignored", Flash::SUCCESS);
+                Flash::addMessage("Employment is now ignored", Flash::SUCCESS);
             }
         }
 

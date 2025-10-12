@@ -288,4 +288,23 @@ class Helper
 
         return $country_string;
     }
+
+    public static function validateAmount(string $value, float $min = 0.0, float $max = PHP_FLOAT_MAX): ?float
+    {
+        // Remove commas, whitespace, etc.
+        $clean = trim(str_replace(',', '', $value));
+
+        // Check if it's numeric
+        if (!is_numeric($clean)) {
+            return null; // Or throw new Exception("Invalid number: $value");
+        }
+
+        $float = (float) $clean;
+
+        if ($float < $min || $float > $max) {
+            return null; // Or throw/return error message
+        }
+
+        return $float;
+    }
 }

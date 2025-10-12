@@ -59,6 +59,12 @@ input[type="password"],
   color: grey;
 }
 
+.grouped-inputs h4 {
+  padding-block: 0;
+  margin-block: 0;
+  font-weight: 400;
+}
+
 .cumulative-data-form {
   max-width: 500px;
 }

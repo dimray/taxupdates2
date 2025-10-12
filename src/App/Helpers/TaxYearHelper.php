@@ -6,6 +6,7 @@ namespace App\Helpers;
 
 use DateTime;
 use DateTimeZone;
+use DateTimeImmutable;
 
 class TaxYearHelper
 {
@@ -113,5 +114,35 @@ class TaxYearHelper
         $current_start_year = (int) substr($current_tax_year, 0, 4);
 
         return $input_start_year < $current_start_year;
+    }
+
+    public static function getMonthsInTaxYear(string $tax_year): array
+    {
+        [$start_year, $end_year] = explode('-', $tax_year);
+        // immutable so it doesn't change when the months change
+        $start_date = new DateTimeImmutable("{$start_year}-04-06");
+
+        $periods = [];
+
+        for ($i = 0; $i < 12; $i++) {
+            $from = $start_date->modify("+{$i} months");
+            $to = $from->modify('+1 month')->modify('-1 day');
+
+            $periods[] = [
+                'from' => $from->format('Y-m-d'),
+                'to'   => $to->format('Y-m-d'),
+            ];
+        }
+
+        return $periods;
+    }
+
+    public static function hasTaxYearEnded(string $tax_year): bool
+    {
+        $end_date_str = self::getTaxYearEndDate($tax_year);
+        $end_date = new DateTime($end_date_str, new DateTimeZone('Europe/London'));
+        $today = new DateTime('now', new DateTimeZone('Europe/London'));
+
+        return $today > $end_date;
     }
 }

@@ -20,7 +20,6 @@ class YearEnd extends Controller
 
     public function otherIncome()
     {
-
         $heading = "Non-MTD Income";
 
         return $this->view("YearEnd/other-income.php", compact("heading"));
@@ -28,9 +27,15 @@ class YearEnd extends Controller
 
     public function capitalGains()
     {
-
         $heading = "Capital Gains";
 
         return $this->view("YearEnd/capital-gains.php", compact("heading"));
+    }
+
+    public function taxReliefs()
+    {
+        $heading = "Tax Reliefs";
+
+        return $this->view("YearEnd/tax-reliefs.php", compact("heading"));
     }
 }

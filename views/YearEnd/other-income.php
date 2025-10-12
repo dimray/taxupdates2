@@ -13,3 +13,5 @@
 <p><a href="/pensions-income/retrieve-pensions-income">Overseas Pension Contributions</a></p>
 
 <p><a href="/other-income/retrieve-other-income">Other Income</a></p>
+
+<p><a href="/cis-deductions/retrieve-cis-deductions">CIS Deductions</a></p>
