@@ -102,7 +102,6 @@ button:disabled {
 .add-group,
 .add-group:hover,
 .add-group:active {
-  margin-inline-end: 1rem;
   background-color: hsla(84, 100%, 64%);
   color: black;
 }

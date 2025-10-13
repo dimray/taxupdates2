@@ -148,6 +148,23 @@ document.addEventListener("DOMContentLoaded", function () {
     ["disposals-container", "disposals-group", "disposals", "Add Disposal"],
     ["multiple-property-disposals-container", "multiple-property-disposals-group", "multiplePropertyDisposals", "Add Disposal"],
     ["single-property-disposals-container", "single-property-disposals-group", "singlePropertyDisposals", "Add Disposal"],
+    // savings income
+    ["foreign-interest-container", "foreign-interest-group", "foreignInterest", "Add Country"],
+    // disclosures
+    ["tax-avoidance-container", "tax-avoidance-group", "taxAvoidance", "Add Another"],
+    // charges
+    [
+      "pension-scheme-overseas-transfers-overseas-scheme-provider-container",
+      "pension-scheme-overseas-transfers-overseas-scheme-provider-group",
+      "pensionSchemeOverseasTransfers[overseasSchemeProvider]",
+      "Add Another",
+    ],
+    [
+      "overseas-pension-contributions-overseas-scheme-provider-container",
+      "overseas-pension-contributions-overseas-scheme-provider-group",
+      "overseasPensionContributions[overseasSchemeProvider]",
+      "Add Another",
+    ],
   ];
 
   setups.forEach(([containerId, groupClass, groupName, buttonLabel]) => {

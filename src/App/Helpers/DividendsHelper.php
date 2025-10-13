@@ -282,7 +282,6 @@ class DividendsHelper
         return $validated;
     }
 
-
     private static function saveError(string $message): void
     {
         $_SESSION['errors'] = $_SESSION['errors'] ?? [];

@@ -47,6 +47,9 @@ $router->group(["namespace" => "Endpoints\Other"], function ($router) {
     $router->add("/capital-gains/{action}", ["controller" => "capital-gains"]);
     $router->add("/cis-deductions/{action}", ["controller" => "cis-deductions"]);
     $router->add("/expenses/{action}", ["controller" => "expenses"]);
+    $router->add("/savings/{action}", ["controller" => "savings"]);
+    $router->add("/disclosures/{action}", ["controller" => "disclosures"]);
+    $router->add("/charges/{action}", ["controller" => "charges"]);
 });
 
 $router->add("/", ["controller" => "home", "action" => "index"]);

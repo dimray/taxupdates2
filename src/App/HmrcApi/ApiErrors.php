@@ -32,7 +32,16 @@ class ApiErrors
         if (!empty($extra_data)) {
             foreach ($extra_data as $key => $value) {
                 if (is_array($value)) {
-                    $value = implode(", ", $value);
+                    // If it's a list of associative arrays (like 'errors')
+                    $flattened = [];
+                    foreach ($value as $sub) {
+                        if (is_array($sub)) {
+                            $flattened[] = implode(' - ', $sub);
+                        } else {
+                            $flattened[] = $sub;
+                        }
+                    }
+                    $value = implode(', ', $flattened);
                 }
                 $msg .= " | {$key}: {$value}";
             }

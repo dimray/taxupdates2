@@ -38,4 +38,11 @@ class YearEnd extends Controller
 
         return $this->view("YearEnd/tax-reliefs.php", compact("heading"));
     }
+
+    public function disclosures()
+    {
+        $heading = "Disclosures";
+
+        return $this->view("YearEnd/disclosures.php", compact("heading"));
+    }
 }
