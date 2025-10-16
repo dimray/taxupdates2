@@ -9,7 +9,7 @@ html {
   --link-color: hsl(240, 100%, 50%);
   --link-hover-bg: hsla(240, 100%, 50%, 10%);
   --table-stripe-color: hsla(0, 0%, 0%, 4%);
-  --button-bg: hsl(0, 0%, 95%);
+  --button-bg: hsl(0, 0%, 100%);
   --button-bg-hover: hsl(0, 0%, 70%);
   --button-disabled-color: hsla(0, 0%, 50%, 70%);
   --button-disabled-bg: hsla(0, 0%, 50%, 20%);
@@ -22,8 +22,11 @@ html {
   --tax-year-bg: hsl(60, 100%, 45%);
   --tax-year-text: hsl(0, 0%, 10%);
   --tax-year-select: hsl(0, 0%, 100%);
-  --summary-bg: hsl(0, 0%, 70%);
-  --details-bg: hsl(0, 0%, 85%);
+  --footer-bg: hsla(0, 0%, 0%, 0.05);
+
+  --summary-bg: lightblue;
+  --details-bg: hsl(0, 0%, 90%);
+  --dialog-bg: hsl(0, 0%, 95%);
 
   --delete-text: hsl(0, 100%, 50%);
   --delete-bg: hsla(0, 100%, 50%, 10%);
@@ -50,6 +53,8 @@ body.dark-theme {
   --details-bg: hsla(0, 0%, 20%, 100%);
   --tax-year-select: hsl(0, 0%, 90%);
   --delete-text: hsl(0, 100%, 40%);
+  --dialog-bg: hsl(0, 0%, 20%);
+  /* --footer-bg: hsl(0, 0%, 25%); */
 }
 
 body {

@@ -25,7 +25,7 @@ summary:not(.navLink) {
   border-radius: 0;
 
   cursor: pointer;
-  width: fit-content;
+  max-width: 500px;
   line-height: 2;
   text-transform: capitalize;
 }

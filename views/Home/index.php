@@ -13,7 +13,8 @@
 
 </div>
 
-<p>Take a look at the short guide <a href="/home/guide">how to use this site</a> before you start.</p>
+<p>Take a look at the short guide <a href="/home/guide">how to use this site for Making Tax Digital</a> before you
+    start.</p>
 
 
 

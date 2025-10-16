@@ -72,6 +72,10 @@ button.link:focus {
   background-color: var(--link-hover-bg);
 }
 
+.different-link {
+  color: var(--text-color);
+}
+
 .word-break span {
   display: block;
 }
@@ -113,6 +117,7 @@ button.link:focus {
 
 .either-or {
   font-weight: bold;
+
   text-decoration: underline;
   text-transform: uppercase;
 }
@@ -142,4 +147,8 @@ display-inline {
 
 .block > * {
   display: block;
+}
+
+svg {
+  line-height: 0;
 }

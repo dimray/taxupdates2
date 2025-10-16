@@ -2,7 +2,7 @@
 
 <?php displayArrayAsList($calculation_details); ?>
 
-<?php if (!empty($summary) || !empty($calculation) || !empty($inputs) || !empty($messages)): ?>
+<?php if (!empty($summary) || !empty($calculation) || !empty($inputs)): ?>
 
 
     <?php if (!empty($summary)): ?>
@@ -58,26 +58,13 @@
 
     <?php endif; ?>
 
+    <form action="/self-assessment-assist/produce-report" method="GET">
 
-    <?php if (!empty($messages)): ?>
+        <input type="hidden" name="calculation_id" value="<?= esc($calculation_id) ?>">
 
-        <details>
+        <button class="link" type="submit">View HMRC Assist Messages</button>
+    </form>
 
-            <summary>HMRC Messages</summary>
-
-            <div class="print-container">
-
-                <?php displayArrayAsList($messages); ?>
-
-                <?php include ROOT_PATH . "views/shared/print-button.php"; ?>
-
-            </div>
-
-        </details>
-
-
-
-    <?php endif; ?>
 
     <!-- if submitting -->
     <?php if (isset($show_submit) && $show_submit === true): ?>

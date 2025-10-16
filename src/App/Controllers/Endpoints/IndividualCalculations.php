@@ -53,6 +53,7 @@ class IndividualCalculations extends Controller
 
     public function retrieveCalculation()
     {
+
         $calculation_id = $this->request->get['calculation_id'] ?? '';
 
         // needed for redirect if calculation isn't ready yet
@@ -135,7 +136,7 @@ class IndividualCalculations extends Controller
 
                 return $this->view(
                     "Endpoints/IndividualCalculations/show.php",
-                    compact("heading", "hide_tax_year",  "calculation_details", "summary", "inputs", "calculation", "messages", "hide_calculation_options")
+                    compact("heading", "hide_tax_year",  "calculation_details", "summary", "inputs", "calculation", "messages", "hide_calculation_options", "calculation_id")
                 );
             }
 
@@ -168,7 +169,7 @@ class IndividualCalculations extends Controller
 
             return $this->view(
                 "Endpoints/IndividualCalculations/show.php",
-                compact("heading", "hide_tax_year", "calculation_details", "summary", "inputs", "calculation", "messages")
+                compact("heading", "hide_tax_year", "calculation_details", "summary", "inputs", "calculation", "messages", "calculation_id")
             );
         }
     }

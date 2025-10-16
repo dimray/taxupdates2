@@ -1,1 +1,1 @@
-<textarea name="pasted_data" rows="5" cols="80" placeholder="Paste data here..."></textarea><br>
+<textarea name="pasted_data" rows="5" cols="80" placeholder="Paste data here..."></textarea>

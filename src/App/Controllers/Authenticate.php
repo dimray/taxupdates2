@@ -36,7 +36,7 @@ class Authenticate extends Controller
 
 
         if ($role === "individual") {
-            $scope = "write:self-assessment read:self-assessment";
+            $scope = "write:self-assessment read:self-assessment write:self-assessment-assist read:self-assessment-assist";
         }
 
         // Add read and write self-assessment scopes to agent if a client nino is set
@@ -44,7 +44,7 @@ class Authenticate extends Controller
             $scope = "read:sent-invitations read:check-relationship write:sent-invitations write:cancel-invitations";
 
             if (isset($_SESSION['client']['nino'])) {
-                $scope .= " " . "read:self-assessment write:self-assessment";
+                $scope .= " " . "read:self-assessment write:self-assessment write:self-assessment-assist read:self-assessment-assist";
             }
         }
 

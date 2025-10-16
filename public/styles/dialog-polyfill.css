@@ -11,13 +11,13 @@ dialog {
   margin: auto;
   border: solid;
   /* padding: 1em; */
-  background: var(--background-color);
+  background: var(--dialog-bg);
   color: var(--text-color);
   display: block;
   padding: 5rem;
   max-height: 80vh;
   min-width: 70vw;
-  position: relative;
+  /* position: relative; */
   box-sizing: border-box;
 }
 

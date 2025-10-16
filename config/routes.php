@@ -50,7 +50,11 @@ $router->group(["namespace" => "Endpoints\Other"], function ($router) {
     $router->add("/savings/{action}", ["controller" => "savings"]);
     $router->add("/disclosures/{action}", ["controller" => "disclosures"]);
     $router->add("/charges/{action}", ["controller" => "charges"]);
+    $router->add("/reliefs/{action}", ["controller" => "reliefs"]);
+    $router->add("/state-benefits/{action}", ["controller" => "state-benefits"]);
+    $router->add("/self-assessment-assist/{action}", ["controller" => "self-assessment-assist"]);
 });
+
 
 $router->add("/", ["controller" => "home", "action" => "index"]);
 

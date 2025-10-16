@@ -1,0 +1,39 @@
+footer {
+}
+
+.footer-links {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 0.5rem;
+
+  padding-block-end: 2rem;
+  padding-block-start: 0.5rem;
+}
+
+.footer-bg {
+  background-color: var(--footer-bg);
+  padding-inline: 0.5rem;
+  padding-block-end: 1rem;
+  padding-block-start: 0.1rem;
+
+  /* clip-path: polygon(0% 0%, 100% 30px, 100% 100%, 0% 100%); */
+}
+
+.tax-calculation a {
+  text-decoration: none;
+  color: black;
+  background-color: lightgreen;
+}
+
+.tax-calculation a:hover,
+.tax-calculation a:active {
+  text-decoration: none;
+  color: black;
+  background-color: lightgreen;
+}
+
+.copyright {
+  display: flex;
+  justify-content: center;
+}

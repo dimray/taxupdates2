@@ -35,6 +35,7 @@ function displayArrayAsList(array $array, int $level = 0): void
         "bbsi" => "Bank & Building Society Interest",
         "SaUnderpaymentsCodedOut" => "Self Assessment Underpayments Coded Out",
         "earningsNotTaxableUK" => "Earnings Not Taxable In UK",
+        "poaRelevantAmount" => "Payments On Account Relevant Amount"
 
         // Add more as needed
     ];
@@ -44,7 +45,8 @@ function displayArrayAsList(array $array, int $level = 0): void
         'CASH' => "Cash",
         'self-employment' => "Self Employment",
         'uk-property' => "UK Property",
-        'foreign-property' => "Foreign Property"
+        'foreign-property' => "Foreign Property",
+
         // Add more as needed
     ];
 
@@ -56,7 +58,11 @@ function displayArrayAsList(array $array, int $level = 0): void
         'ppd' => 'Real Time CGT',
         'prf' => 'Private Residence Relief',
         'srn' => 'Scheme Reference Number',
-        'ftcr' => 'Foreign Tax Credit Relief'
+        'ftcr' => 'Foreign Tax Credit Relief',
+        'itsa' => 'Income Tax Self-Assessment',
+        'bcd' => 'Charge',
+
+
         // add more as needed
     ];
 
@@ -179,6 +185,15 @@ function formatApiString(string $input): string
     $formattedString = preg_replace('/\bRfc\b/i', 'RFC', $formattedString); //residential finance costs
 
     return $formattedString;
+}
+
+function formatCamelCase(string $string): string
+{
+    // Insert space before each uppercase letter, except the first character
+    $withSpaces = preg_replace('/(?<!^)([A-Z])/', ' $1', $string);
+
+    // Capitalize first letter of each word
+    return ucwords($withSpaces);
 }
 
 function formatNumber($value)

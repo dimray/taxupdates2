@@ -47,7 +47,7 @@ class Home extends Controller
 
     public function guide()
     {
-        $heading = "How To Use This Site";
+        $heading = "How To Use This Site For Making Tax Digital";
 
         return $this->view("Home/guide.php", compact("heading"));
     }

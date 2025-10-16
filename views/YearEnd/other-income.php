@@ -19,6 +19,8 @@
 
 <h2>Other</h2>
 
+<p><a href="/state-benefits/list-state-benefits">State Benefits</a></p>
+
 <p><a href="/insurance-income/retrieve-insurance-policies-income">Insurance Income</a></p>
 
 <p><a href="/foreign-income/retrieve-foreign-income">Foreign Income Not Taxable In UK</a></p>

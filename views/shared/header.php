@@ -22,6 +22,8 @@
     <link rel="stylesheet" href="/styles/details-summary.css">
     <link rel="stylesheet" href="/styles/clients.css">
     <link rel="stylesheet" href="/styles/print.css">
+    <link rel="stylesheet" href="/styles/footer.css">
+
 
 
 </head>
@@ -73,36 +75,37 @@
             <ul data-state="closed" class="primary-navigation" id="primary-navigation">
                 <?php if (isset($_SESSION['user_id'])): ?>
 
-                <?php if ($_SESSION['user_role'] === 'individual' || isset($_SESSION['client']['nino'])):  ?>
-                <li><a class="navLink topLink 
+                    <?php if ($_SESSION['user_role'] === 'individual' || isset($_SESSION['client']['nino'])):  ?>
+
+                        <li><a class="navLink topLink 
                         <?= str_starts_with($current_path, '/business-details/list-all-businesses?updates=true') ? 'active' : '' ?>"
-                        href="/business-details/list-all-businesses?updates=true">Updates</a></li>
-                <li>
-                    <a class="navLink topLink <?= str_starts_with($current_path, '/year-end') ? 'active' : '' ?>"
-                        href="/year-end/index">Year End</a>
-                </li>
-                <?php endif; ?>
+                                href="/business-details/list-all-businesses?updates=true">Updates</a></li>
+                        <li>
+                            <a class="navLink topLink <?= str_starts_with($current_path, '/year-end') ? 'active' : '' ?>"
+                                href="/year-end/index">Year End</a>
+                        </li>
+                    <?php endif; ?>
 
-                <?php if ($authenticated_agent): ?>
-                <li><a class="navLink topLink <?= str_starts_with($current_path, '/clients/show-clients') ? 'active' : '' ?>"
-                        href="/clients/show-clients">Clients</a></li>
-                <?php endif; ?>
+                    <?php if ($authenticated_agent): ?>
+                        <li><a class="navLink topLink <?= str_starts_with($current_path, '/clients/show-clients') ? 'active' : '' ?>"
+                                href="/clients/show-clients">Clients</a></li>
+                    <?php endif; ?>
 
-                <?php if ($authenticated_agent && !isset($_SESSION['client']['nino'])): ?>
-                <li><a class="navLink topLink <?= str_starts_with($current_path, '/firm/show-firm') ? 'active' : '' ?>"
-                        href="/firm/show-firm">Firm</a></li>
-                <?php endif; ?>
+                    <?php if ($authenticated_agent && !isset($_SESSION['client']['nino'])): ?>
+                        <li><a class="navLink topLink <?= str_starts_with($current_path, '/firm/show-firm') ? 'active' : '' ?>"
+                                href="/firm/show-firm">Firm</a></li>
+                    <?php endif; ?>
 
-                <?php if (!isset($_SESSION['client']['nino'])): ?>
-                <li><a class="navLink topLink <?= str_starts_with($current_path, '/profile/show-profile') ? 'active' : '' ?>"
-                        href="/profile/show-profile">Profile</a></li>
-                <?php endif; ?>
+                    <?php if (!isset($_SESSION['client']['nino'])): ?>
+                        <li><a class="navLink topLink <?= str_starts_with($current_path, '/profile/show-profile') ? 'active' : '' ?>"
+                                href="/profile/show-profile">Profile</a></li>
+                    <?php endif; ?>
 
-                <li><a class="navLink topLink" href="/logout">Log out</a></li>
+                    <li><a class="navLink topLink" href="/logout">Log out</a></li>
 
                 <?php else: ?>
-                <li><a class="navLink topLink" href="/login">Login</a></li>
-                <li><a class="navLink topLink" href="/register">Register</a></li>
+                    <li><a class="navLink topLink" href="/login">Login</a></li>
+                    <li><a class="navLink topLink" href="/register">Register</a></li>
 
                 <?php endif; ?>
 

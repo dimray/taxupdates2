@@ -165,6 +165,17 @@ document.addEventListener("DOMContentLoaded", function () {
       "overseasPensionContributions[overseasSchemeProvider]",
       "Add Another",
     ],
+    // investment reliefs
+    ["vct-subscription-container", "vct-subscription-group", "vctSubscription", "Add Another"],
+    ["eis-subscription-container", "eis-subscription-group", "eisSubscription", "Add Another"],
+    ["community-investment-container", "community-investment-group", "communityInvestment", "Add Another"],
+    ["seed-enterprise-investment-container", "seed-enterprise-investment-group", "seedEnterpriseInvestment", "Add Another"],
+    // other reliefs
+    ["maintenance-payments-container", "maintenance-payments-group", "maintenancePayments", "Add Another"],
+    ["post-cessation-trade-relief-container", "post-cessation-trade-relief-group", "postCessationTradeReliefAndCertainOtherLosses", "Add Another"],
+    ["qualifying-loan-interest-payments-container", "qualifying-loan-interest-payments-group", "qualifyingLoanInterestPayments", "Add Another"],
+    // foreign reliefs
+    ["foreign-income-tax-credit-relief-container", "foreign-income-tax-credit-relief-group", "foreignIncomeTaxCreditRelief", "Add Another"],
   ];
 
   setups.forEach(([containerId, groupClass, groupName, buttonLabel]) => {

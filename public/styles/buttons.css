@@ -39,7 +39,10 @@ button:disabled {
 
 .button {
   border-block-end: 2px solid #999;
+  border-inline-start: 2px solid #999;
   background-color: var(--button-bg);
+  /* font-weight: 500; */
+  font-size: 1.1rem;
 }
 
 .confirm-delete {
@@ -111,4 +114,13 @@ button:disabled {
 .remove-group:active {
   background-color: hsl(42, 100%, 69%);
   color: black;
+}
+
+.copy-button {
+  background-color: hsl(0, 0%, 70%);
+  color: black;
+}
+
+.copy-button:hover {
+  background-color: hsl(0, 0%, 60%);
 }

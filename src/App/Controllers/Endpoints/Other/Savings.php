@@ -294,7 +294,7 @@ class Savings extends Controller
             $nino = Helper::getNino();
             $tax_year = $_SESSION['tax_year'];
 
-            $response = $this->apiSavings->deleteSavingsIncome($nino, $tax_year);
+            
 
             unset($_SESSION['savings_income']);
 
