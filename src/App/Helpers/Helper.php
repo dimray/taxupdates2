@@ -71,6 +71,19 @@ class Helper
         return true;
     }
 
+    // for header menu
+    public static function isSectionActive(string $current_path, array $paths): bool
+    {
+        foreach ($paths as $path) {
+            if (str_starts_with($current_path, $path)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+
     public static function formatDateTime(string $input): string
     {
         try {

@@ -20,6 +20,7 @@ $router->group(["middleware" => "guest"], function ($router) {
 
 $router->group(["middleware" => "hide_tax_year"], function ($router) {
     $router->add("/clients/{action}", ["controller" => "clients"]);
+    $router->add("/admin/{action}", ["controller" => "admin"]);
 });
 
 $router->group(["namespace" => "Endpoints", "middleware" => "hide_tax_year"], function ($router) {

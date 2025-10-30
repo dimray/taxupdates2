@@ -45,8 +45,9 @@ class UploadHelper
         }
 
         // Check file size (if no previous errors)
-        if ($file['size'] > 100000) {
-            $errors[] = "File too large (max 1KB).";
+        $MAX_FILE_SIZE_BYTES = 512 * 1024;
+        if ($file['size'] > $MAX_FILE_SIZE_BYTES) {
+            $errors[] = "File too large (max 512KB).";
         }
 
         // Check MIME type
@@ -135,7 +136,8 @@ class UploadHelper
 
         $handle = fopen($filePath, 'r');
         if ($handle === false) {
-            return ['error' => 'Unable to open file'];
+            $errors[] = 'Unable to open file';
+            return $errors;
         }
 
         $errors = [];

@@ -1,27 +1,36 @@
 <footer>
 
-    <hr>
 
+
+    <?php /*
     <div class="footer-links">
-        <div class="tax-calculation">
-            <a href="/individual-calculations/trigger-calculation">Generate A New Tax Calculation</a>
-        </div>
 
-        <div id="light-dark" class="dark-light">
-            <?php include ROOT_PATH . "/public/icons/light-dark.svg"; ?>
-        </div>
+        <?php if (isset($_SESSION['nino']) || isset($_SESSION['client']['nino'])): ?>
+    <div class="tax-calculation">
+        <a href="/individual-calculations/trigger-calculation">Generate A New Tax Calculation</a>
+    </div>
+    <?php endif; ?>
 
     </div>
 
+    */ ?>
+
     <div class="footer-bg">
 
-        <p>Contact:
+        <div id="light-dark" class="light-dark">
+            <?php include ROOT_PATH . "/public/icons/light-dark.svg"; ?>
+        </div>
 
-            <a href="mailto:support@taxupdates.co.uk">support@taxupdates.co.uk</a>
+        <p>
+            <a href="/admin/contact-form">Contact</a> |
+            <a href="/admin/terms-and-conditions">Terms</a> |
+            <a href="/admin/privacy-policy">Privacy Policy</a>
+
+
         </p>
 
-        <p>Useful Links:
 
+        <p>Useful Links:
             <a href="https://www.gov.uk/log-in-register-hmrc-online-services">HMRC Online Services</a>
         </p>
 
@@ -33,10 +42,12 @@
 
 </footer>
 
-<?php
+<?php /*
 echo '<pre>';
 var_dump($_SESSION);
 echo '</pre>';
+
+*/
 
 ?>
 
@@ -95,6 +106,14 @@ echo '</pre>';
 
 <?php if (!empty($include_add_another_script)): ?>
     <script src="/scripts/add-another.js"></script>
+<?php endif; ?>
+
+<?php if (!empty($include_message_length_script)): ?>
+    <script src="/scripts/message-length.js"></script>
+<?php endif; ?>
+
+<?php if (!empty($include_disable_form_send_button_script)): ?>
+    <script src="/scripts/disable-form-send-button.js"></script>
 <?php endif; ?>
 
 <!-- always runs as needed for header menu -->

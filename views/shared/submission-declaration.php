@@ -4,7 +4,7 @@
 
  <div class="declaration">
 
-     <div class="checkbox-flex">
+     <div class="inline-checkbox">
          <input type="checkbox" id="confirm_submit" name="confirm_submit" value="true" required>
          <label for="confirm_submit">I confirm that I wish to submit this information to HMRC.</label>
      </div>

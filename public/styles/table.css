@@ -17,9 +17,8 @@ table td {
 }
 
 table thead th {
-  text-align: right;
+  text-align: left;
   vertical-align: middle;
-
   padding-inline-end: 2rem;
   padding-block-end: 0.5rem;
   font-size: 1rem;

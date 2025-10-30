@@ -49,11 +49,8 @@ class IndividualCalculations extends Controller
         return $this->view("Endpoints/IndividualCalculations/index.php", compact("heading", "hide_tax_year", "calculation_type", "calculation_id"));
     }
 
-
-
     public function retrieveCalculation()
     {
-
         $calculation_id = $this->request->get['calculation_id'] ?? '';
 
         // needed for redirect if calculation isn't ready yet

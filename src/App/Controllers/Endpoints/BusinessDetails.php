@@ -18,7 +18,7 @@ class BusinessDetails extends Controller
     {
         Helper::clearUpSession();
 
-        $updates = $this->request->get['updates'] ?? "";
+        $year_end = $this->request->get['year_end'] ?? "";
 
         $nino = Helper::getNino();
 
@@ -34,16 +34,16 @@ class BusinessDetails extends Controller
             $businesses = $response['businesses'] ?? [];
         }
 
-        if (empty($updates)) {
-            $heading = "Adjust Business Income";
+        if (empty($year_end)) {
+            $heading = "Select Business To Update";
         } else {
-            $heading = "Submit An Update";
+            $heading = "Select Business To Update";
         }
 
 
         $hide_tax_year = true;
 
-        return $this->view("/Endpoints/BusinessDetails/index.php", compact("heading", "businesses", "hide_tax_year", "updates"));
+        return $this->view("/Endpoints/BusinessDetails/index.php", compact("heading", "businesses", "hide_tax_year", "year_end"));
     }
 
     public function retrieveBusinessDetails()

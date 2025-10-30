@@ -27,7 +27,13 @@ dl dt:nth-of-type(odd) {
 
 /* end data list dl */
 
-ul {
+ol,
+ol li {
+  list-style-type: decimal;
+}
+
+ul,
+ol {
   padding-inline: 1rem;
 }
 

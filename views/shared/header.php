@@ -24,8 +24,6 @@
     <link rel="stylesheet" href="/styles/print.css">
     <link rel="stylesheet" href="/styles/footer.css">
 
-
-
 </head>
 
 <body>
@@ -45,6 +43,9 @@
         <nav>
 
             <?php
+
+            use App\Helpers\Helper;
+
             $current_path = $_SERVER['REQUEST_URI'];
 
             $agent_type = $_SESSION['agent_type'] ?? null;
@@ -53,22 +54,32 @@
             $main_agent = ($authenticated_agent && $agent_type === "main");
             $supporting_agent = ($authenticated_agent && $agent_type === "supporting");
 
-            // for giving active class to 'Year End' top level nav when one of its sub-items is active
+            $updates_paths = [
+                '/business-details/list-all-businesses?updates=true',
+                '/obligations/retrieve-cumulative-obligations',
+                '/uploads',
+                '/self-employment/retrieve-cumulative-period-summary',
+                '/property-business/retrieve-cumulative-period-summary',
+                '/property-business/retrieve-cumulative-period-summary'
+            ];
+
             $year_end_paths = [
-                '/business-details/list-all-businesses?year-end=true',
+                '/year-end',
+                '/business-details/list-all-businesses?year_end=true',
                 '/other-income',
                 '/capital-gains',
                 '/tax-reliefs',
-                '/final-declaration'
+                '/final-declaration',
+                '/employments-income',
+                '/pensions-income',
+                '/savings',
+                '/dividends-income',
+                '/state-benefits',
+                '/insurance-income',
+                '/foreign-income',
+                '/other-income',
+                '/obligations/final-declaration'
             ];
-
-            $is_year_end_active = false;
-            foreach ($year_end_paths as $path) {
-                if (str_starts_with($current_path, $path)) {
-                    $is_year_end_active = true;
-                    break;
-                }
-            }
 
             ?>
 
@@ -78,10 +89,10 @@
                     <?php if ($_SESSION['user_role'] === 'individual' || isset($_SESSION['client']['nino'])):  ?>
 
                         <li><a class="navLink topLink 
-                        <?= str_starts_with($current_path, '/business-details/list-all-businesses?updates=true') ? 'active' : '' ?>"
+                        <?= Helper::isSectionActive($current_path, $updates_paths) ? 'active' : '' ?>"
                                 href="/business-details/list-all-businesses?updates=true">Updates</a></li>
                         <li>
-                            <a class="navLink topLink <?= str_starts_with($current_path, '/year-end') ? 'active' : '' ?>"
+                            <a class="navLink topLink <?= Helper::isSectionActive($current_path, $year_end_paths) ? 'active' : '' ?>"
                                 href="/year-end/index">Year End</a>
                         </li>
                     <?php endif; ?>
@@ -101,7 +112,7 @@
                                 href="/profile/show-profile">Profile</a></li>
                     <?php endif; ?>
 
-                    <li><a class="navLink topLink" href="/logout">Log out</a></li>
+                    <li><a class="navLink topLink logout" href="/logout">Log out</a></li>
 
                 <?php else: ?>
                     <li><a class="navLink topLink" href="/login">Login</a></li>
@@ -109,9 +120,7 @@
 
                 <?php endif; ?>
 
-
             </ul>
-
 
         </nav>
 

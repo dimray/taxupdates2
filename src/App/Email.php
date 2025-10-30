@@ -12,7 +12,7 @@ require ROOT_PATH . 'vendor/autoload.php';
 
 class Email
 {
-    public static function send($subject, $to, $html, $text): ?string
+    public static function send(string $subject, string $to, string $html, string $text, string $from = "", string $from_name = ""): ?string
     {
 
         $mail = new PHPMailer(true);
@@ -31,6 +31,9 @@ class Email
             //Recipients
             $mail->setFrom('dimray@gmail.com', 'Mailer');
             $mail->addAddress($to);
+            if (!empty($from)) {
+                $mail->addReplyTo($from, $from_name);
+            }
 
             //Content
             $mail->isHTML(true);                                  //Set email format to HTML

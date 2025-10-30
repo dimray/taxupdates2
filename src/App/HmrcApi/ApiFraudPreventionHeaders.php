@@ -30,7 +30,7 @@ class ApiFraudPreventionHeaders
             $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
         }
 
-        $jsUserAgent = $device_data['userAgent'] ?? 'MISSING_HEADER';
+        $jsUserAgent = $device_data['userAgent'] ?? '';
         $deviceID = $device_data['deviceID'];
         $govClientMultiFactor = $this->getGovClientMultiFactor($device_data['deviceID']);
         $publicIp = $this->getPublicIp();

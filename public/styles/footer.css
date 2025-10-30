@@ -1,4 +1,11 @@
 footer {
+  position: relative;
+  margin-block-start: 3rem;
+  font-size: 0.9rem;
+}
+
+footer p {
+  margin-block: 0.5em;
 }
 
 .footer-links {
@@ -6,34 +13,42 @@ footer {
   justify-content: space-between;
   align-items: center;
   padding-inline: 0.5rem;
-
-  padding-block-end: 2rem;
-  padding-block-start: 0.5rem;
+  padding-block-end: 1rem;
+  /* padding-block-start: 1rem; */
 }
 
 .footer-bg {
   background-color: var(--footer-bg);
   padding-inline: 0.5rem;
-  padding-block-end: 1rem;
-  padding-block-start: 0.1rem;
+  padding-block: 0.5rem;
+  position: relative;
 
   /* clip-path: polygon(0% 0%, 100% 30px, 100% 100%, 0% 100%); */
 }
 
 .tax-calculation a {
   text-decoration: none;
-  color: black;
-  background-color: lightgreen;
+  color: var(--text-color);
+  text-decoration: underline;
+  /* background-color: lightgreen; */
 }
 
 .tax-calculation a:hover,
 .tax-calculation a:active {
-  text-decoration: none;
-  color: black;
-  background-color: lightgreen;
+  color: var(--text-background);
+  background-color: var(--text-color);
 }
 
 .copyright {
   display: flex;
   justify-content: center;
+}
+
+footer .light-dark {
+  height: 1.5rem;
+  width: 1.5rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  color: var(--text-color);
 }

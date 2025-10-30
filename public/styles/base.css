@@ -26,6 +26,12 @@ html {
   font-size: 0.9rem;
 }
 
+.email {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 main {
   margin-inline: 0.5rem;
 }
@@ -151,4 +157,8 @@ display-inline {
 
 svg {
   line-height: 0;
+}
+
+hr {
+  margin-inline: 2rem;
 }

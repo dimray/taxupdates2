@@ -54,12 +54,12 @@ summary,
 .navLink:focus,
 .navLink:active {
   color: hsl(0, 0%, 100%);
-  background-color: hsla(0, 0%, 32%, 100%);
+  background-color: hsla(0, 0%, 100%, 15%);
 }
 
 .navLink.active {
-  color: black;
-  background-color: hsl(0, 0%, 95%);
+  background-color: hsla(0, 0%, 100%, 40%);
+  border-radius: 5px;
 }
 
 /* .navLink.active:hover {
@@ -124,6 +124,15 @@ details summary {
 
 .primary-header .menu-toggle {
   display: none;
+}
+
+.logout {
+  font-weight: 200;
+  color: hsl(0, 0%, 85%);
+}
+
+.logout:hover {
+  color: hsl(0, 0%, 85%);
 }
 
 /* Mobile styles */

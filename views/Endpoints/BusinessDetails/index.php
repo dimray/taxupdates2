@@ -17,9 +17,9 @@
                         <td data-label="Business ID"><?= esc($business["businessId"] ?? 'Not Known') ?></td>
                         <td data-label="Trading Name"><?= esc($business["tradingName"] ?? 'N/A') ?></td>
                         <td>
-                            <?php if ($updates): ?>
+                            <?php if ($year_end): ?>
 
-                                <form action="/obligations/retrieve-cumulative-obligations">
+                                <form action="/business-details/retrieve-business-details">
                                     <input type="hidden" name="business_id" value="<?= esc($business["businessId"] ?? '') ?>">
                                     <input type="hidden" name="type_of_business"
                                         value="<?= esc($business["typeOfBusiness"] ?? '') ?>">
@@ -31,7 +31,7 @@
 
                             <?php else: ?>
 
-                                <form action="/business-details/retrieve-business-details">
+                                <form action="/obligations/retrieve-cumulative-obligations">
                                     <input type="hidden" name="business_id" value="<?= esc($business["businessId"] ?? '') ?>">
                                     <input type="hidden" name="type_of_business"
                                         value="<?= esc($business["typeOfBusiness"] ?? '') ?>">
@@ -73,9 +73,9 @@
 
                 </div>
 
-                <?php if ($updates): ?>
+                <?php if ($year_end): ?>
 
-                    <form action="/obligations/retrieve-cumulative-obligations">
+                    <form action="/business-details/retrieve-business-details">
                         <input type="hidden" name="business_id" value="<?= esc($business["businessId"] ?? '') ?>">
                         <input type="hidden" name="type_of_business" value="<?= esc($business["typeOfBusiness"] ?? '') ?>">
                         <?php if ($business['typeOfBusiness'] === "self-employment"): ?>
@@ -86,7 +86,7 @@
 
                 <?php else: ?>
 
-                    <form action="/business-details/retrieve-business-details">
+                    <form action="/obligations/retrieve-cumulative-obligations">
                         <input type="hidden" name="business_id" value="<?= esc($business["businessId"] ?? '') ?>">
                         <input type="hidden" name="type_of_business" value="<?= esc($business["typeOfBusiness"] ?? '') ?>">
                         <?php if ($business['typeOfBusiness'] === "self-employment"): ?>
@@ -111,8 +111,4 @@
 
 <?php endif; ?>
 
-
-
-<p>It is currently not possible to add or remove a business through MTD software. To add or remove a business, go to <a
-        href="https://www.gov.uk/log-in-register-hmrc-online-services?" target="blank">HMRC
-        Online Services</a>.</p>
+<p><a href="/individual-calculations/trigger-calculation">View Latest Tax Calculation</a></p>

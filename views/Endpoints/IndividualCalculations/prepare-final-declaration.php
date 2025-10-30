@@ -27,6 +27,4 @@
     <button type="submit" class="form-button">Prepare Final Declaration</button>
 </form>
 
-<br>
-
 <p><a href="/obligations/final-declaration">Cancel</a></p>

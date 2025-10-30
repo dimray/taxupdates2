@@ -1,11 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector("#collect-device-data");
 
-  form.addEventListener("submit", async function (e) {
-    e.preventDefault();
-    collectData();
-    form.submit();
-  });
+  form.addEventListener("submit", collectData);
 
   function hashEmail(email) {
     let hash = 5381;
@@ -59,19 +55,27 @@ document.addEventListener("DOMContentLoaded", function () {
   function collectData() {
     const emailInput = document.querySelector("#email");
     const email = emailInput?.value.trim().toLowerCase() || "unknown";
-
     const deviceID = getOrCreateDeviceID(email);
-
     const timezone = getTimezoneOffset();
+
+    // Both screen and window sizes are in CSS pixels
+    const screenWidth = window.screen?.width ?? null;
+    const screenHeight = window.screen?.height ?? null;
+    const windowWidth = window.innerWidth ?? null;
+    const windowHeight = window.innerHeight ?? null;
+
+    // Clamp window size to never exceed screen size
+    const safeWindowWidth = screenWidth && windowWidth ? Math.min(windowWidth, screenWidth) : windowWidth;
+    const safeWindowHeight = screenHeight && windowHeight ? Math.min(windowHeight, screenHeight) : windowHeight;
 
     const data = {
       deviceID: deviceID,
-      screenWidth: window.screen?.width ?? null,
-      screenHeight: window.screen?.height ?? null,
+      screenWidth: screenWidth,
+      screenHeight: screenHeight,
       colorDepth: window.screen?.colorDepth ?? null,
       scalingFactor: window.devicePixelRatio || 1,
-      windowWidth: window.innerWidth ?? null,
-      windowHeight: window.innerHeight ?? null,
+      windowWidth: safeWindowWidth,
+      windowHeight: safeWindowHeight,
       userAgent: navigator.userAgent ?? "",
       timezone: timezone,
     };

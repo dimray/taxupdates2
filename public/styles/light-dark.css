@@ -3,8 +3,9 @@ html {
 
   --background-color: hsla(0, 0%, 0%, 6%);
   --text-color: hsl(0, 0%, 5%);
+  --text-background: hsl(0, 0%, 90%);
   --header-color: hsl(0, 0%, 15%);
-  --header-text: hsl(0, 0%, 95%);
+  --header-text: hsl(0, 0%, 90%);
   --submenu-color: hsl(0, 0%, 25%);
   --link-color: hsl(240, 100%, 50%);
   --link-hover-bg: hsla(240, 100%, 50%, 10%);
@@ -24,7 +25,7 @@ html {
   --tax-year-select: hsl(0, 0%, 100%);
   --footer-bg: hsla(0, 0%, 0%, 0.05);
 
-  --summary-bg: lightblue;
+  --summary-bg: hsl(0, 0%, 80%);
   --details-bg: hsl(0, 0%, 90%);
   --dialog-bg: hsl(0, 0%, 95%);
 
@@ -38,6 +39,7 @@ body.dark-theme {
 
   --background-color: hsl(0, 0%, 30%);
   --text-color: hsl(0, 0%, 90%);
+  --text-background: hsl(0, 0%, 10%);
   --link-color: hsl(215, 47%, 80%);
   --link-hover-bg: hsla(215, 47%, 70%, 40%);
   --table-stripe-color: hsla(0, 0%, 0%, 15%);
@@ -62,9 +64,4 @@ body {
 
   background-color: var(--background-color);
   color: var(--text-color);
-}
-
-footer .dark-light {
-  height: 1.5rem;
-  width: 1.5rem;
 }
