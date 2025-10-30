@@ -22,13 +22,6 @@ class ApiFraudPreventionHeaders
             throw new Exception("Session['device_data'] not set");
         }
 
-        if (!empty($_SERVER['REMOTE_ADDR'])) {
-            $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
-        }
-
-        if (!empty($_SERVER['REMOTE_PORT'])) {
-            $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
-        }
 
         $jsUserAgent = $device_data['userAgent'] ?? '';
         $deviceID = $device_data['deviceID'];
