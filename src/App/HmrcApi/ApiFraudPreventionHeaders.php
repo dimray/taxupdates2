@@ -22,7 +22,6 @@ class ApiFraudPreventionHeaders
             throw new Exception("Session['device_data'] not set");
         }
 
-
         $jsUserAgent = $device_data['userAgent'] ?? '';
         $deviceID = $device_data['deviceID'];
         $govClientMultiFactor = $this->getGovClientMultiFactor($device_data['deviceID']);
@@ -147,6 +146,11 @@ class ApiFraudPreventionHeaders
     // Helper function to check if IP is public
     private function isPublicIp($ip)
     {
+        // 1. Check for localhost/loopback IP
+        if ($ip === '127.0.0.1' || $ip === '::1') {
+            return true;
+        }
+
         return (bool) filter_var(
             $ip,
             FILTER_VALIDATE_IP,

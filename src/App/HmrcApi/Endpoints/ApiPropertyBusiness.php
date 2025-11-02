@@ -4,12 +4,26 @@ declare(strict_types=1);
 
 namespace App\HmrcApi\Endpoints;
 
+use App\Helpers\Helper;
 use App\HmrcApi\ApiCalls;
 use App\HmrcApi\ApiErrors;
+use App\HmrcApi\ApiFraudPreventionHeaders;
+use App\HmrcApi\ApiTestFraudPreventionHeaders;
+use App\HmrcApi\ApiTokenStorage;
 use App\Flash;
 
 class ApiPropertyBusiness extends ApiCalls
 {
+    // FRAUD PREVENTION HEADERS
+    public function __construct(
+        ApiTokenStorage $tokenStorage,
+        ApiFraudPreventionHeaders $apiFraudPreventionHeaders,
+        private ApiTestFraudPreventionHeaders $testHeaders
+    ) {
+        parent::__construct($tokenStorage, $apiFraudPreventionHeaders);
+    }
+    // FRAUD PREVENTION HEADERS
+
     public function retrieveAPropertyCumulativePeriodSummary(string $location, string $nino, string $business_id, string $tax_year): array
     {
         $url = $this->base_url . "/individuals/business/property/{$location}/{$nino}/{$business_id}/cumulative/{$tax_year}";
@@ -26,6 +40,11 @@ class ApiPropertyBusiness extends ApiCalls
         $headers = array_merge($headers, $test_headers);
 
         $response_array = $this->sendGetRequest($url, $headers);
+
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('PropertyBusiness');
+        Helper::logFeedback("PropertyBusiness", $feedback);
+        // FRAUD PREVENTION HEADERS
 
         $response_code = $response_array['response_code'] ?? 0;
         $response = $response_array['response'] ?? [];
@@ -63,6 +82,11 @@ class ApiPropertyBusiness extends ApiCalls
         $headers = array_merge($headers, $test_headers);
 
         $response_array = $this->sendPutRequest($url, $payload, $headers);
+
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('PropertyBusiness');
+        Helper::logFeedback("PropertyBusiness", $feedback);
+        // FRAUD PREVENTION HEADERS
 
         $response_headers = $response_array['headers'];
         $response_code = $response_array['response_code'];
@@ -103,6 +127,11 @@ class ApiPropertyBusiness extends ApiCalls
 
         $response_array = $this->sendPutRequest($url, $payload, $headers);
 
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('PropertyBusiness');
+        Helper::logFeedback("PropertyBusiness", $feedback);
+        // FRAUD PREVENTION HEADERS
+
         $response_headers = $response_array['headers'];
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];
@@ -141,6 +170,11 @@ class ApiPropertyBusiness extends ApiCalls
 
         $response_array = $this->sendGetRequest($url, $headers);
 
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('PropertyBusiness');
+        Helper::logFeedback("PropertyBusiness", $feedback);
+        // FRAUD PREVENTION HEADERS
+
         $response_code = $response_array['response_code'] ?? 0;
         $response = $response_array['response'] ?? [];
         $response_headers = $response_array['headers'] ?? [];
@@ -173,6 +207,11 @@ class ApiPropertyBusiness extends ApiCalls
         $headers = array_merge($headers, $test_headers);
 
         $response_array = $this->sendDeleteRequest($url, $headers);
+
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('PropertyBusiness');
+        Helper::logFeedback("PropertyBusiness", $feedback);
+        // FRAUD PREVENTION HEADERS
 
         $response_code = $response_array['response_code'] ?? 0;
         $response = $response_array['response'] ?? [];

@@ -4,15 +4,28 @@ declare(strict_types=1);
 
 namespace App\HmrcApi\Endpoints;
 
+use App\Helpers\Helper;
 use App\HmrcApi\ApiCalls;
 use App\HmrcApi\ApiErrors;
+use App\HmrcApi\ApiFraudPreventionHeaders;
+use App\HmrcApi\ApiTestFraudPreventionHeaders;
+use App\HmrcApi\ApiTokenStorage;
 
 class ApiBusinessSourceAdjustableSummary extends ApiCalls
 {
 
+    // FRAUD PREVENTION HEADERS
+    public function __construct(
+        ApiTokenStorage $tokenStorage,
+        ApiFraudPreventionHeaders $apiFraudPreventionHeaders,
+        private ApiTestFraudPreventionHeaders $testHeaders
+    ) {
+        parent::__construct($tokenStorage, $apiFraudPreventionHeaders);
+    }
+    // FRAUD PREVENTION HEADERS
+
     public function triggerABusinessSourceAdjustableSummary(string $nino, string $business_id, string $type_of_business, array $accounting_period): array
     {
-
         $url = $this->base_url . "/individuals/self-assessment/adjustable-summary/{$nino}/trigger";
 
         $access_token = $_SESSION['access_token'];
@@ -37,7 +50,10 @@ class ApiBusinessSourceAdjustableSummary extends ApiCalls
 
         $response_array = $this->sendPostRequest($url, $payload, $headers);
 
-
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('BSAS');
+        Helper::logFeedback("BSAS", $feedback);
+        // FRAUD PREVENTION HEADERS
 
         $response_code = $response_array['response_code'] ?? 0;
         $response = $response_array['response'] ?? [];
@@ -76,6 +92,11 @@ class ApiBusinessSourceAdjustableSummary extends ApiCalls
         $headers = array_merge($headers, $test_headers);
 
         $response_array = $this->sendPostRequest($url, $payload, $headers);
+
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('BSAS');
+        Helper::logFeedback("BSAS", $feedback);
+        // FRAUD PREVENTION HEADERS
 
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];
@@ -116,6 +137,11 @@ class ApiBusinessSourceAdjustableSummary extends ApiCalls
         $headers = array_merge($headers, $test_headers);
 
         $response_array = $this->sendGetRequest($url, $headers);
+
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('BSAS');
+        Helper::logFeedback("BSAS", $feedback);
+        // FRAUD PREVENTION HEADERS
 
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];
@@ -172,6 +198,11 @@ class ApiBusinessSourceAdjustableSummary extends ApiCalls
         $headers = array_merge($headers, $test_headers);
 
         $response_array = $this->sendGetRequest($url, $headers);
+
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('BSAS');
+        Helper::logFeedback("BSAS", $feedback);
+        // FRAUD PREVENTION HEADERS
 
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];

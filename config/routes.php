@@ -7,7 +7,7 @@ $router->group(["middleware" => "auth|hide_tax_year"], function ($router) {
     $router->add("/logout", ["controller" => "session", "action" => "destroy"]);
 });
 
-$router->group(["middleware" => "guest"], function ($router) {
+$router->group(["middleware" => "guest|hide_tax_year"], function ($router) {
     $router->add("/register/{action}", ["controller" => "register"]);
     $router->add("/password/{action}", ["controller" => "password"]);
     // can't use /session/destroy as it's caught here. Can use /logout above.
@@ -21,6 +21,9 @@ $router->group(["middleware" => "guest"], function ($router) {
 $router->group(["middleware" => "hide_tax_year"], function ($router) {
     $router->add("/clients/{action}", ["controller" => "clients"]);
     $router->add("/admin/{action}", ["controller" => "admin"]);
+    $router->add("/firm/{action}", ["controller" => "firm"]);
+    $router->add("/profile/{action}", ["controller" => "profile"]);
+    $router->add("/authenticate/{action}", ["controller" => "authenticate"]);
 });
 
 $router->group(["namespace" => "Endpoints", "middleware" => "hide_tax_year"], function ($router) {

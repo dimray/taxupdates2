@@ -4,11 +4,25 @@ declare(strict_types=1);
 
 namespace App\HmrcApi\Endpoints;
 
+use App\Helpers\Helper;
 use App\HmrcApi\ApiCalls;
 use App\HmrcApi\ApiErrors;
+use App\HmrcApi\ApiFraudPreventionHeaders;
+use App\HmrcApi\ApiTestFraudPreventionHeaders;
+use App\HmrcApi\ApiTokenStorage;
 
 class ApiIndividualCalculations extends ApiCalls
 {
+    // FRAUD PREVENTION HEADERS
+    public function __construct(
+        ApiTokenStorage $tokenStorage,
+        ApiFraudPreventionHeaders $apiFraudPreventionHeaders,
+        private ApiTestFraudPreventionHeaders $testHeaders
+    ) {
+        parent::__construct($tokenStorage, $apiFraudPreventionHeaders);
+    }
+    // FRAUD PREVENTION HEADERS
+
     public function triggerASelfAssessmentTaxCalculation(string $nino, string $tax_year, string $calculation_type): array
     {
 
@@ -30,6 +44,11 @@ class ApiIndividualCalculations extends ApiCalls
         $headers = array_merge($headers, $test_headers);
 
         $response_array = $this->sendPostRequest($url, "", $headers);
+
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('IndividualCalculations');
+        Helper::logFeedback("IndividualCalculations", $feedback);
+        // FRAUD PREVENTION HEADERS
 
         $response_code = $response_array['response_code'] ?? 0;
         $response = $response_array['response'] ?? [];
@@ -67,6 +86,10 @@ class ApiIndividualCalculations extends ApiCalls
 
         $response_array = $this->sendGetRequest($url, $headers);
 
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('IndividualCalculations');
+        Helper::logFeedback("IndividualCalculations", $feedback);
+        // FRAUD PREVENTION HEADERS
 
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];
@@ -116,6 +139,11 @@ class ApiIndividualCalculations extends ApiCalls
 
         $response_array = $this->sendGetRequest($url, $headers);
 
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('IndividualCalculations');
+        Helper::logFeedback("IndividualCalculations", $feedback);
+        // FRAUD PREVENTION HEADERS
+
         $response_code = $response_array['response_code'] ?? 0;
         $response = $response_array['response'] ?? [];
         $response_headers = $response_array['headers'] ?? [];
@@ -150,6 +178,11 @@ class ApiIndividualCalculations extends ApiCalls
         $headers = array_merge($headers, $test_headers);
 
         $response_array = $this->sendPostRequest($url, "", $headers);
+
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('IndividualCalculations');
+        Helper::logFeedback("IndividualCalculations", $feedback);
+        // FRAUD PREVENTION HEADERS
 
 
         $response_code = $response_array['response_code'];

@@ -35,6 +35,8 @@ class Submission extends Model
             $params[':business_id'] = $business_id;
         }
 
+        $sql .= " ORDER BY submitted_at DESC";
+
         $stmt = $pdo->prepare($sql);
 
         foreach ($params as $key => $value) {
@@ -47,7 +49,7 @@ class Submission extends Model
     }
 
     // used in submissions
-    public function findSubmissionsByAgentForUser($firm_id, $nino_hash, $tax_year, $submission_type = null, $business_id = null)
+    public function findSubmissionsByAgentForUser($firm_id, $nino_hash, $tax_year, $submission_type = null, $business_id = null): array
     {
 
         $pdo = $this->database->getConnection();
@@ -69,6 +71,8 @@ class Submission extends Model
             $sql .= " AND business_id = :business_id";
             $params[':business_id'] = $business_id;
         }
+
+        $sql .= " ORDER BY submitted_at DESC";
 
         $stmt = $pdo->prepare($sql);
 

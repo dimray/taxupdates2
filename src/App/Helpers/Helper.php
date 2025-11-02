@@ -11,6 +11,29 @@ use Exception;
 
 class Helper
 {
+
+    public static function logFeedback(string $controller_name, array $feedback): void
+    {
+        $logDir = ROOT_PATH . "/logs/fraudPreventionHeaderLogs";
+
+        // Ensure the directory exists
+        if (!is_dir($logDir)) {
+            mkdir($logDir, 0755, true);
+        }
+
+        // Timestamp for uniqueness: YYYYMMDD_HHMMSS
+        $timestamp = date('Ymd_His');
+
+        // Safe filename based on controller name + timestamp
+        $filename = $logDir . '/' . $controller_name . '_feedback_' . $timestamp . '.json';
+
+        // Format feedback nicely
+        $jsonContent = json_encode($feedback, JSON_PRETTY_PRINT);
+
+        file_put_contents($filename, $jsonContent);
+    }
+
+
     // for registration and login
     public static function standardiseInputs(array $data): array
     {

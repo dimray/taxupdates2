@@ -4,11 +4,24 @@ declare(strict_types=1);
 
 namespace App\HmrcApi\Endpoints;
 
+use App\Helpers\Helper;
 use App\HmrcApi\ApiCalls;
 use App\HmrcApi\ApiErrors;
+use App\HmrcApi\ApiFraudPreventionHeaders;
+use App\HmrcApi\ApiTestFraudPreventionHeaders;
+use App\HmrcApi\ApiTokenStorage;
 
 class ApiObligations extends ApiCalls
 {
+    // FRAUD PREVENTION HEADERS
+    public function __construct(
+        ApiTokenStorage $tokenStorage,
+        ApiFraudPreventionHeaders $apiFraudPreventionHeaders,
+        private ApiTestFraudPreventionHeaders $testHeaders
+    ) {
+        parent::__construct($tokenStorage, $apiFraudPreventionHeaders);
+    }
+    // FRAUD PREVENTION HEADERS
 
     public function retrieveIncomeTaxIncomeAndExpenditureObligations(string $nino, string $business_id, string $type_of_business, string $from_date, string $to_date): ?array
     {
@@ -32,13 +45,18 @@ class ApiObligations extends ApiCalls
 
         // test scenario headers. Open is needed for foreign property
         $test_headers = [
-            // 'Gov-Test-Scenario: CUMULATIVE'
+            // 'Gov-Test-Scenario: OPEN'
             'Gov-Test-Scenario: DYNAMIC'
         ];
 
         $headers = array_merge($headers, $test_headers);
 
         $response_array = $this->sendGetRequest($url, $headers);
+
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('Obligations');
+        Helper::logFeedback("Obligations", $feedback);
+        // FRAUD PREVENTION HEADERS
 
         $response_code = $response_array['response_code'] ?? 0;
         $response = $response_array['response'] ?? [];
@@ -78,6 +96,11 @@ class ApiObligations extends ApiCalls
         $headers = array_merge($headers, $test_headers);
 
         $response_array = $this->sendGetRequest($url, $headers);
+
+        // FRAUD PREVENTION HEADERS
+        $feedback = $this->testHeaders->getFeedback('Obligations');
+        Helper::logFeedback("Obligations", $feedback);
+        // FRAUD PREVENTION HEADERS
 
         $response_code = $response_array['response_code'] ?? 0;
         $response = $response_array['response'] ?? [];
