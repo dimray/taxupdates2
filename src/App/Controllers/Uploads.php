@@ -20,6 +20,13 @@ class Uploads extends Controller
             unset($_SESSION['cumulative_data']);
         }
 
+        // but clear foreign property session if cancel has been selected
+        $cancel_foreign_property = isset($this->request->get['cancel-foreign-property']) ? true : false;
+
+        if ($cancel_foreign_property) {
+            unset($_SESSION['cumulative_data']);
+        }
+
         if (isset($this->request->get['period_start_date'])) {
             $_SESSION['period_start_date'] = $this->request->get['period_start_date'];
         }

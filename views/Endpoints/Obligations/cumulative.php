@@ -27,7 +27,8 @@
 
                         <?php if ($obligation['status'] === "fulfilled"): ?>
                             <td>
-                                <form action="/<?= $controller ?>/retrieve-cumulative-period-summary" method="GET">
+                                <form class="hmrc-connection" action="/<?= $controller ?>/retrieve-cumulative-period-summary"
+                                    method="GET">
 
                                     <button class="link" type="submit">View</button>
                                 </form>
@@ -96,7 +97,7 @@
 
                 <?php if ($obligation['status'] === "fulfilled"): ?>
                     <td>
-                        <form action="/<?= $controller ?>/retrieve-cumulative-period-summary" method="GET">
+                        <form class="hmrc-connection" action="/<?= $controller ?>/retrieve-cumulative-period-summary" method="GET">
 
                             <button class="link" type="submit">View</button>
                         </form>

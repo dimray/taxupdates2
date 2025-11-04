@@ -42,8 +42,9 @@
 
 <p><a href="/individual-losses/create-loss-claim">Create A Loss Claim For This Business</a></p>
 
-<p><a href="/business-details/list-all-businesses">Create A Loss Claim For A Different Business</a></p>
+<p><a class="hmrc-connection" href="/business-details/list-all-businesses">Create A Loss Claim For A Different
+        Business</a></p>
 
-<p><a href="/individual-losses/list-loss-claims">View Loss Claims</a></p>
+<p><a class="hmrc-connection" href="/individual-losses/list-loss-claims">View Loss Claims</a></p>
 
-<p><a href="/business-details/retrieve-business-details">Cancel</a></p>
+<p><a class="hmrc-connection" href="/business-details/retrieve-business-details">Cancel</a></p>

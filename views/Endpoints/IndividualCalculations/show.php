@@ -13,8 +13,6 @@
 
     <?php endif; ?>
 
-
-
     <?php if (!empty($calculation)): ?>
 
         <h2>Calculation Details</h2>
@@ -58,7 +56,7 @@
 
     <?php endif; ?>
 
-    <form action="/self-assessment-assist/produce-report" method="GET">
+    <form class="hmrc-connection" action="/self-assessment-assist/produce-report" method="GET">
 
         <input type="hidden" name="calculation_id" value="<?= esc($calculation_id) ?>">
 
@@ -85,7 +83,7 @@
 
         <?php include "submission-form.php"; ?>
 
-        <p><a href="/obligations/final-declaration">Cancel</a></p>
+        <p><a class="hmrc-connection" href="/obligations/final-declaration">Cancel</a></p>
 
     <?php endif; ?>
 
@@ -110,9 +108,11 @@
         tax due calculated after the end of the tax year.</p>
 
 
-    <p><a href="/individual-calculations/trigger-calculation">Click here</a> to generate a new calculation</p>
+    <p><a class="hmrc-connection" href="/individual-calculations/trigger-calculation">Click here</a> to generate a new
+        calculation</p>
 
-    <p><a href="/business-details/list-all-businesses">Click here</a> to submit a new summary or adjustments for a business.
+    <p><a class="hmrc-connection" href="/business-details/list-all-businesses">Click here</a> to submit a new summary or
+        adjustments for a business.
     </p>
 
     <p><a href="/submissions/get-submissions">Click here</a> to view submissions made for this tax year.</p>
@@ -124,18 +124,19 @@
 
     <p>If you are claiming sideways relief and the relief is not shown in your calculation,
         make sure you have claimed the loss, which you can do
-        by selecting the business which made the loss <a
+        by selecting the business which made the loss <a class="hmrc-connection"
             href="/business-details/list-all-businesses?year-end=true">here</a>.
     </p>
 
 
 
-    <p><a href="/individual-losses/list-loss-claims">View all losses</a></p>
+    <p><a class="hmrc-connection" href="/individual-losses/list-loss-claims">View all losses</a></p>
 
     <p><a href="/individual-losses/edit-loss-claim-sequence">Click here</a> to change the order in which sideways loss
         claims are applied to your calculation, if you have more than one.</p>
 
-    <p><a href="/individual-losses/list-brought-forward-losses">Click here</a> to view all losses brought
+    <p><a class="hmrc-connection" href="/individual-losses/list-brought-forward-losses">Click here</a> to view all losses
+        brought
         forward from before you joined Making Tax Digital.
     </p>
 

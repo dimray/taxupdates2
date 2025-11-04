@@ -1,7 +1,5 @@
 <form class="cumulative-data-form" action="<?= $form_action ?>" method="POST" enctype="multipart/form-data">
 
-    <hr>
-
 
     <details>
 
@@ -67,7 +65,7 @@
     </details>
 
 
-    <hr>
+
 
     <h3>Upload Your Data</h3>
 
@@ -77,10 +75,10 @@
         <?php include ROOT_PATH . "views/shared/select-country.php"; ?>
 
         <p>If you have properties in more than one country, submit your data for one country and you
-            will then be given the option to add other countries.</p>
+            will then be given the option to add further countries.</p>
 
 
-        <hr>
+
         <span class="form-input">Foreign Tax Credit Relief</span>
         <div class="inline-checkbox">
             <input type="checkbox" name="foreign_tax_credit_relief" id="foreign_tax_credit_relief" value="1" checked>

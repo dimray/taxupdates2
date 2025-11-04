@@ -2,7 +2,7 @@
 
 <p>Are you sure you want to delete this loss claim?</p>
 
-<form action="/individual-losses/delete-loss-claim" method="POST">
+<form class="hmrc-connection" action="/individual-losses/delete-loss-claim" method="POST">
 
     <input type="hidden" name="claim_id" value="<?= esc($claim_id) ?>">
 
@@ -11,4 +11,4 @@
 </form>
 
 
-<p><a href="/individual-losses/list-loss-claims">Cancel</a></p>
+<p><a class="hmrc-connection" href="/individual-losses/list-loss-claims">Cancel</a></p>

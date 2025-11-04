@@ -1,4 +1,4 @@
-   <form class="generic-form" action="/individual-calculations/submit-final-declaration" method="POST">
+   <form class="generic-form hmrc-connection" action="/individual-calculations/submit-final-declaration" method="POST">
 
        <p>Before you submit the information displayed here in response to your notice to file from HM Revenue &
            Customs, you must read and agree to the following statement:</p>
@@ -39,5 +39,6 @@
        <button type="submit" class="form-button">Submit to HMRC</button>
 
    </form>
+
 
    <?php $include_scroll_to_errors_script = true; ?>

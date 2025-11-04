@@ -8,4 +8,4 @@
 
 <?php endif; ?>
 
-<p><a href="/obligations/retrieve-cumulative-obligations">Filing Obligations</a></p>
+<p><a class="hmrc-connection" href="/obligations/retrieve-cumulative-obligations">Filing Obligations</a></p>

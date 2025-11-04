@@ -12,7 +12,7 @@
 
 
 
-<form action="/individual-losses/delete-brought-forward-loss" method="POST">
+<form class="hmrc-connection" action="/individual-losses/delete-brought-forward-loss" method="POST">
 
     <input type="hidden" name="loss_id" value="<?= esc($loss_id) ?>">
     <input type="hidden" name="loss_year" value="<?= esc($loss_year) ?>">
@@ -23,4 +23,4 @@
 
 
 
-<p><a href="/individual-losses/list-brought-forward-losses?<?= $query_string ?>">Cancel</a></p>
+<p><a class="hmrc-connection" href="/individual-losses/list-brought-forward-losses?<?= $query_string ?>">Cancel</a></p>

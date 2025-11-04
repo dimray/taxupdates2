@@ -8,7 +8,7 @@
 
         </div>
 
-        <form action="/individual-calculations/retrieve-calculation" method="GET">
+        <form class="hmrc-connection" action="/individual-calculations/retrieve-calculation" method="GET">
             <input type="hidden" name="calculation_id" value="<?= $calculation_id ?>">
             <input type="hidden" name="calculation_type" value="<?= $calculation_type ?>">
 
@@ -24,7 +24,7 @@
 
         </div>
 
-        <form action="/individual-calculations/retrieve-calculation">
+        <form class="hmrc-connection" action="/individual-calculations/retrieve-calculation">
             <input type="hidden" name="calculation_id" value="<?= $calculation_id ?>">
 
             <button class="button" id="countdown-button" disabled=false>View Your Calculation</button>
@@ -35,7 +35,8 @@
 
 <?php else: ?>
 
-    <p><a class="button" href="/individual-calculations/trigger-calculation">Generate A New Calculation</a></p>
+    <p><a class="button hmrc-connection" href="/individual-calculations/trigger-calculation">Generate A New Calculation</a>
+    </p>
 
 
 <?php endif; ?>

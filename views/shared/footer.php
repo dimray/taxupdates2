@@ -42,6 +42,11 @@
 
 </footer>
 
+<div id="loader" class="display-none">
+    <div class="spinner"></div>
+    <p class="loader-text">Connecting to HMRC ...</p>
+</div>
+
 <?php /*
 echo '<pre>';
 var_dump($_SESSION);
@@ -118,7 +123,8 @@ echo '</pre>';
 
 <!-- always runs as needed for header menu -->
 <script src="/scripts/mobile-nav.js"></script>
-<script src="/scripts/light-dark.js"></script>
+<script src="/scripts/light-dark.js"></script>#
+<script src="/scripts/loader.js"></script>
 
 </body>
 

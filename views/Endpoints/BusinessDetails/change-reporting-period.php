@@ -24,7 +24,7 @@
 <hr>
 
 <!-- don't use shared tax year form as don't want to update period every time the year is changed-->
-<form class="inline-form-center" action="/business-details/update-reporting-period" method="GET">
+<form class="inline-form-center hmrc-connection" action="/business-details/update-reporting-period" method="GET">
 
     <input type="hidden" name="new_period" value="<?= $new_period ?>">
 
@@ -42,4 +42,4 @@
 <br>
 <hr>
 
-<a href="/business-details/retrieve-business-details">Cancel</a>
+<a class="hmrc-connection" href="/business-details/retrieve-business-details">Cancel</a>

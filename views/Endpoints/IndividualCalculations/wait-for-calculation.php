@@ -4,7 +4,8 @@
 
  </div>
 
- <form action="/individual-calculations/retrieve-calculation">
+ <form class="hmrc-connection" action="/individual-calculations/retrieve-calculation">
+
      <input type="hidden" name="calculation_id" value="<?= $calculation_id ?>">
 
      <button class="button" id="countdown-button" disabled=false>View Calculation</button>

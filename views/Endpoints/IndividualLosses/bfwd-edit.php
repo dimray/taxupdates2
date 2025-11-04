@@ -1,4 +1,4 @@
-<form class="generic-form" action="/individual-losses/update-brought-forward-loss" method="GET">
+<form class="generic-form hmrc-connection" action="/individual-losses/update-brought-forward-loss" method="GET">
 
     <p>Loss ID: <?= $loss_id ?></p>
 
@@ -23,4 +23,4 @@
 
 
 
-<p><a href="/individual-losses/list-brought-forward-losses?<?= $query_string ?>">Cancel</a></p>
+<p><a class="hmrc-connection" href="/individual-losses/list-brought-forward-losses?<?= $query_string ?>">Cancel</a></p>

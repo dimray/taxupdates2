@@ -15,7 +15,7 @@
 
 <br>
 
-<form action="/business-source-adjustable-summary/submit" method="POST">
+<form class="hmrc-connection" action="/business-source-adjustable-summary/submit" method="POST">
 
 
     <?php include ROOT_PATH . "/views/shared/submission-declaration.php"; ?>

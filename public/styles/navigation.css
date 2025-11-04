@@ -27,6 +27,11 @@ summary,
   text-decoration: none;
 }
 
+.logo a:hover,
+.logo a:active {
+  background: none;
+}
+
 .primary-navigation {
   display: flex;
   gap: 0;
@@ -43,7 +48,7 @@ summary,
   text-decoration: none;
   width: 100%;
   display: inline-block;
-  padding-inline: 1.5rem;
+  padding-inline: 1rem;
   color: hsl(0, 0%, 90%);
   white-space: nowrap;
   font-weight: 400;
@@ -127,10 +132,10 @@ details summary {
 }
 
 .logout {
-  font-weight: 200;
-  font-size: 0.95rem;
-  line-height: 2;
-  color: hsl(0, 0%, 85%);
+  /* font-weight: 200; */
+  /* font-size: 1rem; */
+  /* line-height: 2; */
+  color: hsl(0, 0%, 75%);
 }
 
 .logout:hover {

@@ -5,7 +5,8 @@
 <p><a href="/individual-losses/create-brought-forward-loss">Click Here</a> to register a brought forward loss for this
     business.</p>
 
-<p><a href="/individual-losses/list-brought-forward-losses?<?= $business_id_query_string ?>">Click Here</a>
+<p><a class="hmrc-connection"
+        href="/individual-losses/list-brought-forward-losses?<?= $business_id_query_string ?>">Click Here</a>
     to view or amend
     details of pre-MTD
     losses already registered.</p>

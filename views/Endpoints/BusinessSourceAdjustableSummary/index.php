@@ -7,6 +7,6 @@
 
 <p>If multiple adjustments are submitted, later submissions will overwrite earlier ones.</p>
 
-<p><a href="/business-source-adjustable-summary/trigger">Create Accounting Adjustments</a></p>
+<p><a class="hmrc-connection" href="/business-source-adjustable-summary/trigger">Create Accounting Adjustments</a></p>
 
-<p><a href="/business-source-adjustable-summary/list">View Accounting Adjustments</a></p>
+<p><a class="hmrc-connection" href="/business-source-adjustable-summary/list">View Accounting Adjustments</a></p>

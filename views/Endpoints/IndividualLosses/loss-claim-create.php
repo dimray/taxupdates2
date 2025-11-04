@@ -1,4 +1,4 @@
-<form class="generic-form" action="/individual-losses/process-loss-claim" method="GET">
+<form class="generic-form hmrc-connection" action="/individual-losses/process-loss-claim" method="GET">
 
     <p>You are telling HMRC how to allocate a loss made by this business in <b><?= esc($loss_year) ?></b>. If the loss
         was not incurred

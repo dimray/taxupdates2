@@ -25,7 +25,7 @@
 <br>
 
 <!-- don't use shared tax year form as don't want to update period every time the year is changed-->
-<form class="inline-form-center" action="/business-details/update-accounting-type" method="GET">
+<form class="inline-form-center hmrc-connection" action="/business-details/update-accounting-type" method="GET">
 
     <input type="hidden" name="new_accounting_type" value="<?= $new_accounting_type ?>">
 
@@ -47,4 +47,4 @@
 
 
 
-<a href="/business-details/retrieve-business-details">Cancel</a>
+<a class="hmrc-connection" href="/business-details/retrieve-business-details">Cancel</a>

@@ -4,7 +4,7 @@
     joined MTD, not the year when the loss was originally incurred.</p>
 
 
-<form class="generic-form" action="/individual-losses/register-brought-forward-loss" method="GET">
+<form class="generic-form hmrc-connection" action="/individual-losses/register-brought-forward-loss" method="GET">
 
     <div>
         <div class="form-input">

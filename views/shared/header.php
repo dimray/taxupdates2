@@ -23,7 +23,7 @@
     <link rel="stylesheet" href="/styles/clients.css">
     <link rel="stylesheet" href="/styles/print.css">
     <link rel="stylesheet" href="/styles/footer.css">
-
+    <link rel="stylesheet" href="/styles/loader.css">
 </head>
 
 <body>
@@ -112,7 +112,7 @@
                                 href="/profile/show-profile">Profile</a></li>
                     <?php endif; ?>
 
-                    <li><a class="navLink topLink logout" href="/logout">Log out</a></li>
+                    <li><a class="navLink topLink logout" href="/logout">Logout</a></li>
 
                 <?php else: ?>
                     <li><a class="navLink topLink" href="/login">Login</a></li>

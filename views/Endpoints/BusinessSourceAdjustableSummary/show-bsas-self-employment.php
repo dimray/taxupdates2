@@ -12,4 +12,4 @@
 
 <?php endif; ?>
 
-<p><a href="/individual-calculations/trigger-calculation">View Tax Calculation</a></p>
+<p><a class="hmrc-connection" href="/individual-calculations/trigger-calculation">View Tax Calculation</a></p>

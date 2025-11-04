@@ -30,7 +30,7 @@
                             </form>
                         </td>
                         <td>
-                            <form action="/individual-losses/delete-brought-forward-loss" method="GET">
+                            <form class="hmrc-connection" action="/individual-losses/delete-brought-forward-loss" method="GET">
                                 <input type="hidden" name="loss_id" value="<?= esc($loss['lossId']) ?>">
                                 <input type="hidden" name="loss_year" value="<?= esc($loss['taxYearBroughtForwardFrom']) ?>">
                                 <button class="link" type="submit">Delete</button>
@@ -81,7 +81,7 @@
                         <button class="link" type="submit">Edit Amount</button>
                     </form>
 
-                    <form action="/individual-losses/delete-brought-forward-loss" method="GET">
+                    <form class="hmrc-connection" action="/individual-losses/delete-brought-forward-loss" method="GET">
                         <input type="hidden" name="loss_id" value="<?= esc($loss['lossId']) ?>">
                         <input type="hidden" name="loss_year" value="<?= esc($loss['taxYearBroughtForwardFrom']) ?>">
                         <button class="link" type="submit">Delete</button>
@@ -106,7 +106,7 @@
 
 <p>Showing losses brought forward from <?= $loss_year ?></p>
 
-<form class="inline-form" action="/individual-losses/list-brought-forward-losses" method="GET">
+<form class="inline-form hmrc-connection" action="/individual-losses/list-brought-forward-losses" method="GET">
 
     <div class="form-input">
         <label for="loss_year">Show losses from a different year</label>

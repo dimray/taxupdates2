@@ -1,6 +1,6 @@
 <?php displayArrayAsList($claim_details); ?>
 
-<form class="generic-form" action="/individual-losses/update-loss-claim" method="GET">
+<form class="generic-form hmrc-connection" action="/individual-losses/update-loss-claim" method="GET">
 
     <input type="hidden" name="claim_id" value="<?= $claim_details['claimId'] ?>">
 
@@ -32,4 +32,4 @@
     <button type="submit" class="form-button">Update</button>
 </form>
 
-<p><a href="/individual-losses/list-loss-claims">Cancel</a></p>
+<p><a class="hmrc-connection" href="/individual-losses/list-loss-claims">Cancel</a></p>

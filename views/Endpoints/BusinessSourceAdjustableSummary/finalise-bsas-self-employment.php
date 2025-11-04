@@ -1,13 +1,13 @@
 <?php if (!empty($zero_adjustments)): ?>
 
-<div class="inline-checkbox">
-    <input type="checkbox" name="zeroAdjustments" id="zero-adjustments-toggle" value="true" checked disabled>
-    <label for="zeroAdjustments">Set All Adjustments To Zero</label>
-</div>
+    <div class="inline-checkbox">
+        <input type="checkbox" name="zeroAdjustments" id="zero-adjustments-toggle" value="true" checked disabled>
+        <label for="zeroAdjustments">Set All Adjustments To Zero</label>
+    </div>
 
 <?php else: ?>
 
-<?php include "shared/self-employment-table.php"; ?>
+    <?php include "shared/self-employment-table.php"; ?>
 
 <?php endif; ?>
 
@@ -15,7 +15,7 @@
 
 <br>
 
-<form action="/business-source-adjustable-summary/submit" method="POST">
+<form class="hmrc-connection" action="/business-source-adjustable-summary/submit" method="POST">
 
 
     <?php include ROOT_PATH . "/views/shared/submission-declaration.php"; ?>

@@ -19,7 +19,7 @@
                         <td>
                             <?php if ($year_end): ?>
 
-                                <form action="/business-details/retrieve-business-details">
+                                <form action="/business-details/retrieve-business-details" class="hmrc-connection">
                                     <input type="hidden" name="business_id" value="<?= esc($business["businessId"] ?? '') ?>">
                                     <input type="hidden" name="type_of_business"
                                         value="<?= esc($business["typeOfBusiness"] ?? '') ?>">
@@ -31,7 +31,7 @@
 
                             <?php else: ?>
 
-                                <form action="/obligations/retrieve-cumulative-obligations">
+                                <form action="/obligations/retrieve-cumulative-obligations" class="hmrc-connection">
                                     <input type="hidden" name="business_id" value="<?= esc($business["businessId"] ?? '') ?>">
                                     <input type="hidden" name="type_of_business"
                                         value="<?= esc($business["typeOfBusiness"] ?? '') ?>">
@@ -75,7 +75,7 @@
 
                 <?php if ($year_end): ?>
 
-                    <form action="/business-details/retrieve-business-details">
+                    <form action="/business-details/retrieve-business-details" class="hmrc-connection">
                         <input type="hidden" name="business_id" value="<?= esc($business["businessId"] ?? '') ?>">
                         <input type="hidden" name="type_of_business" value="<?= esc($business["typeOfBusiness"] ?? '') ?>">
                         <?php if ($business['typeOfBusiness'] === "self-employment"): ?>
@@ -86,7 +86,7 @@
 
                 <?php else: ?>
 
-                    <form action="/obligations/retrieve-cumulative-obligations">
+                    <form action="/obligations/retrieve-cumulative-obligations" class="hmrc-connection">
                         <input type="hidden" name="business_id" value="<?= esc($business["businessId"] ?? '') ?>">
                         <input type="hidden" name="type_of_business" value="<?= esc($business["typeOfBusiness"] ?? '') ?>">
                         <?php if ($business['typeOfBusiness'] === "self-employment"): ?>

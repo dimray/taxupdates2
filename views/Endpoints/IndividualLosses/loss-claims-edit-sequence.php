@@ -12,7 +12,7 @@
                 and have no
                 gaps (e.g. 1,2,3 or 2,3,1).</p>
 
-            <form action="/individual-losses/update-loss-claims-sequence" method="POST">
+            <form class="hmrc-connection" action="/individual-losses/update-loss-claims-sequence" method="POST">
 
                 <table class="left-align-headers">
 
@@ -79,7 +79,7 @@
                 and have no
                 gaps (e.g. 1,2,3 or 2,3,1). Every loss must include a sequence number.</p>
 
-            <form action="/individual-losses/update-loss-claims-sequence" method="POST">
+            <form class="hmrc-connection" action="/individual-losses/update-loss-claims-sequence" method="POST">
 
                 <?php foreach ($claims as $index => $claim): ?>
                     <?php if ($claim['typeOfClaim'] === "carry-sideways"): ?>
@@ -144,11 +144,11 @@
 
     <p>You do not have more than one sideways loss claim.</p>
 
-    <p><a href="https://taxupdates.test/individual-losses/list-loss-claims">View all losses</a></p>
+    <p><a class="hmrc-connection" href="/individual-losses/list-loss-claims">View all losses</a></p>
 
 
 
 <?php endif; ?>
 
 
-<p><a href="/individual-losses/list-loss-claims">Cancel</a></p>
+<p><a class="hmrc-connection" href="/individual-losses/list-loss-claims">Cancel</a></p>
