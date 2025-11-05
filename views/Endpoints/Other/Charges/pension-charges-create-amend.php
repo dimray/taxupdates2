@@ -1,52 +1,52 @@
 <?php include ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
-<form action="/charges/process-create-and-amend-pension-charges" method="POST" class="generic-form">
+<form action="/charges/process-create-and-amend-pension-charges" method="POST" class="generic-form hmrc-connection">
 
     <h2>Overseas Transfers</h2>
 
     <?php if (isset($pension_scheme_overseas_transfers_overseas_scheme_provider)): ?>
 
-    <div id="pension-scheme-overseas-transfers-overseas-scheme-provider-container">
+        <div id="pension-scheme-overseas-transfers-overseas-scheme-provider-container">
 
-        <?php foreach ($pension_scheme_overseas_transfers_overseas_scheme_provider as $provider): ?>
+            <?php foreach ($pension_scheme_overseas_transfers_overseas_scheme_provider as $provider): ?>
 
-        <div class="pension-scheme-overseas-transfers-overseas-scheme-provider-group field-container"
-            data-group="pensionSchemeOverseasTransfers[overseasSchemeProvider]">
+                <div class="pension-scheme-overseas-transfers-overseas-scheme-provider-group field-container"
+                    data-group="pensionSchemeOverseasTransfers[overseasSchemeProvider]">
 
-            <div class="nested-input">
-                <label><span>Provider Name <span class="asterisk">*</span></span>
-                    <input type="text" data-name="providerName" maxlength="90"
-                        value="<?= esc($provider['providerName'] ?? '') ?>">
-                </label>
-            </div>
+                    <div class="nested-input">
+                        <label><span>Provider Name <span class="asterisk">*</span></span>
+                            <input type="text" data-name="providerName" maxlength="90"
+                                value="<?= esc($provider['providerName'] ?? '') ?>">
+                        </label>
+                    </div>
 
-            <div class="nested-input">
-                <label><span>Provider Address <span class="asterisk">*</span></span>
-                    <input type="text" data-name="providerAddress" maxlength="90"
-                        value="<?= esc($provider['providerAddress'] ?? '') ?>">
-                </label>
-            </div>
+                    <div class="nested-input">
+                        <label><span>Provider Address <span class="asterisk">*</span></span>
+                            <input type="text" data-name="providerAddress" maxlength="90"
+                                value="<?= esc($provider['providerAddress'] ?? '') ?>">
+                        </label>
+                    </div>
 
-            <div class="nested-input">
-                <label><span>Country <span class="asterisk">*</span></span>
-                    <select data-name="providerCountryCode">
-                        <option value="">Select country</option>
-                        <?php foreach ($countries as $continent => $country_list): ?>
-                        <optgroup label="<?= esc($continent) ?>">
-                            <?php foreach ($country_list as $code => $name): ?>
-                            <option value="<?= esc($code) ?>"
-                                <?= ($provider['providerCountryCode'] ?? '') === $code ? 'selected' : '' ?>>
-                                <?= esc($name) ?></option>
-                            <?php endforeach; ?>
-                        </optgroup>
-                        <?php endforeach; ?>
-                    </select>
-                </label>
-            </div>
+                    <div class="nested-input">
+                        <label><span>Country <span class="asterisk">*</span></span>
+                            <select data-name="providerCountryCode">
+                                <option value="">Select country</option>
+                                <?php foreach ($countries as $continent => $country_list): ?>
+                                    <optgroup label="<?= esc($continent) ?>">
+                                        <?php foreach ($country_list as $code => $name): ?>
+                                            <option value="<?= esc($code) ?>"
+                                                <?= ($provider['providerCountryCode'] ?? '') === $code ? 'selected' : '' ?>>
+                                                <?= esc($name) ?></option>
+                                        <?php endforeach; ?>
+                                    </optgroup>
+                                <?php endforeach; ?>
+                            </select>
+                        </label>
+                    </div>
 
-            <!-- optional names and references commented out as hmrc don't give formatting but do give error responses -->
+                    <!-- optional names and references commented out as hmrc don't give formatting but do give error responses -->
 
-            <?php
+                    <?php
                     /*
 
                     <div class="nested-input">
@@ -71,15 +71,15 @@
         </div>
 
         */
-        ?>
+                    ?>
 
 
 
-    </div>
+                </div>
 
-    <?php endforeach; ?>
+            <?php endforeach; ?>
 
-    </div>
+        </div>
 
     <?php endif; ?>
 
@@ -107,7 +107,8 @@
         <label><span>Scheme Tax Reference <span class="asterisk">*</span></span><span class="small">Separate multiple
                 referencess with
                 commas</span>
-            <input type="text" name="pensionSchemeUnauthorisedPayments[pensionSchemeTaxReference]" value="<?= esc(is_array($pension_scheme_unauthorised_payments['pensionSchemeTaxReference'] ?? '')
+            <input type="text" name="pensionSchemeUnauthorisedPayments[pensionSchemeTaxReference]"
+                value="<?= esc(is_array($pension_scheme_unauthorised_payments['pensionSchemeTaxReference'] ?? '')
                             ? implode(',', $pension_scheme_unauthorised_payments['pensionSchemeTaxReference'])
                             : $pension_scheme_unauthorised_payments['pensionSchemeTaxReference'] ?? '') ?>">
         </label>
@@ -205,46 +206,46 @@
 
     <?php if (isset($overseas_pension_contributions_overseas_scheme_provider)): ?>
 
-    <div id="overseas-pension-contributions-overseas-scheme-provider-container">
+        <div id="overseas-pension-contributions-overseas-scheme-provider-container">
 
-        <?php foreach ($overseas_pension_contributions_overseas_scheme_provider as $provider): ?>
+            <?php foreach ($overseas_pension_contributions_overseas_scheme_provider as $provider): ?>
 
-        <div class="overseas-pension-contributions-overseas-scheme-provider-group field-container"
-            data-group="overseasPensionContributions[overseasSchemeProvider]">
+                <div class="overseas-pension-contributions-overseas-scheme-provider-group field-container"
+                    data-group="overseasPensionContributions[overseasSchemeProvider]">
 
-            <div class="nested-input">
-                <label><span>Provider Name <span class="asterisk">*</span></span>
-                    <input type="text" data-name="providerName" value="<?= esc($provider['providerName'] ?? '') ?>">
-                </label>
-            </div>
+                    <div class="nested-input">
+                        <label><span>Provider Name <span class="asterisk">*</span></span>
+                            <input type="text" data-name="providerName" value="<?= esc($provider['providerName'] ?? '') ?>">
+                        </label>
+                    </div>
 
-            <div class="nested-input">
-                <label><span>Provider Address <span class="asterisk">*</span></span>
-                    <input type="text" data-name="providerAddress"
-                        value="<?= esc($provider['providerAddress'] ?? '') ?>">
-                </label>
-            </div>
+                    <div class="nested-input">
+                        <label><span>Provider Address <span class="asterisk">*</span></span>
+                            <input type="text" data-name="providerAddress"
+                                value="<?= esc($provider['providerAddress'] ?? '') ?>">
+                        </label>
+                    </div>
 
-            <div class="nested-input">
-                <label><span>Country <span class="asterisk">*</span></span>
-                    <select data-name="providerCountryCode">
-                        <option value="">Select country</option>
-                        <?php foreach ($countries as $continent => $country_list): ?>
-                        <optgroup label="<?= esc($continent) ?>">
-                            <?php foreach ($country_list as $code => $name): ?>
-                            <option value="<?= esc($code) ?>"
-                                <?= ($provider['providerCountryCode'] ?? '') === $code ? 'selected' : '' ?>>
-                                <?= esc($name) ?></option>
-                            <?php endforeach; ?>
-                        </optgroup>
-                        <?php endforeach; ?>
-                    </select>
-                </label>
-            </div>
+                    <div class="nested-input">
+                        <label><span>Country <span class="asterisk">*</span></span>
+                            <select data-name="providerCountryCode">
+                                <option value="">Select country</option>
+                                <?php foreach ($countries as $continent => $country_list): ?>
+                                    <optgroup label="<?= esc($continent) ?>">
+                                        <?php foreach ($country_list as $code => $name): ?>
+                                            <option value="<?= esc($code) ?>"
+                                                <?= ($provider['providerCountryCode'] ?? '') === $code ? 'selected' : '' ?>>
+                                                <?= esc($name) ?></option>
+                                        <?php endforeach; ?>
+                                    </optgroup>
+                                <?php endforeach; ?>
+                            </select>
+                        </label>
+                    </div>
 
-            <!-- optional names and references commented out as hmrc don't give formatting-->
+                    <!-- optional names and references commented out as hmrc don't give formatting-->
 
-            <?php
+                    <?php
                     /*
             <div class="nested-input">
                 <label>Qualifying Recognised Overseas Pension Scheme Reference <span class="small">Separate multiple
@@ -267,18 +268,18 @@
         </div>
 
         */
-        ?>
+                    ?>
 
 
-        <!--  scheme names and references left out as optional -->
+                    <!--  scheme names and references left out as optional -->
 
 
 
-    </div>
+                </div>
 
-    <?php endforeach; ?>
+            <?php endforeach; ?>
 
-    </div>
+        </div>
 
     <?php endif; ?>
 
@@ -302,7 +303,7 @@
     <button type="submit" class="form-button">Submit</button>
 </form>
 
-<p><a href="/charges/retrieve-pension-charges">Cancel</a></p>
+<p><a class="hmrc-connection" href="/charges/retrieve-pension-charges">Cancel</a></p>
 
 <?php $include_add_another_script = true; ?>
 <?php $include_scroll_to_errors_script = true; ?>

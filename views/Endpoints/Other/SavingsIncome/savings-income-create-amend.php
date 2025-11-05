@@ -1,6 +1,6 @@
 <?php include ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
-<form action="/savings/process-create-amend-savings-income" method="POST" class="generic-form">
+<form action="/savings/process-create-amend-savings-income" method="POST" class="generic-form hmrc-connection">
 
     <h2>Securities</h2>
 
@@ -106,7 +106,7 @@
 </form>
 
 
-<p><a href="/savings/retrieve-savings-income">Cancel</a></p>
+<p><a class="hmrc-connection" href="/savings/retrieve-savings-income">Cancel</a></p>
 
 <?php $include_add_another_script = true; ?>
 <?php $include_scroll_to_errors_script = true; ?>

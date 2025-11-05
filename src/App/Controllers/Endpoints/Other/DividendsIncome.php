@@ -12,7 +12,6 @@ use App\Flash;
 
 class DividendsIncome extends Controller
 {
-
     public function __construct(private ApiDividendsIncome $apiDividendsIncome) {}
 
     public function index()

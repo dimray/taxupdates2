@@ -1,6 +1,6 @@
 <p>Confirm you wish to delete Foreign Reliefs</p>
 
-<form action="/reliefs/delete-foreign-reliefs" method="POST">
+<form class="hmrc-connection" action="/reliefs/delete-foreign-reliefs" method="POST">
 
     <button type="submit" class="delete-button confirm-delete">Confirm</button>
 </form>

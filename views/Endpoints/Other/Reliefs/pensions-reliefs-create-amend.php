@@ -1,4 +1,4 @@
-<form action="/reliefs/process-create-and-amend-pensions-reliefs" method="POST" class="generic-form">
+<form action="/reliefs/process-create-and-amend-pensions-reliefs" method="POST" class="generic-form hmrc-connection">
 
     <?php if (isset($pension_reliefs)): ?>
 
@@ -58,7 +58,7 @@
     <button type="submit" class="form-button">Submit</button>
 </form>
 
-<p><a href="/reliefs/retrieve-pensions-reliefs">Cancel</a></p>
+<p><a class="hmrc-connection" href="/reliefs/retrieve-pensions-reliefs">Cancel</a></p>
 
 
 <?php $include_scroll_to_errors_script = true; ?>

@@ -1,4 +1,4 @@
-<form class="generic-form" action="/employments-income/process-add-custom-employment" method="POST">
+<form class="generic-form hmrc-connection" action="/employments-income/process-add-custom-employment" method="POST">
 
     <div class="form-input">
         <label for="employer-name">Employer Name</label>

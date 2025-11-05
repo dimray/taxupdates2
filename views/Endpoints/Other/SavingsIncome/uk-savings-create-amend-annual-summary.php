@@ -1,4 +1,5 @@
-<form class="generic-form" action="/savings/process-create-amend-uk-savings-account-annual-summary" method="POST">
+<form class="generic-form hmrc-connection" action="/savings/process-create-amend-uk-savings-account-annual-summary"
+    method="POST">
 
     <input type="hidden" name="account_name" value="<?= esc($account_name) ?>">
     <input type="hidden" name="account_id" value="<?= esc($account_id) ?>">
@@ -19,4 +20,4 @@
 </form>
 
 
-<p><a href="/savings/list-uk-savings-accounts">Cancel</a></p>
+<p><a class="hmrc-connection" href="/savings/list-uk-savings-accounts">Cancel</a></p>

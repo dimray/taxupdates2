@@ -1,6 +1,6 @@
 <p>Confirm you wish to delete this employment.</p>
 
-<form action="/employments-income/delete-custom-employment" method="POST">
+<form class="hmrc-connection" action="/employments-income/delete-custom-employment" method="POST">
     <button type="submit" class="delete-button confirm-delete">Delete Employment</button>
 </form>
 

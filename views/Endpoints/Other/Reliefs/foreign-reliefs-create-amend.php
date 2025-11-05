@@ -1,6 +1,6 @@
 <?php include ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
-<form action="/reliefs/process-create-and-amend-foreign-reliefs" method="POST" class="generic-form">
+<form action="/reliefs/process-create-and-amend-foreign-reliefs" method="POST" class="generic-form hmrc-connection">
 
     <?php if (isset($foreign_tax_credit_relief)): ?>
 
@@ -95,7 +95,7 @@
 
 
 
-<p><a href="/reliefs/retrieve-foreign-reliefs">Cancel</a></p>
+<p><a class="hmrc-connection" href="/reliefs/retrieve-foreign-reliefs">Cancel</a></p>
 
 <?php $include_add_another_script = true; ?>
 <?php $include_scroll_to_errors_script = true; ?>

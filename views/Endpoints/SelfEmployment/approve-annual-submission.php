@@ -2,13 +2,11 @@
 
 <br>
 
-<form action="/self-employment/create-amend-annual-submission" method="POST">
+<form class="hmrc-connection" action="/self-employment/create-amend-annual-submission" method="POST">
 
     <?php include ROOT_PATH . "views/shared/errors.php"; ?>
 
     <?php include ROOT_PATH . "views/shared/submission-declaration.php"; ?>
-
-    <br>
 
     <button class="form-button" type="submit">Submit</button>
 

@@ -1,8 +1,8 @@
 <p>Ignoring an employment will exclude it from your tax calculation. Confirm you wish to ignore this employment.</p>
 
-<form action="/employments-income/ignore-employment" method="POST">
+<form class="hmrc-connection" action="/employments-income/ignore-employment" method="POST">
 
     <button type="submit" class="delete-button confirm-delete">Ignore</button>
 </form>
 
-<p><a href="/employments-income/list-employments">Cancel</a></p>
+<p><a class="hmrc-connection" href="/employments-income/list-employments">Cancel</a></p>

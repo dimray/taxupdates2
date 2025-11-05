@@ -1,6 +1,7 @@
 <?php require ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
-<form class="generic-form" action="/employments-income/process-create-amend-other-employment-income" method="POST">
+<form class="generic-form hmrc-connection" action="/employments-income/process-create-amend-other-employment-income"
+    method="POST">
 
     <?php if (isset($share_options)): ?>
 
@@ -449,7 +450,7 @@
 
 </form>
 
-<p><a href="/employments-income/retrieve-other-employment-income">Cancel</a></p>
+<p><a class="hmrc-connection" href="/employments-income/retrieve-other-employment-income">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>
 <?php $include_add_another_script = true; ?>

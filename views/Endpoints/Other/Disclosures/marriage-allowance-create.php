@@ -1,6 +1,6 @@
 <p>Transfer part of your personal allowance to your spouse or civil partner.</p>
 
-<form action="/disclosures/process-create-marriage-allowance" method="POST" class="generic-form">
+<form action="/disclosures/process-create-marriage-allowance" method="POST" class="generic-form hmrc-connection">
 
     <div class="form-input">
         <label for="spouse_nino">Spouse's National Insurance Number <span class="asterisk">*</span></label>

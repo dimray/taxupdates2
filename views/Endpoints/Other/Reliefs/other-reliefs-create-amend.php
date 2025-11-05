@@ -1,6 +1,6 @@
 <?php require ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
-<form action="/reliefs/process-create-and-amend-other-reliefs" method="POST" class="generic-form">
+<form action="/reliefs/process-create-and-amend-other-reliefs" method="POST" class="generic-form hmrc-connection">
 
     <?php if (isset($non_deductible_loan_interest)): ?>
 
@@ -227,7 +227,7 @@
     <button type="submit" class="form-button">Submit</button>
 </form>
 
-<p><a href="/reliefs/retrieve-other-reliefs">Cancel</a></p>
+<p><a class="hmrc-connection" href="/reliefs/retrieve-other-reliefs">Cancel</a></p>
 
 <?php $include_add_another_script = true; ?>
 <?php $include_scroll_to_errors_script = true; ?>

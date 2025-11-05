@@ -44,7 +44,6 @@
 
                             <?php else: ?>
 
-
                                 <td>
                                     <form action="/state-benefits/confirm-ignore-state-benefit" method="GET">
                                         <input type="hidden" name="benefit_id" value="<?= esc($benefit['benefitId']) ?>">
@@ -55,8 +54,6 @@
                                 </td>
 
                             <?php endif; ?>
-
-
 
                         </tr>
 

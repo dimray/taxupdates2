@@ -1,6 +1,7 @@
 <?php require ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
-<form action="/pensions-income/process-create-and-amend-pensions-income" method="POST" class="generic-form">
+<form action="/pensions-income/process-create-and-amend-pensions-income" method="POST"
+    class="generic-form hmrc-connection">
 
 
     <?php if (isset($foreign_pensions)): ?>
@@ -167,7 +168,7 @@
     <button class="form-button">Submit</button>
 </form>
 
-<p><a href="/pensions-income/retrieve-pensions-income">Cancel</a></p>
+<p><a class="hmrc-connection" href="/pensions-income/retrieve-pensions-income">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>
 <?php $include_add_another_script = true; ?>

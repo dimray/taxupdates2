@@ -2,7 +2,7 @@
 
 <p>Confirm you wish to delete Capital Gains</p>
 
-<form action="/capital-gains/delete-other-capital-gains" method="POST">
+<form class="hmrc-connection" action="/capital-gains/delete-other-capital-gains" method="POST">
 
     <button type="submit" class="delete-button confirm-delete">Confirm</button>
 </form>

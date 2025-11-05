@@ -1,5 +1,5 @@
 <form action="/dividends-income/process-create-amend-directorship-and-dividend-information" method="POST"
-    class="generic-form">
+    class="generic-form hmrc-connection">
 
     <div>
         <label class="inline-checkbox label-text">
@@ -57,7 +57,7 @@
 
 </form>
 
-<p><a href="/dividends-income/retrieve-directorship-and-dividend-information">Cancel</a></p>
+<p><a class="hmrc-connection" href="/dividends-income/retrieve-directorship-and-dividend-information">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>
 <?php $include_add_another_script = true; ?>

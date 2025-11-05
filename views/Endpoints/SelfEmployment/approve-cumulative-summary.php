@@ -3,15 +3,10 @@
 <?php include ROOT_PATH . "views/Endpoints/SelfEmployment/shared/cumulative-summary-table.php"; ?>
 
 
-
-
-
-<form action="/self-employment/submit-cumulative-period-summary" method="GET">
+<form class="hmrc-connection" action="/self-employment/submit-cumulative-period-summary" method="GET">
 
 
     <?php include ROOT_PATH . "views/shared/submission-declaration.php" ?>
-
-
 
     <?php include ROOT_PATH . "views/shared/errors.php" ?>
 

@@ -1,7 +1,8 @@
 <?php require ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
 
-<form class="generic-form" method="POST" action="/dividends-income/process-create-amend-dividends-income">
+<form class="generic-form hmrc-connection" method="POST"
+    action="/dividends-income/process-create-amend-dividends-income">
 
     <?php if (isset($foreign_dividends)): ?>
 
@@ -264,7 +265,7 @@
 
 </form>
 
-<p><a href="/dividends-income/retrieve-dividends-income">Cancel</a></p>
+<p><a class="hmrc-connection" href="/dividends-income/retrieve-dividends-income">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>
 <?php $include_add_another_script = true; ?>

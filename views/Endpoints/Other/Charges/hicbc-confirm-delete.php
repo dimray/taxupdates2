@@ -1,7 +1,7 @@
 <p>Confirm you wish to delete High Income Child Benefit Charge
 </p>
 
-<form action="/charges/delete-high-income-child-benefit-charge-submission" method="POST">
+<form class="hmrc-connection" action="/charges/delete-high-income-child-benefit-charge-submission" method="POST">
 
     <button type="submit" class="delete-button confirm-delete">Confirm</button>
 </form>

@@ -25,7 +25,7 @@
 
 <p><a href="/self-employment/create-annual-submission">Create an Annual Submission</a></p>
 
-<p><a href="/self-employment/retrieve-annual-submission">View Annual Submission</a></p>
+<p><a class="hmrc-connection" href="/self-employment/retrieve-annual-submission">View Annual Submission</a></p>
 
 <h3 id="amend">Amending A Submission</h3>
 

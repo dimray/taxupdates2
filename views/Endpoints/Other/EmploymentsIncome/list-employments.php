@@ -16,7 +16,7 @@
                         <td><?= esc($employment['employerName']) ?></td>
 
                         <td>
-                            <form action="/employments-income/retrieve-employment-and-financial-details">
+                            <form class="hmrc-connection" action="/employments-income/retrieve-employment-and-financial-details">
                                 <input type="hidden" name="employment_id" value="<?= esc($employment['employmentId']) ?>">
                                 <input type="hidden" name="employment_type" value="hmrc">
                                 <button class="link" type="submit">Details</button>
@@ -44,7 +44,7 @@
                         <td><?= esc($custom_employment['employerName']) ?></td>
 
                         <td>
-                            <form action="/employments-income/retrieve-employment-and-financial-details">
+                            <form class="hmrc-connection" action="/employments-income/retrieve-employment-and-financial-details">
                                 <input type="hidden" name="employment_id" value="<?= esc($custom_employment['employmentId']) ?>">
                                 <input type="hidden" name="employment_type" value="custom">
                                 <button class="link" type="submit">Details</button>

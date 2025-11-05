@@ -2,7 +2,7 @@
 
 <hr>
 
-<form class="generic-form" action="/cis-deductions/process-amend-cis-deductions" method="POST">
+<form class="generic-form hmrc-connection" action="/cis-deductions/process-amend-cis-deductions" method="POST">
 
     <input type="hidden" name="contractorName" value="<?= $contractor['contractorName'] ?? '' ?>">
     <input type="hidden" name="employerRef" value="<?= $contractor['employerRef'] ?? '' ?>">
@@ -72,6 +72,6 @@
 
 </form>
 
-<p><a href="/cis-deductions/retrieve-cis-deductions">Cancel</a></p>
+<p><a class="hmrc-connection" href="/cis-deductions/retrieve-cis-deductions">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>

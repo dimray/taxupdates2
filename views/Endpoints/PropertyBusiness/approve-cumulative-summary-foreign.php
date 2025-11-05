@@ -3,7 +3,7 @@
 <?php include ROOT_PATH . "views/Endpoints/PropertyBusiness/shared/cumulative-summary-table-foreign.php";  ?>
 
 
-<form action="<?= '/property-business/submit-cumulative-period-summary' ?>" method="GET">
+<form class="hmrc-submission" action="<?= '/property-business/submit-cumulative-period-summary' ?>" method="GET">
 
     <?php include ROOT_PATH . "views/shared/submission-declaration.php" ?>
 

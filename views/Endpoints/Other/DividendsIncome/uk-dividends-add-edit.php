@@ -1,4 +1,5 @@
-<form class="generic-form" action="/dividends-income/process-create-amend-uk-dividends-annual-summary" method="POST">
+<form class="generic-form hmrc-connection" action="/dividends-income/process-create-amend-uk-dividends-annual-summary"
+    method="POST">
 
     <div class="form-input">
         <label for="ukDividends">UK Dividends</label>
@@ -22,4 +23,4 @@
 
 <br>
 
-<p><a href="/dividends-income/retrieve-uk-dividends-income-annual-summary">Cancel</a></p>
+<p><a class="hmrc-connection" href="/dividends-income/retrieve-uk-dividends-income-annual-summary">Cancel</a></p>

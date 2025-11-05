@@ -28,7 +28,8 @@
 
                         <?php if ($obligation['status'] === "fulfilled"): ?>
                             <td>
-                                <form action="/individual-calculations/retrieve-final-calculation" method="GET">
+                                <form class="hmrc-connection" action="/individual-calculations/retrieve-final-calculation"
+                                    method="GET">
                                     <button class="link" type="submit">View Final Declaration</button>
                                 </form>
                             </td>
@@ -92,7 +93,7 @@
 
 
                 <?php if ($obligation['status'] === "fulfilled"): ?>
-                    <form action="/individual-calculations/retrieve-final-calculation" method="GET">
+                    <form class="hmrc-connection" action="/individual-calculations/retrieve-final-calculation" method="GET">
                         <button class="link" type="submit">View Final Declaration</button>
                     </form>
 

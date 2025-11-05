@@ -1,6 +1,6 @@
 <p>Confirm you wish to delete Investment Reliefs</p>
 
-<form action="/reliefs/delete-relief-investments" method="POST">
+<form class="hmrc-connection" action="/reliefs/delete-relief-investments" method="POST">
 
     <button type="submit" class="delete-button confirm-delete">Confirm</button>
 </form>

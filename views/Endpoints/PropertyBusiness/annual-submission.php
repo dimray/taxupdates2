@@ -18,7 +18,7 @@
 
 <p><a href="/property-business/create-annual-submission">Create an Annual Submission</a></p>
 
-<p><a href="/property-business/retrieve-annual-submission">View Annual Submission</a></p>
+<p><a class="hmrc-connection" href="/property-business/retrieve-annual-submission">View Annual Submission</a></p>
 
 <h3 id="amend">Amending A Submission</h3>
 

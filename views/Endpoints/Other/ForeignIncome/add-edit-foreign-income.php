@@ -1,6 +1,7 @@
 <?php require ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
-<form action="/foreign-income/process-create-and-amend-foreign-income" method="POST" class="generic-form">
+<form action="/foreign-income/process-create-and-amend-foreign-income" method="POST"
+    class="generic-form hmrc-connection">
 
 
     <?php if (isset($foreign_earnings)): ?>
@@ -89,7 +90,7 @@
 
 
 
-<p><a href="/foreign-income/retrieve-foreign-income">Cancel</a></p>
+<p><a class="hmrc-connection" href="/foreign-income/retrieve-foreign-income">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>
 <?php $include_add_another_script = true; ?>

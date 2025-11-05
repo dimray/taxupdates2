@@ -276,6 +276,6 @@
 </form>
 
 
-<p><a href="/business-details/retrieve-business-details">Cancel</a></p>
+<p><a class="hmrc-connection" href="/business-details/retrieve-business-details">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>

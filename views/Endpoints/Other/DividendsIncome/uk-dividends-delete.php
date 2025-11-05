@@ -1,6 +1,6 @@
 <p>Confirm you wish to delete UK Dividends</p>
 
-<form action="/dividends-income/delete-uk-dividends-income-annual-summary" method="POST">
+<form class="hmrc-connection" action="/dividends-income/delete-uk-dividends-income-annual-summary" method="POST">
 
 
     <button type="submit" class="delete-button confirm-delete">Confirm</button>

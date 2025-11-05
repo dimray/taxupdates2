@@ -1,6 +1,6 @@
 <?php require ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
-<form action="/other-income/process-create-and-amend-other-income" method="POST" class="generic-form">
+<form action="/other-income/process-create-and-amend-other-income" method="POST" class="generic-form hmrc-connection">
 
     <?php if (isset($post_cessation_receipts)): ?>
 
@@ -277,9 +277,7 @@
     <button type="submit" class="form-button">Submit</button>
 </form>
 
-
-
-<p><a href="/other-income/retrieve-other-income">Cancel</a></p>
+<p><a class="hmrc-connection" href="/other-income/retrieve-other-income">Cancel</a></p>
 
 <?php $include_add_another_script = true; ?>
 <?php $include_scroll_to_errors_script = true; ?>

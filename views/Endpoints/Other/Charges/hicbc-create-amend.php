@@ -2,7 +2,7 @@
 
 
 <form action="/charges/process-create-or-amend-high-income-child-benefit-charge-submission" method="POST"
-    class="generic-form">
+    class="generic-form hmrc-connection">
 
 
     <div class="form-input">
@@ -29,4 +29,4 @@
 
 </form>
 
-<p><a href="/charges/retrieve-high-income-child-benefit-charge-submission">Cancel</a></p>
+<p><a class="hmrc-connection" href="/charges/retrieve-high-income-child-benefit-charge-submission">Cancel</a></p>

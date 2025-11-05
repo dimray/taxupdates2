@@ -1,6 +1,6 @@
 <?php include ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
-<form action="/reliefs/process-create-and-amend-relief-investments" method="POST" class="generic-form">
+<form action="/reliefs/process-create-and-amend-relief-investments" method="POST" class="generic-form hmrc-connection">
 
     <?php if (isset($vct_subscription)): ?>
 
@@ -220,7 +220,7 @@
     <button type="submit" class="form-button">Submit</button>
 </form>
 
-<p><a href="/reliefs/retrieve-relief-investments">Cancel</a></p>
+<p><a class="hmrc-connection" href="/reliefs/retrieve-relief-investments">Cancel</a></p>
 
 <?php $include_add_another_script = true; ?>
 <?php $include_scroll_to_errors_script = true; ?>

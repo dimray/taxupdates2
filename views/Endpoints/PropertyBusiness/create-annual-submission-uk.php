@@ -188,7 +188,7 @@
 
 </form>
 
-<p><a href="/business-details/retrieve-business-details">Cancel</a></p>
+<p><a class="hmrc-submission" href="/business-details/retrieve-business-details">Cancel</a></p>
 
 <?php $include_rentaroom_toggle_script = true; ?>
 <?php $include_scroll_to_errors_script = true; ?>

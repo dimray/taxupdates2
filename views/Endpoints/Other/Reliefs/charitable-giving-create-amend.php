@@ -1,6 +1,7 @@
 <?php include ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
-<form action="/reliefs/process-create-and-amend-charitable-giving-tax-relief" method="POST" class="generic-form">
+<form action="/reliefs/process-create-and-amend-charitable-giving-tax-relief" method="POST"
+    class="generic-form hmrc-connection">
 
     <?php if (isset($gift_aid_payments)): ?>
 
@@ -113,7 +114,7 @@
 </form>
 
 
-<p><a href="/reliefs/retrieve-charitable-giving-tax-relief">Cancel</a></p>
+<p><a class="hmrc-connection" href="/reliefs/retrieve-charitable-giving-tax-relief">Cancel</a></p>
 
 
 <?php $include_scroll_to_errors_script = true; ?>

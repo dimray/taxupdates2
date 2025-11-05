@@ -15,4 +15,4 @@
 
 <p><a href="/savings/confirm-delete-savings-income">Delete</a></p>
 
-<p><a href="/savings/list-uk-savings-accounts">UK Bank Interest</a></p>
+<p><a class="hmrc-connection" href="/savings/list-uk-savings-accounts">UK Bank Interest</a></p>

@@ -1,4 +1,4 @@
-<form action="/disclosures/process-create-and-amend-disclosures" method="POST" class="generic-form">
+<form action="/disclosures/process-create-and-amend-disclosures" method="POST" class="generic-form hmrc-connection">
 
 
     <?php if (isset($tax_avoidance)): ?>
@@ -51,7 +51,7 @@
 
 
 
-<p><a href="/disclosures/retrieve-disclosures">Cancel</a></p>
+<p><a class="hmrc-connection" href="/disclosures/retrieve-disclosures">Cancel</a></p>
 
 <?php $include_add_another_script = true; ?>
 <?php $include_scroll_to_errors_script = true; ?>

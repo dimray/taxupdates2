@@ -1,4 +1,5 @@
-<form action="/expenses/process-create-and-amend-employment-expenses" method="POST" class="generic-form">
+<form action="/expenses/process-create-and-amend-employment-expenses" method="POST"
+    class="generic-form hmrc-connection">
 
     <div class="nested-input">
         <label>Travel Costs
@@ -61,6 +62,6 @@
     <button type="submit" class="form-button">Submit</button>
 </form>
 
-<p><a href="/expenses/retrieve-employment-expenses">Cancel</a></p>
+<p><a class="hmrc-connection" href="/expenses/retrieve-employment-expenses">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>

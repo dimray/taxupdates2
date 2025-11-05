@@ -23,4 +23,4 @@
     <button class="link" type="submit">Company Director</button>
 </form>
 
-<p><a href="/employments-income/list-employments">Back</a></p>
+<p><a class="hmrc-connection" href="/employments-income/list-employments">Back</a></p>

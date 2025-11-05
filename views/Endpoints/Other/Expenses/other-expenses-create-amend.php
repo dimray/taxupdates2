@@ -1,4 +1,4 @@
-<form action="/expenses/process-create-and-amend-other-expenses" method="POST" class="generic-form">
+<form action="/expenses/process-create-and-amend-other-expenses" method="POST" class="generic-form hmrc-connection">
 
     <h2>Payments To Trade Unions For Death Benefits</h2>
 
@@ -39,6 +39,6 @@
     <button type="submit" class="form-button">Submit</button>
 </form>
 
-<p><a href="/expenses/retrieve-other-expenses">Cancel</a></p>
+<p><a class="hmrc-connection" href="/expenses/retrieve-other-expenses">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>

@@ -1,4 +1,4 @@
-<form action="/state-benefits/process-create-state-benefit" method="POST" class="generic-form">
+<form action="/state-benefits/process-create-state-benefit" method="POST" class="generic-form hmrc-connection">
 
     <div class="form-input">
         <label for="benefit_type">Benefit Type</label>
@@ -31,4 +31,4 @@
 </form>
 
 
-<p><a href="/state-benefits/list-state-benefits">Cancel</a></p>
+<p><a class="hmrc-connection" href="/state-benefits/list-state-benefits">Cancel</a></p>

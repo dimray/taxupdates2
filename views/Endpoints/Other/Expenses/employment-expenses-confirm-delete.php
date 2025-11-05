@@ -1,8 +1,8 @@
 <p>Confirm you wish to delete Employment Expenses</p>
 
-<form action="/expenses/delete-employment-expenses" method="POST">
+<form class="hmrc-connection" action="/expenses/delete-employment-expenses" method="POST">
 
     <button type="submit" class="delete-button">Confirm</button>
 </form>
 
-<p><a href="/expenses/retrieve-employment-expenses">Cancel</a></p>
+<p><a class="hmrc-connection" href="/expenses/retrieve-employment-expenses">Cancel</a></p>

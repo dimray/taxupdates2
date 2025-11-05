@@ -2,10 +2,10 @@
     deleted.
 </p>
 
-<form action="/disclosures/delete-disclosures" method="POST">
+<form class="hmrc-connection" action="/disclosures/delete-disclosures" method="POST">
 
     <button type="submit" class="delete-button confirm-delete">Confirm</button>
 </form>
 
 
-<p><a href="/disclosures/retrieve-disclosures">Cancel</a></p>
+<p><a class="hmrc-connection" href="/disclosures/retrieve-disclosures">Cancel</a></p>

@@ -1,7 +1,8 @@
 <p>Fields marked <span class="asterisk">*</span> are required.
 </p>
 
-<form class="generic-form" action="/employments-income/process-create-amend-employment-financial-details" method="POST">
+<form class="generic-form hmrc-connection"
+    action="/employments-income/process-create-amend-employment-financial-details" method="POST">
 
     <h2>Salary</h2>
 
@@ -253,6 +254,6 @@
 
 </form>
 
-<p><a href="/employments-income/list-employments">Cancel</a></p>
+<p><a class="hmrc-connection" href="/employments-income/list-employments">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>

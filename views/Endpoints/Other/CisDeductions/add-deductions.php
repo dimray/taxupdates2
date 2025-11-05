@@ -1,4 +1,4 @@
-<form class="generic-form" action="/cis-deductions/process-create-cis-deductions    " method="POST">
+<form class="generic-form hmrc-connection" action="/cis-deductions/process-create-cis-deductions" method="POST">
 
     <div class="form-input">
         <label for="contractorName">Contractor Name</label>
@@ -66,6 +66,6 @@
 
 </form>
 
-<p><a href="/cis-deductions/retrieve-cis-deductions">Cancel</a></p>
+<p><a class="hmrc-connection" href="/cis-deductions/retrieve-cis-deductions">Cancel</a></p>
 
 <?php $include_scroll_to_errors_script = true; ?>

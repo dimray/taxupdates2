@@ -2,7 +2,7 @@
     <? formatCamelCase($benefit_amount) ?>
 </p>
 
-<form action="/state-benefits/process-amend-state-benefit-amounts" method="POST" class="generic-form">
+<form action="/state-benefits/process-amend-state-benefit-amounts" method="POST" class="generic-form hmrc-connection">
 
     <div class="form-input">
         <label for="amount">Amount</label>

@@ -1,6 +1,7 @@
 <?php require ROOT_PATH . "views/shared/mandatory-fields.php"; ?>
 
-<form action="/insurance-income/process-create-and-amend-insurance-policies-income" method="POST" class="generic-form">
+<form action="/insurance-income/process-create-and-amend-insurance-policies-income" method="POST"
+    class="generic-form hmrc-connection">
 
     <?php if (isset($life_insurance)): ?>
 
@@ -334,7 +335,7 @@
 </form>
 
 
-<p><a href="/insurance-income/retrieve-insurance-policies-income">Cancel</a></p>
+<p><a class="hmrc-connection" href="/insurance-income/retrieve-insurance-policies-income">Cancel</a></p>
 
 <?php $include_add_another_script = true; ?>
 <?php $include_scroll_to_errors_script = true; ?>

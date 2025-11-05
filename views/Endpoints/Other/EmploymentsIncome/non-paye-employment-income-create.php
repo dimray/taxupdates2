@@ -1,4 +1,5 @@
-<form action="/employments-income/process-create-amend-non-paye-employment-income" class="generic-form" method="POST">
+<form action="/employments-income/process-create-amend-non-paye-employment-income" class="generic-form hmrc-connection"
+    method="POST">
 
     <div class="form-input">
         <label for="tips">Total Amount Received</label>
