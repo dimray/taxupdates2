@@ -31,7 +31,7 @@ class ApiIndividualCalculations extends ApiCalls
         $access_token  = $_SESSION['access_token'];
 
         $headers = [
-            "Accept: application/vnd.hmrc.8.0+json",
+            "Accept: application/vnd.hmrc.7.0+json",
             "Authorization: Bearer " . $access_token,
             "Content-Length: 0"
         ];
@@ -73,7 +73,7 @@ class ApiIndividualCalculations extends ApiCalls
         $access_token  = $_SESSION['access_token'];
 
         $headers = [
-            "Accept: application/vnd.hmrc.8.0+json",
+            "Accept: application/vnd.hmrc.7.0+json",
             "Authorization: Bearer " . $access_token
         ];
 
@@ -128,7 +128,7 @@ class ApiIndividualCalculations extends ApiCalls
         }
 
         $headers = [
-            "Accept: application/vnd.hmrc.8.0+json",
+            "Accept: application/vnd.hmrc.7.0+json",
             "Authorization: Bearer " . $access_token,
         ];
 
@@ -167,7 +167,7 @@ class ApiIndividualCalculations extends ApiCalls
         $access_token  = $_SESSION['access_token'];
 
         $headers = [
-            "Accept: application/vnd.hmrc.8.0+json",
+            "Accept: application/vnd.hmrc.7.0+json",
             "Authorization: Bearer " . $access_token
         ];
 

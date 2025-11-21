@@ -81,14 +81,22 @@ class ApiFraudPreventionHeaders
     {
         $remoteAddr = $_SERVER['REMOTE_ADDR'] ?? '';
 
-        if (!empty($remoteAddr) && $this->isPublicIp($remoteAddr)) {
+        // if (!empty($remoteAddr) && $this->isPublicIp($remoteAddr)) {
+        //     return $remoteAddr;
+        // }
+
+        if (!empty($remoteAddr)) {
             return $remoteAddr;
         }
 
         // Fallback to the IP saved on login
         $userIp = $_SESSION['user_ip'] ?? '';
 
-        if (!empty($userIp) && $this->isPublicIp($userIp)) {
+        // if (!empty($userIp) && $this->isPublicIp($userIp)) {
+        //     return $userIp;
+        // }
+
+        if (!empty($userIp)) {
             return $userIp;
         }
 
