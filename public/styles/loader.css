@@ -1,14 +1,3 @@
-.display-none {
-  display: none;
-}
-
-.display-flex {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  margin-inline: 1rem;
-}
-
 /* Center container */
 #loader {
   position: fixed;
@@ -24,7 +13,23 @@
   padding-block: 0.5rem;
   border-radius: 5px;
   border: 2px solid var(--loader-border);
-  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+
+  transition: opacity 0.3s ease-in, visibility 0.3s ease-in;
+}
+
+.loader-hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-visible {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-inline: 1rem;
+
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Spinner */

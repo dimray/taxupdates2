@@ -6,5 +6,6 @@ return [
     "deny" => \App\Middleware\RedirectExample::class,
     "auth" => \App\Middleware\RequireLogin::class,
     "guest" => \App\Middleware\RedirectIfAuthenticated::class,
-    "hide_tax_year" => \App\Middleware\HideTaxYear::class
+    "hide_tax_year" => \App\Middleware\HideTaxYear::class,
+    "hide_client_name" => \App\Middleware\HideClientName::class
 ];

@@ -4,7 +4,7 @@ button {
   border: 0;
   padding: 0;
   padding-inline: 1rem;
-  background-color: hsl(0, 0%, 85%);
+  background-color: var(--button-bg);
 }
 
 button:hover,

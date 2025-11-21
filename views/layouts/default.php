@@ -6,7 +6,7 @@
         <?php include ROOT_PATH . "views/shared/tax-year.php"; ?>
     <?php endif; ?>
 
-    <?php if (!empty($_SESSION['client']['name'])): ?>
+    <?php if (!empty($_SESSION['client']['name']) && (!isset($hide_client_name))): ?>
         <p>Client Name: <?= $_SESSION['client']['name'] ?></p>
     <?php endif; ?>
 

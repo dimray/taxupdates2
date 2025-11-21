@@ -27,7 +27,7 @@ input[type="password"],
   font-size: 1rem; /* normalize font size */
   line-height: 1.2;
   font-weight: 400;
-  border: 1px solid #ccc;
+  border: 1px solid var(--input-border);
   background-color: var(--input-bg);
 }
 

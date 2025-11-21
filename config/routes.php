@@ -26,6 +26,10 @@ $router->group(["middleware" => "hide_tax_year"], function ($router) {
     $router->add("/authenticate/{action}", ["controller" => "authenticate"]);
 });
 
+$router->group(["middleware" => "hide_tax_year|hide_client_name"], function ($router) {
+    $router->add("/blog/{action}", ["controller" => "blog"]);
+});
+
 $router->group(["namespace" => "Endpoints", "middleware" => "hide_tax_year"], function ($router) {
     $router->add("/agent-authorisation/{action}", ["controller" => "agent-authorisation"]);
     $router->add("/agent-authorisation-test-support/{action}", ["controller" => "agent-authorisation-test-support"]);

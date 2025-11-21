@@ -4,6 +4,11 @@
   gap: 1rem;
 }
 
+.client-filter {
+  border: none;
+  outline: none;
+}
+
 @media (max-width: 500px) {
   .client-inputs {
     flex-direction: column;

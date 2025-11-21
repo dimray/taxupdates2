@@ -30,7 +30,7 @@ class ApiBusinessDetails extends ApiCalls
         $url = $this->base_url . "/individuals/business/details/{$nino}/list";
 
         $headers = [
-            "Accept: application/vnd.hmrc.2.0+json",
+            "Accept: application/vnd.hmrc.1.0+json",
             "Authorization: Bearer {$access_token}"
         ];
 
@@ -70,7 +70,7 @@ class ApiBusinessDetails extends ApiCalls
         $access_token  = $_SESSION['access_token'];
 
         $headers = [
-            "Accept: application/vnd.hmrc.2.0+json",
+            "Accept: application/vnd.hmrc.1.0+json",
             "Authorization: Bearer {$access_token}"
         ];
 
@@ -111,7 +111,7 @@ class ApiBusinessDetails extends ApiCalls
         $access_token = $_SESSION['access_token'];
 
         $headers = [
-            "Accept: application/vnd.hmrc.2.0+json",
+            "Accept: application/vnd.hmrc.1.0+json",
             "Authorization: Bearer {$access_token}",
             "Content-Type: application/json"
         ];
@@ -154,7 +154,7 @@ class ApiBusinessDetails extends ApiCalls
         $access_token = $_SESSION['access_token'];
 
         $headers = [
-            "Accept: application/vnd.hmrc.2.0+json",
+            "Accept: application/vnd.hmrc.1.0+json",
             "Authorization: Bearer {$access_token}"
         ];
 
@@ -195,7 +195,7 @@ class ApiBusinessDetails extends ApiCalls
         $access_token = $_SESSION['access_token'];
 
         $headers = [
-            "Accept: application/vnd.hmrc.2.0+json",
+            "Accept: application/vnd.hmrc.1.0+json",
             "Authorization: Bearer {$access_token}",
             "Content-Type: application/json"
         ];
@@ -239,7 +239,7 @@ class ApiBusinessDetails extends ApiCalls
         $access_token = $_SESSION['access_token'];
 
         $headers = [
-            "Accept: application/vnd.hmrc.2.0+json",
+            "Accept: application/vnd.hmrc.1.0+json",
             "Authorization: Bearer {$access_token}"
         ];
 

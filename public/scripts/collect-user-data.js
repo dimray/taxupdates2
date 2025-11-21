@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.querySelector("#collect-device-data");
+  if (!form) return;
+
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) collectData();
+  });
 
   form.addEventListener("submit", collectData);
 

@@ -7,7 +7,7 @@
         <p>Add or edit any items that will impact your tax position, if necessary.</p>
 
         <p>
-            <a href="/business-details/list-all-businesses?year_end=true">Business Income</a>
+            <a class="hmrc-connection" href="/business-details/list-all-businesses?year_end=true">Business Income</a>
             <span class="small">
                 Claim Capital Allowances, make Accounting Adjustments and other adjustments to submitted Cumulative
                 Summaries
@@ -41,6 +41,6 @@
     </li>
     <li>
         <p>Make your Final Declaration for the year</p>
-        <p><a href="/obligations/final-declaration">Final Declaration</a></p>
+        <p><a class="hmrc-connection" href="/obligations/final-declaration">Final Declaration</a></p>
     </li>
 </ol>

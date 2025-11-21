@@ -40,7 +40,7 @@
 
                         <?php if ($client['authorisation']): ?>
                             <td>
-                                <form action="/clients/index" method="POST">
+                                <form class="hmrc-connection" action="/clients/index" method="POST">
                                     <input type="hidden" name="client_id" value="<?= esc($client['client_id']) ?>">
                                     <input type="hidden" name="client_name" value="<?= esc($client['client_name']) ?>">
                                     <input type="hidden" name="nino" value="<?= esc($client['nino']) ?>">
@@ -149,7 +149,7 @@
                         <input type="hidden" name="select_client" value="true">
 
 
-                        <button class="link" type="submit">Select Client</button>
+                        <button class="link hmrc-connection" type="submit">Select Client</button>
                     </form>
 
                     <hr>

@@ -42,7 +42,7 @@
 
 </footer>
 
-<div id="loader" class="display-none">
+<div id="loader" class="loader-hidden">
     <div class="spinner"></div>
     <p class="loader-text">Connecting to HMRC ...</p>
 </div>

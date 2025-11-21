@@ -18,6 +18,7 @@ html {
   --form-button-hover: hsl(240, 100%, 15%);
   --form-input-disabled-bg: hsla(0, 0%, 50%, 20%);
   --input-bg: hsl(0, 0%, 100%);
+  --input-border: hsl(0, 0%, 80%);
   --focus-border: hsl(60, 100%, 50%);
   --card-border: hsl(0, 0%, 80%);
   --tax-year-bg: hsl(60, 100%, 45%);
@@ -41,20 +42,21 @@ html {
 body.dark-theme {
   color-scheme: dark;
 
-  --background-color: hsl(0, 0%, 30%);
+  --background-color: hsl(0, 0%, 25%);
   --text-color: hsl(0, 0%, 90%);
   --text-background: hsl(0, 0%, 10%);
   --link-color: hsl(215, 47%, 80%);
   --link-hover-bg: hsla(215, 47%, 70%, 40%);
   --table-stripe-color: hsla(0, 0%, 0%, 15%);
-  --button-bg: hsl(0, 0%, 22%);
+  --button-bg: hsl(0, 0%, 17%);
   --button-bg-hover: hsl(0, 0%, 12%);
   --button-disabled-bg: hsl(0, 0%, 0%);
   --form-button-bg: hsl(0, 0%, 10%);
   --form-button-hover: hsl(0, 0%, 5%);
   --form-input-disabled-bg: hsla(0, 0%, 0%, 20%);
-  --input-bg: hsl(0, 0%, 20%);
-  --focus-border: hsl(60, 100%, 40%);
+  --input-bg: hsl(0, 0%, 30%);
+  --input-border: var(--background-color);
+  --focus-border: hsla(60, 100%, 40%, 0.5);
   --card-border: hsl(0, 0%, 25%);
   --details-bg: hsla(0, 0%, 20%, 100%);
   --tax-year-select: hsl(0, 0%, 90%);
