@@ -79,24 +79,26 @@ class ApiFraudPreventionHeaders
 
     private function getPublicIp(): string
     {
+        // First, check X-Forwarded-For (may contain multiple IPs, comma-separated)
+        $xff = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? '';
+        if (!empty($xff)) {
+            // Take the first IP in the list (the original client)
+            $ips = explode(',', $xff);
+            $clientIp = trim($ips[0]);
+            if ($this->isPublicIp($clientIp)) {
+                return $clientIp;
+            }
+        }
+
+        // Fall back to REMOTE_ADDR (usually Nginx after real_ip module)
         $remoteAddr = $_SERVER['REMOTE_ADDR'] ?? '';
-
-        // if (!empty($remoteAddr) && $this->isPublicIp($remoteAddr)) {
-        //     return $remoteAddr;
-        // }
-
-        if (!empty($remoteAddr)) {
+        if (!empty($remoteAddr) && $this->isPublicIp($remoteAddr)) {
             return $remoteAddr;
         }
 
-        // Fallback to the IP saved on login
+        // Fall back to user IP stored in session
         $userIp = $_SESSION['user_ip'] ?? '';
-
-        // if (!empty($userIp) && $this->isPublicIp($userIp)) {
-        //     return $userIp;
-        // }
-
-        if (!empty($userIp)) {
+        if (!empty($userIp) && $this->isPublicIp($userIp)) {
             return $userIp;
         }
 
@@ -154,11 +156,6 @@ class ApiFraudPreventionHeaders
     // Helper function to check if IP is public
     private function isPublicIp($ip)
     {
-        // 1. Check for localhost/loopback IP
-        if ($ip === '127.0.0.1' || $ip === '::1') {
-            return true;
-        }
-
         return (bool) filter_var(
             $ip,
             FILTER_VALIDATE_IP,
