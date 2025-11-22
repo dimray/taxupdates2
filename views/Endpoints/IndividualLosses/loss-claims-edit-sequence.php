@@ -1,8 +1,5 @@
 <?php if (!empty($claims  && $sideways_claim_count > 1)):  ?>
 
-
-
-
     <div class="regular-table">
 
         <div class="desktop-view">
@@ -136,8 +133,6 @@
         </div>
 
     </div>
-
-
 
 
 <?php else: ?>

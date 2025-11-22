@@ -429,10 +429,6 @@ class IndividualLosses extends Controller
             $claims =  $_SESSION['loss_claims'] ?? [];
         }
 
-        // redirect if nothing in post or session
-        if (empty($claims)) {
-            return $this->redirect("/individual-losses/loss-claims");
-        }
 
         // save in session for redirect with errors
         $_SESSION['loss_claims'] = $claims;
