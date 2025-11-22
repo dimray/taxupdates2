@@ -472,7 +472,7 @@ class PropertyBusiness extends Controller
         if (empty($submission)) {
             $empty_data = true;
             return $this->view(
-                "Hmrc/PropertyBusiness/show-annual-submission.php",
+                "Endpoints/PropertyBusiness/show-annual-submission.php",
                 compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "type_of_business")
             );
         }
