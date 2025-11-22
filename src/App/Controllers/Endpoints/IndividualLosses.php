@@ -255,6 +255,10 @@ class IndividualLosses extends Controller
 
         $business_details = Helper::setBusinessDetails();
 
+        if (!isset($_SESSION['type_of_business'])) {
+            return $this->redirect("/business-details/list-all-businesses?year_end=true");
+        }
+
         $type_of_business = $_SESSION['type_of_business'] === "self-employment" ? "self-employment" : "property";
 
         return $this->view("Endpoints/IndividualLosses/loss-claim-index.php", compact("heading", "business_details", "type_of_business"));
