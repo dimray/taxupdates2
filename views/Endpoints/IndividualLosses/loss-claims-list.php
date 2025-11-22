@@ -136,8 +136,6 @@
 
     <p>No loss claims found</p>
 
-    <p><a href="/individual-losses/loss-claims">Make A Loss Claim</a></p>
-
 <?php endif; ?>
 
 <hr>

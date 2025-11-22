@@ -13,7 +13,6 @@ use Framework\Controller;
 
 class IndividualLosses extends Controller
 {
-
     public function __construct(private ApiIndividualLosses $apiIndividualLosses) {}
 
     // **********************BFWD LOSSES*******************************

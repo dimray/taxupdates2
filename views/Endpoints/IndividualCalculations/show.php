@@ -132,7 +132,7 @@
 
     <p><a class="hmrc-connection" href="/individual-losses/list-loss-claims">View all losses</a></p>
 
-    <p><a href="/individual-losses/edit-loss-claim-sequence">Click here</a> to change the order in which sideways loss
+    <p><a href="/individual-losses/edit-loss-claims-sequence">Click here</a> to change the order in which sideways loss
         claims are applied to your calculation, if you have more than one.</p>
 
     <p><a class="hmrc-connection" href="/individual-losses/list-brought-forward-losses">Click here</a> to view all losses

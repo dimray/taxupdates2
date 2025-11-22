@@ -13,14 +13,10 @@
 
 <?php include ROOT_PATH . "views/shared/errors.php"; ?>
 
-<br>
-
 <form class="hmrc-connection" action="/business-source-adjustable-summary/submit" method="POST">
 
 
     <?php include ROOT_PATH . "/views/shared/submission-declaration.php"; ?>
-
-    <br>
 
     <button class="form-button" type="submit">Submit</button>
 

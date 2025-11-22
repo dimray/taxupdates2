@@ -123,7 +123,7 @@ echo '</pre>';
 
 <!-- always runs as needed for header menu -->
 <script src="/scripts/mobile-nav.js"></script>
-<script src="/scripts/light-dark.js"></script>#
+<script src="/scripts/light-dark.js"></script>
 <script src="/scripts/loader.js"></script>
 
 </body>
