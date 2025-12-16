@@ -27,12 +27,11 @@
 .add-row-btn,
 .remove-row-btn {
   font-size: 1.5rem;
+  border-radius: 10px;
 
-  border-radius: 5px;
-  border: none;
-  height: 1.5rem;
-  line-height: 1.5rem;
   margin-block-start: 0.5rem;
+  padding-block-end: 0.2rem;
+  background-color: hsl(0, 0%, 90%);
 }
 
 .clients-table th {

@@ -367,6 +367,11 @@ class SelfEmployment extends Controller
 
         $hide_tax_year = true;
 
-        return $this->view("Endpoints/SelfEmployment/success.php", compact("heading", "hide_tax_year", "business_details", "type"));
+        $supporting_agent  = false;
+        if (isset($_SESSION['client']['agent_type']) && $_SESSION['client']['agent_type'] === "supporting") {
+            $supporting_agent = true;
+        }
+
+        return $this->view("Endpoints/SelfEmployment/success.php", compact("heading", "hide_tax_year", "business_details", "type", "supporting_agent"));
     }
 }

@@ -8,6 +8,8 @@ use finfo;
 
 class UploadHelper
 {
+    private const MAX_CSV_FILE_SIZE_BYTES = 512 * 1024;
+
     // *********** UPLOADS ****************************************
 
     public static function processCsvErrors(array $file, int $maxDataRows, int $maxDataColumns): array
@@ -37,37 +39,53 @@ class UploadHelper
         // Check if file was actually uploaded
         if (!is_uploaded_file($file['tmp_name'])) {
             $errors[] = "File does not exist or was not uploaded properly.";
+            return $errors;
         }
 
         // Check if file is empty
         if (filesize($file['tmp_name']) === 0) {
             $errors[] = "File is empty.";
+            return $errors;
         }
 
         // Check file size (if no previous errors)
-        $MAX_FILE_SIZE_BYTES = 512 * 1024;
-        if ($file['size'] > $MAX_FILE_SIZE_BYTES) {
+        if ($file['size'] > self::MAX_CSV_FILE_SIZE_BYTES) {
             $errors[] = "File too large (max 512KB).";
+            return $errors;
         }
 
         // Check MIME type
         $finfo = new finfo(FILEINFO_MIME_TYPE);
         $mime_type = $finfo->file($file['tmp_name']);
 
+        if ($mime_type === false) {
+            $errors[] = "Unable to determine file type. File may be corrupted or missing.";
+            return $errors;
+        }
+
         $allowed_mime_types = [
             "text/csv",
             "application/vnd.ms-excel",
             "text/plain", // Sometimes CSV files are detected as plain text
-            "application/csv"  // Additional MIME type sometimes used
+            "application/csv",  // Additional MIME type sometimes used
+            "text/x-comma-separated-values"
         ];
 
         if (!in_array($mime_type, $allowed_mime_types)) {
             $errors[] = "File must be a CSV file. Detected format: {$mime_type}";
+            return $errors;
         }
 
         // Check for correct number of columns
         if (empty($errors)) {
-            $delimiter = self::determineCsvDelimiter($file['tmp_name'], $mime_type);
+            $contents = file_get_contents($file['tmp_name']);
+
+            if (strncmp($contents, "\xEF\xBB\xBF", 3) === 0) {
+                $contents = substr($contents, 3);
+                file_put_contents($file['tmp_name'], $contents);
+            }
+
+            $delimiter = self::detectDelimiter($file['tmp_name']);
 
             $errors = self::validateColumnAndRowCount($file['tmp_name'], $delimiter, $maxDataRows, $maxDataColumns);
         }
@@ -75,50 +93,72 @@ class UploadHelper
         return $errors;
     }
 
-    private static function determineCsvDelimiter(string $filePath, string $mimeType): string
-    {
-        // Common MIME type hints for delimiters
-        $mimeHints = [
-            'text/tab-separated-values' => "\t",
-            'application/vnd.ms-excel' => ",",
-            'text/csv' => ",",
-            'application/csv' => ",",
-            'text/plain' => ",",
-        ];
-
-        // Prioritize delimiter based on explicit MIME type hints
-        if (isset($mimeHints[$mimeType])) {
-            return $mimeHints[$mimeType];
-        }
-
-        // Fallback to scanning the file for the most common delimiter
-        return self::detectDelimiter($filePath);
-    }
-
 
     private static function detectDelimiter(string $filePath): string
     {
-        $delimiters = ["," => 0, "\t" => 0, ";" => 0, "|" => 0];
+        // Candidate delimiters in priority order
+        $delimiters = [",", ";", "\t", "|"];
 
-        $handle = fopen($filePath, 'r');
-        if ($handle === false) {
-            return ",";
+        // Read a small sample (first 10 lines)
+        $lines = [];
+        $fh = fopen($filePath, "r");
+
+        if (!$fh) {
+            return ","; // safe fallback
         }
 
-        $line = fgets($handle);
-        fclose($handle);
+        $maxLines = 10;
+        while (($line = fgets($fh)) !== false && count($lines) < $maxLines) {
 
-        if ($line === false) {
-            return ",";
+            if (trim($line) !== "") {
+                $lines[] = $line;
+            }
+        }
+        fclose($fh);
+
+        if (empty($lines)) {
+            return ","; // empty file → fallback
         }
 
-        foreach ($delimiters as $delimiter => &$count) {
-            $count = substr_count($line, $delimiter);
+        $scores = [];
+
+        foreach ($delimiters as $delimiter) {
+            $columnCounts = [];
+
+            foreach ($lines as $line) {
+                $columnCounts[] = substr_count($line, $delimiter) + 1;
+            }
+
+            // If all column counts match, it's a strong candidate
+            $unique = array_unique($columnCounts);
+            $consistent = count($unique) === 1;
+
+            $scores[$delimiter] = [
+                "consistent" => $consistent,
+                "maxColumns" => max($columnCounts),
+                "minColumns" => min($columnCounts),
+            ];
         }
 
-        $detected = array_search(max($delimiters), $delimiters);
+        // 1. Prefer delimiters with fully consistent column counts
+        foreach ($scores as $delimiter => $stat) {
+            if ($stat["consistent"] && $stat["maxColumns"] > 1) {
+                return $delimiter;
+            }
+        }
 
-        return $detected !== false ? $detected : ","; // Default to comma if no delimiter found
+        // 2. Otherwise, pick the delimiter that yields the highest column count (best guess)
+        $best = ",";
+        $bestColumns = 1;
+
+        foreach ($scores as $delimiter => $stat) {
+            if ($stat["maxColumns"] > $bestColumns) {
+                $bestColumns = $stat["maxColumns"];
+                $best = $delimiter;
+            }
+        }
+
+        return $best;
     }
 
 
@@ -134,18 +174,19 @@ class UploadHelper
         // maxTotalColumns is total number of columns from the start scanned.
         // maxScanDistance is max empty rows between data columns
 
+        $errors = [];
+
         $handle = fopen($filePath, 'r');
         if ($handle === false) {
             $errors[] = 'Unable to open file';
             return $errors;
         }
 
-        $errors = [];
         $dataRowCount = 0;
         $consecutiveEmptyRows = 0;
         $usedColumnIndices = [];
 
-        while (($line = fgetcsv($handle, 5000, $delimiter)) !== false) {
+        while (($line = fgetcsv($handle, 0, $delimiter)) !== false) {
 
             // Limit columns scanned to maxTotalColumns
             $line = array_slice($line, 0, $maxTotalColumns);
@@ -216,14 +257,20 @@ class UploadHelper
             return $data;
         }
 
-        $delimiter = self::determineCsvDelimiter($file['tmp_name'], $file['type'] ?? 'application/octet-stream');
+        $delimiter = self::detectDelimiter($file['tmp_name']);
 
         if (($handle = fopen($file['tmp_name'], 'r')) !== false) {
             while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
+
                 $row = array_map('trim', $row);
 
+                // Skip empty or malformed rows
+                if (count($row) < 2 || $row[0] === '') {
+                    continue;
+                }
+
                 $key = $row[0];
-                $value = $row[1];
+                $value = $row[1] ?? '';
 
                 if ($key === '') {
                     continue;
@@ -246,7 +293,7 @@ class UploadHelper
             return $clients;
         }
 
-        $delimiter = self::determineCsvDelimiter($file['tmp_name'], $file['type'] ?? 'application/octet-stream');
+        $delimiter = self::detectDelimiter($file['tmp_name']);
 
         if (($handle = fopen($file['tmp_name'], 'r')) !== false) {
             while (($row = fgetcsv($handle, 0, $delimiter)) !== false) {
@@ -316,7 +363,7 @@ class UploadHelper
 
     private static function detectDelimiterFromLine(string $line): string
     {
-        $delimiters = ["\t" => 0, "," => 0, ";" => 0, "|" => 0, " " => 0];
+        $delimiters = ["\t" => 0, "," => 0, ";" => 0, "|" => 0];
 
         foreach ($delimiters as $delimiter => $count) {
             $delimiters[$delimiter] = substr_count($line, $delimiter);
@@ -324,7 +371,7 @@ class UploadHelper
 
         $detected = array_search(max($delimiters), $delimiters);
 
-        return $delimiters[$detected] > 0 ? $detected : "\t";
+        return $delimiters[$detected] > 0 ? $detected : ",";
     }
 
 

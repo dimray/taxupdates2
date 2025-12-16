@@ -43,7 +43,12 @@ class BusinessDetails extends Controller
 
         $hide_tax_year = true;
 
-        return $this->view("/Endpoints/BusinessDetails/index.php", compact("heading", "businesses", "hide_tax_year", "year_end"));
+        $supporting_agent  = false;
+        if (isset($_SESSION['client']['agent_type']) && $_SESSION['client']['agent_type'] === "supporting") {
+            $supporting_agent = true;
+        }
+
+        return $this->view("/Endpoints/BusinessDetails/index.php", compact("heading", "businesses", "hide_tax_year", "year_end", "supporting_agent"));
     }
 
     public function retrieveBusinessDetails()

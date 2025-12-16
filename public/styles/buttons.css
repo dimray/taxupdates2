@@ -123,3 +123,8 @@ button:disabled {
 .copy-button:hover {
   background-color: hsl(0, 0%, 60%);
 }
+
+.select-button {
+  color: var(--link-color);
+  border: none;
+}

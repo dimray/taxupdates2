@@ -1,3 +1,4 @@
+<?php if (!$supporting_agent): ?>
 <ol>
     <li>
         <p>Check your tax calculation</p>
@@ -44,3 +45,15 @@
         <p><a class="hmrc-connection" href="/obligations/final-declaration">Final Declaration</a></p>
     </li>
 </ol>
+
+<?php else: ?>
+
+<p>
+    <a class="hmrc-connection" href="/business-details/list-all-businesses?year_end=true">Business Income</a>
+    <span class="small">
+        Claim Capital Allowances, make Accounting Adjustments and other adjustments to submitted Cumulative
+        Summaries
+    </span>
+</p>
+
+<?php endif; ?>

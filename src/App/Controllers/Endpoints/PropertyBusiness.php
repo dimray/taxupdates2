@@ -592,8 +592,13 @@ class PropertyBusiness extends Controller
 
         $hide_tax_year = true;
 
+        $supporting_agent  = false;
+        if (isset($_SESSION['client']['agent_type']) && $_SESSION['client']['agent_type'] === "supporting") {
+            $supporting_agent = true;
+        }
+
         $business_details = Helper::setBusinessDetails();
 
-        return $this->view("Endpoints/PropertyBusiness/success.php", compact("heading", "hide_tax_year", "business_details", "type"));
+        return $this->view("Endpoints/PropertyBusiness/success.php", compact("heading", "hide_tax_year", "business_details", "type", "supporting_agent"));
     }
 }

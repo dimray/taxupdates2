@@ -56,15 +56,20 @@ class Session extends Controller
 
         // get device data
         $device_data = $this->request->post['device_data'] ?? null;
+
         if (!$device_data) {
             $this->addError($this->deviceError);
+        }
+
+        if (!is_string($device_data)) {
+            $this->addError($this->deviceError);
+            return $this->redirect("/session/new");
         }
 
         if (!empty($this->errors)) {
             return $this->redirect("/session/new");
         }
 
-        $_SESSION['device_data'] = $device_data;
         unset($this->request->post['device_data']);
 
         // validate login data
@@ -153,14 +158,15 @@ class Session extends Controller
         }
 
         // check if device is known
+
         if (!Helper::isDeviceDataValid($device_data)) {
             $this->addError($this->deviceError);
             return $this->redirect("/session/new");
         }
 
-        $device_data = json_decode($device_data, true);
+        $device_data_array = json_decode($device_data, true);
 
-        $device_id = $device_data['deviceID'];
+        $device_id = $device_data_array['deviceID'];
 
         $user_id = (int) $user['id'];
 
@@ -187,6 +193,9 @@ class Session extends Controller
 
         // login and redirect
         $this->user_login->loginUser($user);
+
+        // save device data to session
+        $_SESSION['device_data'] = $device_data;
 
         $redirect = $_SESSION['redirect'] ?? "/";
 
@@ -226,17 +235,21 @@ class Session extends Controller
             return $this->redirect("/session/new");
         }
 
-        $device_data = $this->request->post['device_data'] ?? [];
+        $device_data = $this->request->post['device_data'] ?? null;
 
         if (!Helper::isDeviceDataValid($device_data)) {
             $this->addError($this->deviceError);
             return $this->redirect("/session/new");
         }
 
-        $_SESSION['device_data'] = $device_data;
-        $device_data = json_decode($device_data, true);
+        if (!is_string($device_data)) {
+            $this->addError($this->deviceError);
+            return $this->redirect("/session/new");
+        }
 
-        $response = $this->user_validator->checkAuthenticationCode("session", $authentication_code, $user, $device_data);
+        $device_data_array = json_decode($device_data, true);
+
+        $response = $this->user_validator->checkAuthenticationCode("session", $authentication_code, $user, $device_data_array);
 
         if ($response['success']) {
             // log in
@@ -247,6 +260,8 @@ class Session extends Controller
             $updated_user = $this->user->findUserBy("email", $email);
 
             $this->user_login->loginUser($updated_user);
+
+            $_SESSION['device_data'] = $device_data;
 
             $redirect = $_SESSION['redirect'] ?? "/";
 

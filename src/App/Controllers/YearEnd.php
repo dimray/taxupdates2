@@ -13,9 +13,14 @@ class YearEnd extends Controller
     {
         $hide_tax_year = true;
 
+        $supporting_agent  = false;
+        if (isset($_SESSION['client']['agent_type']) && $_SESSION['client']['agent_type'] === "supporting") {
+            $supporting_agent = true;
+        }
+
         $heading = "Year-End";
 
-        return $this->view("YearEnd/index.php", compact("hide_tax_year", "heading"));
+        return $this->view("YearEnd/index.php", compact("hide_tax_year", "heading", "supporting_agent"));
     }
 
     public function otherIncome()

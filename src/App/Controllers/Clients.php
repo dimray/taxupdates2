@@ -172,6 +172,7 @@ class Clients extends Controller
             $clients = UploadHelper::parseClientCsv($file);
         }
 
+
         if (empty($clients)) {
             $this->addError("No valid data found, please check your file and try again");
             return $this->redirect("/clients/upload-clients");
@@ -182,7 +183,10 @@ class Clients extends Controller
             array_shift($clients);
         }
 
+
+
         $valid_clients = $this->validateClients($clients);
+
 
         if (empty($valid_clients)) {
             return $this->redirect("/clients/upload-clients");
@@ -243,6 +247,8 @@ class Clients extends Controller
                 $this->client->insert($client_array);
                 $client_id = (int) $this->client->getLastId();
             }
+
+
 
             // if client is already linked to this firm, update details if they don't match
             if ($this->client_agent->checkDuplicate($client_id, $firm_id)) {

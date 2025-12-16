@@ -10,7 +10,7 @@ html {
   --link-color: hsl(240, 100%, 50%);
   --link-hover-bg: hsla(240, 100%, 50%, 10%);
   --table-stripe-color: hsla(0, 0%, 0%, 4%);
-  --button-bg: hsl(0, 0%, 100%);
+  --button-bg: hsl(0, 0%, 75%);
   --button-bg-hover: hsl(0, 0%, 70%);
   --button-disabled-color: hsla(0, 0%, 50%, 70%);
   --button-disabled-bg: hsla(0, 0%, 50%, 20%);

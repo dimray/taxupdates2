@@ -37,7 +37,7 @@
 <h2>Client Maintenance</h2>
 
 <p>To edit a client record do one of the following:</p>
-<ul>
+<ul class="list">
     <li>delete the record then enter it again</li>
     <li>overwrite the record by saving a new record with the same NI Number</li>
 </ul>
