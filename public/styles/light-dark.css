@@ -1,10 +1,16 @@
 html {
   color-scheme: dark-light;
 
-  --background-color: hsla(0, 0%, 0%, 6%);
+  --theme-color: hsl(208, 73%, 42%);
+  --theme-hover: hsl(208, 73%, 37%);
+  --theme-text: var(--theme-color);
+  --light-text: hsl(0, 0%, 95%);
+
+  --background-color: hsl(0, 0%, 95%);
   --text-color: hsl(0, 0%, 5%);
-  --text-background: hsl(0, 0%, 90%);
+  --text-background: hsl(0, 0%, 95%);
   --header-color: hsl(0, 0%, 15%);
+  --header-color: var(--theme-color);
   --header-text: hsl(0, 0%, 90%);
   --submenu-color: hsl(0, 0%, 25%);
   --link-color: hsl(240, 100%, 50%);
@@ -14,46 +20,64 @@ html {
   --button-bg-hover: hsl(0, 0%, 70%);
   --button-disabled-color: hsla(0, 0%, 50%, 70%);
   --button-disabled-bg: hsla(0, 0%, 50%, 20%);
-  --form-button-bg: hsl(240, 100%, 25%);
-  --form-button-hover: hsl(240, 100%, 15%);
+  --form-button-bg: var(--theme-color);
+  --form-button-hover: var(--theme-hover);
   --form-input-disabled-bg: hsla(0, 0%, 50%, 20%);
   --input-bg: hsl(0, 0%, 100%);
   --input-border: hsl(0, 0%, 80%);
   --focus-border: hsl(60, 100%, 50%);
   --card-border: hsl(0, 0%, 80%);
   --tax-year-bg: hsl(60, 100%, 45%);
-  --tax-year-text: hsl(0, 0%, 10%);
+  --tax-year-bg: transparent;
+
+  --error: yellow;
+
+  --tax-year-text: var(--theme-text);
+
   --tax-year-select: hsl(0, 0%, 100%);
-  --footer-bg: hsla(0, 0%, 0%, 0.05);
+  --footer-bg: hsl(0, 0%, 80%);
 
   --summary-bg: hsl(0, 0%, 80%);
-  --details-bg: hsl(0, 0%, 90%);
+  --details-bg: hsl(0, 0%, 80%);
   --dialog-bg: hsl(0, 0%, 95%);
 
   --delete-text: hsl(0, 100%, 50%);
   --delete-bg: hsla(0, 100%, 50%, 10%);
   --delete-bg-hover: hsla(0, 100%, 50%, 20%);
 
-  --loader-text: hsl(0, 0%, 30%);
-  --loader-bg: hsl(0, 0%, 95%);
-  --loader-border: hsl(0, 0%, 40%);
+  --loader-text: var(--theme-color);
+  --loader-bg: var(--text-background);
+  --loader-border: var(--theme-color);
+
+  --upload-button-bg: hsl(0, 0%, 80%);
+  --upload-button-hover: hsl(0, 0%, 75%);
 }
 
 body.dark-theme {
   color-scheme: dark;
+
+  --theme-color: hsl(208, 73%, 22%);
+  --theme-hover: hsl(208, 73%, 17%);
+  --theme-text: hsl(0, 0%, 90%);
+  --light-text: hsl(0, 0%, 95%);
+
+  --tax-year-text: var(--theme-text);
 
   --background-color: hsl(0, 0%, 25%);
   --text-color: hsl(0, 0%, 90%);
   --text-background: hsl(0, 0%, 10%);
   --link-color: hsl(215, 47%, 80%);
   --link-hover-bg: hsla(215, 47%, 70%, 40%);
-  --table-stripe-color: hsla(0, 0%, 0%, 15%);
+  --table-stripe-color: hsla(0, 0%, 0%, 8%);
   --button-bg: hsl(0, 0%, 17%);
   --button-bg-hover: hsl(0, 0%, 12%);
   --button-disabled-bg: hsl(0, 0%, 0%);
-  --form-button-bg: hsl(0, 0%, 10%);
-  --form-button-hover: hsl(0, 0%, 5%);
+  /* --form-button-bg: hsl(0, 0%, 10%);
+  --form-button-hover: hsl(0, 0%, 5%); */
   --form-input-disabled-bg: hsla(0, 0%, 0%, 20%);
+
+  --error: hsl(60, 85%, 45%);
+
   --input-bg: hsl(0, 0%, 30%);
   --input-border: var(--background-color);
   --focus-border: hsla(60, 100%, 40%, 0.5);
@@ -64,9 +88,14 @@ body.dark-theme {
   --dialog-bg: hsl(0, 0%, 20%);
   /* --footer-bg: hsl(0, 0%, 25%); */
 
-  --loader-text: hsl(0, 0%, 70%);
-  --loader-bg: hsl(0, 0%, 20%);
-  --loader-border: hsl(0, 0%, 70%);
+  --loader-text: var(--link-color);
+  --loader-bg: var(--text-background);
+  --loader-border: var(--link-color);
+
+  --footer-bg: hsl(0, 0%, 20%);
+
+  --upload-button-bg: var(--theme-color);
+  --upload-button-hover: var(--theme-hover);
 }
 
 body {

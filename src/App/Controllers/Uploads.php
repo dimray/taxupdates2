@@ -8,10 +8,12 @@ use App\Helpers\Helper;
 use App\Helpers\SubmissionsHelper;
 use App\Helpers\UploadHelper;
 use App\Flash;
+use App\Helpers\ForeignPropertyHelper;
 use Framework\Controller;
 
 class Uploads extends Controller
 {
+    public function __construct(private ForeignPropertyHelper $foreign_property_helper) {}
 
     public function createCumulativeUpload()
     {
@@ -51,23 +53,63 @@ class Uploads extends Controller
         $form_action = "/uploads/process-cumulative-upload";
 
         $country_codes = [];
+        $foreign_properties = [];
+        $nino = Helper::getNino();
+
+
+
 
         if ($type_of_business === "foreign-property") {
-            $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
+
+            if ($_SESSION['tax_year'] === "2025-26") {
+                $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
+            } else {
+                if (isset($_SESSION['foreign_properties'])) {
+                    $foreign_properties = $_SESSION['foreign_properties'];
+                } else {
+                    $foreign_properties = $this->foreign_property_helper->getForeignProperties($nino);
+                    $_SESSION['foreign_properties'] = $foreign_properties;
+                }
+            }
+
+            // ********************
+            // FOR TESTING remove for production
+            $foreign_properties = $this->foreign_property_helper->getForeignProperties($nino);
+            $country_codes = [];
+            // ****************************
         }
 
-        return $this->view("Uploads/cumulative-upload.php", compact("heading", "business_details", "type_of_business", "errors", "hide_tax_year", "form_action", "country_codes"));
+
+        return $this->view("Uploads/cumulative-upload.php", compact("heading", "business_details", "type_of_business", "errors", "hide_tax_year", "form_action", "country_codes", "foreign_properties"));
     }
 
     public function processCumulativeUpload()
     {
+        $country_or_property = "";
+        $country_code = "";
+        $property_id = "";
+
+        // check whether dealing with countries or properties
         if ($_SESSION['type_of_business'] === "foreign-property") {
             // set country code and foreign tax credit relief
-            $country_code = $this->request->post['country_code'] ?? '';
+            $country_or_property = $this->request->post['country_or_property'];
 
-            if (empty($country_code)) {
-                $this->addError("Country is required");
-                return $this->redirect("/uploads/create-cumulative-upload");
+            if ($country_or_property === "country") {
+
+                $country_code = $this->request->post['country_code'] ?? '';
+
+                if (empty($country_code)) {
+                    $this->addError("Country is required");
+                    return $this->redirect("/uploads/create-cumulative-upload");
+                }
+            } else {
+
+                $property_id = $this->request->post['hmrc_property_id'] ?? '';
+
+                if (empty($property_id)) {
+                    $this->addError("A property must be selected");
+                    return $this->redirect("/uploads/create-cumulative-upload");
+                }
             }
 
             $foreign_tax_credit_relief = isset($this->request->post['foreign_tax_credit_relief']) ? true : false;
@@ -146,9 +188,15 @@ class Uploads extends Controller
 
             $cumulative_data['foreignTaxCreditRelief'] = $foreign_tax_credit_relief;
 
-            $_SESSION['cumulative_data'][$_SESSION['business_id']][$country_code] = $cumulative_data;
-            // add more properties
-            return $this->redirect("/uploads/add-country");
+            if ($country_or_property === "country") {
+                $_SESSION['cumulative_data'][$_SESSION['business_id']][$country_code] = $cumulative_data;
+
+                return $this->redirect("/uploads/add-country");
+            } else {
+                $_SESSION['cumulative_data'][$_SESSION['business_id']][$property_id] = $cumulative_data;
+
+                return $this->redirect("/uploads/add-property");
+            }
         }
 
         $_SESSION['cumulative_data'][$_SESSION['business_id']] = $cumulative_data;
@@ -286,6 +334,34 @@ class Uploads extends Controller
         return $this->view("Uploads/cumulative-add-country.php", compact("heading", "business_details", "country_names"));
     }
 
+    public function addProperty()
+    {
+
+        $business_details = Helper::setBusinessDetails();
+        $business_details['periodStartDate'] = $_SESSION['period_start_date'];
+        $business_details['periodEndDate'] = $_SESSION['period_end_date'];
+
+        if ($_SESSION['type_of_business'] !== 'foreign-property' || empty($_SESSION['cumulative_data'][$_SESSION['business_id']])) {
+            return $this->redirect("/uploads/create-cumulative-upload");
+        }
+
+        $nino = Helper::getNino();
+
+        $foreign_properties = $this->foreign_property_helper->getForeignProperties($nino);
+        $selected_properties = [];
+        $session_property_ids = array_keys($_SESSION['cumulative_data'][$_SESSION['business_id']]);
+
+        foreach ($foreign_properties as $property) {
+            if (in_array($property['propertyId'], $session_property_ids)) {
+                $selected_properties[] = $property;
+            }
+        }
+
+        $heading = "Cumulative Summary";
+
+        return $this->view("Uploads/cumulative-add-property.php", compact("heading", "business_details", "selected_properties", "foreign_properties"));
+    }
+
     public function approveForeignProperty()
     {
         $business_details = Helper::setBusinessDetails();
@@ -299,27 +375,33 @@ class Uploads extends Controller
             return $this->redirect("/uploads/create-cumulative-upload");
         }
 
-        // put the country code inside the array and save this as the session array
-        $foreign_property_data = [];
 
-        foreach ($cumulative_data as $country_code => $country_data) {
-            $updated_array = array_merge(['countryCode' => $country_code], $country_data);
-            $foreign_property_data[] = $updated_array;
+        // differentiate between country or property from 26/27
+        $country_or_property = "";
+
+        if ($_SESSION['tax_year'] === "2025-26") {
+            $country_or_property = "country";
+        } else {
+            $country_or_property = "property";
         }
 
-        $_SESSION['cumulative_data'][$_SESSION['business_id']] = $foreign_property_data;
+        // ********************
+        // For TESTING remove at production
+        $country_or_property = "property";
+        // End for TESTING
+        // ********************
 
-        $cumulative_data = $foreign_property_data;
+        // put the country code or property id inside the array and save this as the session array       
 
         // set totals
         $totals = [];
 
-        foreach ($cumulative_data as $key => $country_data) {
+        foreach ($cumulative_data as $key => $data) {
 
-            $total_income = array_sum($country_data['income']);
-            $total_expenses = array_sum($country_data['expenses']);
+            $total_income = array_sum($data['income']);
+            $total_expenses = array_sum($data['expenses']);
 
-            $totals[$country_data['countryCode']] = [
+            $totals[$key] = [
                 'total_income' => $total_income,
                 'total_expenses' => $total_expenses,
                 'profit' => $total_income - $total_expenses
@@ -337,11 +419,18 @@ class Uploads extends Controller
             }
         }
 
+        // prepare view
         $errors = $this->flashErrors();
 
         $heading = "Confirm Cumulative Summary";
 
         $hide_tax_year = true;
+
+        $foreign_property_data = $cumulative_data;
+
+        $nino = Helper::getNino();
+
+        $foreign_properties = $this->foreign_property_helper->getForeignProperties($nino);
 
         return $this->view(
             "Endpoints/PropertyBusiness/approve-cumulative-summary-foreign.php",
@@ -350,10 +439,12 @@ class Uploads extends Controller
                 "business_details",
                 "errors",
                 "foreign_property_data",
+                "foreign_properties",
                 "totals",
                 "consolidated_expenses",
                 "non_consolidated_expenses",
-                "hide_tax_year"
+                "hide_tax_year",
+                "country_or_property"
             )
         );
     }

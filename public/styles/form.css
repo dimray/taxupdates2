@@ -23,12 +23,14 @@ input[type="password"],
 .remove-row {
   height: 2.5em; /* consistent height */
   padding: 0.25em 0.5em; /* vertical + horizontal padding */
+  padding-block: 0;
   box-sizing: border-box; /* ensures padding doesn't affect height */
   font-size: 1rem; /* normalize font size */
   line-height: 1.2;
   font-weight: 400;
   border: 1px solid var(--input-border);
   background-color: var(--input-bg);
+  border-radius: 2px;
 }
 
 .generic-form {
@@ -92,6 +94,7 @@ input[type="password"],
 
 label {
   color: var(--text-color);
+  margin-block-end: 2px;
 }
 
 .form-input {
@@ -109,7 +112,6 @@ label {
 .form-input input,
 .form-input select {
   border: 1px solid black;
-  border-radius: 0px;
 }
 
 .form-input input:focus,
@@ -176,7 +178,9 @@ label {
 
 .inline-form-center {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
+  margin-block: 2rem;
+
   gap: 1rem;
 }
 
@@ -186,8 +190,22 @@ label {
   gap: 1rem;
 }
 
+.inline-form label,
+.inline-form-center label {
+  color: var(--theme-text);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.inline-form select,
+.inline-form-center select {
+  height: 2rem;
+}
+
 .inline-form input,
-.inline-form button {
+.inline-form button,
+.inline-form-center input,
+.inline-form-center button {
   height: 2rem;
   vertical-align: bottom;
 }
@@ -250,6 +268,7 @@ input[type="checkbox"] {
 
 /* csv upload */
 
+/* hide native element */
 #csv_upload {
   width: 0.1px;
   height: 0.1px;
@@ -257,24 +276,34 @@ input[type="checkbox"] {
   overflow: hidden;
   position: absolute;
   z-index: -1;
-  background-color: var(--link-color);
+  background-color: transparent;
 }
 
+p.upload_label {
+  color: var(--text-color);
+  margin-block-end: 0;
+  font-weight: 500;
+}
+
+.csv_upload_button,
 .csv_upload_label {
-  background: none;
-  border: none;
-  padding: 0;
-  font: inherit;
-  text-decoration: underline;
   cursor: pointer;
-  color: var(--link-color);
-  text-align: left;
+  border-radius: 2px;
+  border: 0;
+  padding: 0;
+  padding-inline: 1rem;
+  padding-block: 0.2rem;
+  background-color: var(--upload-button-bg);
+  color: var(--text-color);
+  margin-block: 1rem;
 }
 
+.csv_upload_button:hover,
+.csv_upload_button:focus,
 .csv_upload_label:hover,
 .csv_upload_label:focus {
-  color: var(--link-color);
-  background-color: var(--link-hover-bg);
+  color: var(--text-color);
+  background-color: var(--upload-button-hover);
 }
 
 #csv_filename {
@@ -287,30 +316,31 @@ input[type="checkbox"] {
 
 /* change tax year */
 #change_tax_year {
-  font-size: 1.5rem;
-  font-weight: 800;
   margin-block-start: 1rem;
   align-items: center;
   gap: 1rem;
   background-color: var(--tax-year-bg);
   display: inline-flex;
-  padding-inline: 2rem;
-  padding-block: 0.5rem;
+  padding-inline: 0;
+  padding-block: 0rem;
   border-radius: 0;
 }
 
 #change_tax_year label {
   text-transform: uppercase;
-  font-weight: 800;
+  font-size: 1.4rem;
+  font-weight: 700;
   color: var(--tax-year-text);
 }
 
 #change_tax_year select {
-  border: 1px solid black;
+  /* border: 1px solid black; */
   height: 2rem;
-  background-color: var(--tax-year-select);
+  /* background-color: var(--tax-year-select); */
   color: var(--tax-year-text);
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 1rem;
+  border: 1px solid var(--tax-year-text);
 }
 
 /* end change tax year */
@@ -353,4 +383,6 @@ input[type="checkbox"] {
 .error-messages .form-error {
   margin: 0;
   margin-block-end: 1rem;
+  background-color: var(--error);
+  color: hsl(0, 0%, 5%);
 }

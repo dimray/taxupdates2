@@ -11,11 +11,14 @@ use App\Helpers\AgentHelper;
 use App\HmrcApi\Endpoints\ApiPropertyBusiness;
 use App\Models\Submission;
 use App\Flash;
+use App\Helpers\ForeignPropertyHelper;
+use App\Helpers\TaxYearHelper;
+use App\Validate;
 use Framework\Controller;
 
 class PropertyBusiness extends Controller
 {
-    public function __construct(private ApiPropertyBusiness $apiPropertyBusiness, private Submission $submission) {}
+    public function __construct(private ApiPropertyBusiness $apiPropertyBusiness, private Submission $submission, private ForeignPropertyHelper $foreignPropertyHelper) {}
 
     public function retrieveCumulativePeriodSummary()
     {
@@ -50,11 +53,16 @@ class PropertyBusiness extends Controller
         $business_details['periodStartDate'] = $summary['fromDate'] ?? "";
         $business_details['periodEndDate'] = $summary['toDate'] ?? "";
 
+        $supporting_agent  = false;
+        if (isset($_SESSION['client']['agent_type']) && $_SESSION['client']['agent_type'] === "supporting") {
+            $supporting_agent = true;
+        }
+
 
         if ($empty_data) {
             return $this->view(
                 "Endpoints/PropertyBusiness/show-cumulative-summary.php",
-                compact("heading", "hide_tax_year", "business_details", "empty_data")
+                compact("heading", "hide_tax_year", "business_details", "empty_data", "supporting_agent")
             );
         }
 
@@ -93,7 +101,7 @@ class PropertyBusiness extends Controller
 
             return $this->view(
                 "Endpoints/PropertyBusiness/show-cumulative-summary.php",
-                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "income", "expenses", "rentaroom", "rentaroom_profit", "residential_finance", "total_income", "total_expenses", "profit")
+                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "income", "expenses", "rentaroom", "rentaroom_profit", "residential_finance", "total_income", "total_expenses", "profit", "supporting_agent")
             );
         }
 
@@ -150,7 +158,7 @@ class PropertyBusiness extends Controller
 
             return $this->view(
                 "Endpoints/PropertyBusiness/show-cumulative-summary.php",
-                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "foreign_property_data", "totals", "consolidated_expenses", "non_consolidated_expenses")
+                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "foreign_property_data", "totals", "consolidated_expenses", "non_consolidated_expenses", "supporting_agent")
             );
         }
     }
@@ -160,13 +168,20 @@ class PropertyBusiness extends Controller
 
         $confirm_submit = $this->request->get['confirm_submit'] ?? false;
 
+        $location =  ($_SESSION['type_of_business'] === "uk-property") ? "uk" : "foreign";
+
         if (!$confirm_submit) {
             $this->addError("You must tick the box to confirm you have approved this submission.");
 
-            return $this->redirect("/uploads/approve-uk-property");
+            if ($location === "uk") {
+                return $this->redirect("/uploads/approve-uk-property");
+            }
+
+            if ($location === "foreign") {
+                return $this->redirect("/uploads/approve-foreign-property");
+            }
         }
 
-        $location =  ($_SESSION['type_of_business'] === "uk-property") ? "uk" : "foreign";
 
         if ($location === "uk") {
             SubmissionsHelper::finaliseUkPropertyCumulativeSummaryArray();
@@ -178,7 +193,40 @@ class PropertyBusiness extends Controller
 
             $foreign_property_data = $_SESSION['cumulative_data'][$_SESSION['business_id']];
 
-            $cumulative_data = SubmissionsHelper::finaliseForeignPropertyCumulativeSummaryArray($foreign_property_data);
+            $updated_data = [];
+
+            if ($_SESSION['tax_year'] === "2025-26") {
+
+                foreach ($foreign_property_data as $key => $data) {
+                    $updated_data[] = array_merge(
+                        ['countryCode' => $key],
+                        $data
+                    );
+                }
+            } else {
+
+                foreach ($foreign_property_data as $key => $data) {
+                    $updated_data[] = array_merge(
+                        ['propertyId' => $key],
+                        $data
+                    );
+                }
+            }
+
+            // ********************
+            // FOR TESTING PROPERTIES
+            // REMOVE FOR PRODUCTION
+            // $updated_data = [];
+            // foreach ($foreign_property_data as $key => $data) {
+            //     $updated_data[] = array_merge(
+            //         ['propertyId' => $key],
+            //         $data
+            //     );
+            // }
+            // END TESTING
+            // *********************
+
+            $cumulative_data = SubmissionsHelper::finaliseForeignPropertyCumulativeSummaryArray($updated_data);
         }
 
         unset($_SESSION['cumulative_data']);
@@ -600,5 +648,203 @@ class PropertyBusiness extends Controller
         $business_details = Helper::setBusinessDetails();
 
         return $this->view("Endpoints/PropertyBusiness/success.php", compact("heading", "hide_tax_year", "business_details", "type", "supporting_agent"));
+    }
+
+    public function retrieveForeignProperties()
+    {
+        $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
+        $tax_year = "2026-27";
+
+        $response = $this->apiPropertyBusiness->retrieveForeignPropertyDetails($nino, $business_id, $tax_year);
+
+        var_dump($response['foreign_property_details']);
+        exit;
+    }
+
+    public function createForeignProperty()
+    {
+        $source = "";
+        if (isset($this->request->get['source'])) {
+            $source = $this->request->get['source'];
+        }
+
+        $heading = "Add A Foreign Property";
+
+        $business_details = Helper::setBusinessDetails();
+
+        $hide_tax_year = true;
+
+        $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
+
+        // first and last year must both be at least 2026-27
+        $last_tax_year = TaxYearHelper::getCurrentTaxYear();
+        $last_tax_year = TaxYearHelper::getLatestTaxYear("2026-27", $last_tax_year);
+        $first_tax_year = TaxYearHelper::getCurrentTaxYear(-4);
+        $first_tax_year = TaxYearHelper::getLatestTaxYear("2026-27", $first_tax_year);
+
+        $errors = $this->flashErrors();
+
+        return $this->view("Endpoints/PropertyBusiness/foreign-property-add.php", compact("heading", "country_codes", "hide_tax_year", "business_details", "last_tax_year", "first_tax_year", "errors", "source"));
+    }
+
+    public function processCreateForeignProperty()
+    {
+
+        if (!isset($this->request->post)) {
+            $this->addError("Please fill in all fields");
+            return $this->redirect("/property-business/create-foreign-property");
+        }
+
+        $property_name = $this->request->post['property_name'] ?? '';
+        $country_code = $this->request->post['country_code'] ?? '';
+        $tax_year = $this->request->post['tax_year'] ?? '';
+        $source = $this->request->post['source'] ?? '';
+
+        if (!Validate::string($property_name)) {
+            $this->addError("Property name is required (max 105 characters)");
+        }
+
+        if (!Validate::countryCode($country_code)) {
+            $this->addError("Select a country from the drop-down list");
+        }
+
+        if (!Validate::tax_year($tax_year)) {
+            $tax_year = TaxYearHelper::getCurrentTaxYear();
+        }
+
+        if (!empty($this->errors)) {
+            return $this->redirect("/property-business/create-foreign-property");
+        }
+
+        $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $property_data = [
+            'propertyName' => $property_name,
+            'countryCode' => $country_code
+        ];
+
+        $response = $this->apiPropertyBusiness->createForeignPropertyDetails($nino, $business_id, $tax_year, $property_data);
+
+        unset($_SESSION[$nino]['cache']['foreign_properties']);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        if ($response['type'] === 'success') {
+
+            $property_id = $response['property_id'];
+
+            if (empty($property_id)) {
+
+                $this->addError("An error occurred and HMRC did not return a property ID. Please try again");
+                return $this->redirect("/property-business/create-foreign-property");
+            }
+
+            Flash::addMessage("Property has been saved", Flash::SUCCESS);
+            if (empty($source)) {
+                return $this->redirect("/business-details/retrieve-business-details");
+            } else {
+                return $this->redirect($source);
+            }
+        }
+        // if not success
+        return $this->redirect("/property-business/create-foreign-property");
+    }
+
+    public function viewForeignProperties()
+    {
+        $heading = "Foreign Properties";
+
+        $nino = Helper::getNino();
+
+        // helper makes the api call because i also need them in the submit cumulative update view
+        $properties = $this->foreignPropertyHelper->getForeignProperties($nino);
+
+        $hide_tax_year = true;
+
+        $business_details = Helper::setBusinessDetails();
+
+        return $this->view("Endpoints/PropertyBusiness/foreign-property-view.php", compact("heading", "hide_tax_year", "business_details", "properties"));
+    }
+
+    public function updateForeignProperty()
+    {
+        $property_id = $this->request->post['property_id'] ?? '';
+        $property_name = $this->request->post['property_name'] ?? '';
+
+        if (empty($property_id) || empty($property_name)) {
+            return $this->redirect("/property-business/view-foreign-properties");
+        }
+
+
+        $heading = "Update Foreign Property";
+
+        $business_details = Helper::setBusinessDetails();
+
+        $hide_tax_year = true;
+
+        $errors = $this->flashErrors();
+
+        return $this->view("Endpoints/propertyBusiness/foreign-property-update.php", compact("heading", "property_id", "property_name", "business_details", "hide_tax_year", "errors"));
+    }
+
+    public function processUpdateForeignProperty()
+    {
+        $property_id = $this->request->post['property_id'] ?? '';
+        $property_name = $this->request->post['property_name'] ?? '';
+        $end_date = $this->request->post['end_date'] ?? '';
+        $end_reason = $this->request->post['end_reason'] ?? '';
+
+        if (empty($property_id)) {
+            return $this->redirect("/property-business/view-foreign-properties");
+        }
+
+        if (empty($property_name)) {
+            $this->addError("Property name is required");
+        }
+
+        if (empty($end_date)) {
+            $end_reason = "";
+        }
+
+        if (empty($end_reason) && !empty($end_date)) {
+            $this->addError("End reason is required  if an end date is given");
+        }
+
+        if (!empty($this->errors)) {
+            return $this->redirect("/property-business/update-foreign-property");
+        }
+
+        $property_data = [
+            'propertyName' => $property_name
+        ];
+
+        if (!empty($end_date)) {
+            $property_data['endDate'] = $end_date;
+            $property_data['endReason'] = $end_reason;
+        }
+
+        $nino = Helper::getNino();
+
+
+        if (!empty($end_date)) {
+            $tax_year = TaxYearHelper::getTaxYearFromDate($end_date);
+        } else {
+            $tax_year = TaxYearHelper::getLatestTaxYear(TaxYearHelper::getCurrentTaxYear(), "2026-27");
+        }
+
+        $response = $this->apiPropertyBusiness->updateForeignPropertyDetails($nino, $property_id, $tax_year, $property_data);
+
+        if ($response['type'] === 'redirect') {
+            return $this->redirect($response['location']);
+        }
+
+        if ($response['type'] === 'success') {
+            Flash::addMessage("Property has been updated", Flash::SUCCESS);
+        }
+        return $this->redirect("/business-details/retrieve-business-details");
     }
 }

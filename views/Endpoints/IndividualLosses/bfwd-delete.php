@@ -2,11 +2,9 @@
     be returned. In these circumstances, HMRC instead
     advise amending the loss amount to zero.</p>
 
-
+<hr>
 
 <p>Loss ID: <?= $loss_id ?></p>
-
-
 
 <p>Are you sure you want to delete this loss?</p>
 
@@ -20,7 +18,6 @@
     <button type="submit" class="confirm-delete">Delete</button>
 
 </form>
-
 
 
 <p><a class="hmrc-connection" href="/individual-losses/list-brought-forward-losses?<?= $query_string ?>">Cancel</a></p>

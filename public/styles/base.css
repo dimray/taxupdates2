@@ -67,6 +67,7 @@ button.link {
   text-align: left;
   text-decoration: underline;
   position: relative;
+  font-weight: 350;
 }
 
 a:not(.navLink):hover,
@@ -76,6 +77,11 @@ a:not(.navLink):focus,
 button.link:hover,
 button.link:focus {
   background-color: var(--link-hover-bg);
+}
+
+a.delete:hover,
+a.delete:focus {
+  background: var(--delete-bg-hover);
 }
 
 .different-link {
@@ -134,7 +140,7 @@ button.link:focus {
   text-decoration: none;
 }
 
-display-inline {
+.display-inline {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -155,10 +161,27 @@ display-inline {
   display: block;
 }
 
+#countdown-msg p {
+  margin-block: 0;
+  color: var(--theme-text);
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+#countdown {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
 svg {
   line-height: 0;
 }
 
 hr {
   margin-inline: 2rem;
+}
+
+h1,
+h2 {
+  margin-block-start: 1rem;
 }

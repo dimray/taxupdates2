@@ -3,6 +3,10 @@
 <form action="/business-source-adjustable-summary/process" method="POST" class="generic-form"
     id="zero-adjustments-form">
 
+    <label class="inline-checkbox"><input type="checkbox" name="zeroAdjustments" id="zero-adjustments-toggle"
+            value="true"><span>Set All
+            Adjustments To Zero</span></label>
+
 
     <h3>Income</h3>
 

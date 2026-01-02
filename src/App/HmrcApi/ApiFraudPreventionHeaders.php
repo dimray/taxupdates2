@@ -134,6 +134,7 @@ class ApiFraudPreventionHeaders
 
     private function getUserIds()
     {
+        error_log('SESSION: ' . print_r($_SESSION, true));
         $identifiers = [
             'email' => $_SESSION['email'],
             'user_id' => (string) $_SESSION['user_id']

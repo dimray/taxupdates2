@@ -127,12 +127,15 @@ class ApiSelfEmployment extends ApiCalls
 
         // test scenario headers
         $test_headers = [
-            'Gov-Test-Scenario: STATEFUL'
+            // 'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);
 
         $response_array = $this->sendPutRequest($url, $payload, $headers);
+
+        // var_dump($response_array);
+        // exit;
 
         // FRAUD PREVENTION HEADERS
         $feedback = $this->testHeaders->getFeedback('SelfEmploymentBusiness');
@@ -171,7 +174,7 @@ class ApiSelfEmployment extends ApiCalls
 
         // test scenario headers
         $test_headers = [
-            'Gov-Test-Scenario: STATEFUL'
+            // 'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);

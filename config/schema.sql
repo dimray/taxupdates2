@@ -1,8 +1,7 @@
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    email_hash VARCHAR(64) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,    
     password_hash VARCHAR(255) NOT NULL,
     login_attempts INT UNSIGNED DEFAULT 0,    
     last_login_attempt DATETIME DEFAULT NULL,    
@@ -18,7 +17,7 @@ CREATE TABLE users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_users_email_hash ON users (email_hash);
+
 
 CREATE TABLE individuals (
     user_id INT PRIMARY KEY,
@@ -79,14 +78,11 @@ CREATE INDEX idx_clients_agents_agent_firm_id ON clients_agents (agent_firm_id);
 CREATE TABLE submissions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nino VARCHAR(255) NOT NULL,
-    nino_hash VARCHAR(64) NOT NULL,
-    
+    nino_hash VARCHAR(64) NOT NULL,    
     submitted_by_user_id INT DEFAULT NULL,
     submitted_by_firm_id INT DEFAULT NULL,
-    submitted_by_type ENUM('individual', 'agent') NOT NULL,
-    
-    business_id VARCHAR(255) DEFAULT NULL,
-    business_id_hash VARCHAR(64) DEFAULT NULL,
+    submitted_by_type ENUM('individual', 'agent') NOT NULL,    
+    business_id VARCHAR(255) DEFAULT NULL,    
     period_start DATE,
     period_end DATE,
     tax_year VARCHAR(7) NOT NULL,   
@@ -99,8 +95,7 @@ CREATE TABLE submissions (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,   
     FOREIGN KEY (submitted_by_user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (submitted_by_firm_id) REFERENCES agent_firms(id) ON DELETE CASCADE,
-    INDEX idx_nino_hash (nino_hash),
-    INDEX idx_business_id_hash (business_id_hash),
+    INDEX idx_nino_hash (nino_hash), 
     INDEX idx_tax_year (tax_year),
     INDEX idx_submission_type (submission_type),
     INDEX idx_submission_reference (submission_reference),
@@ -136,19 +131,11 @@ CREATE TABLE bot_attempts (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- stop encrypting name and email in Users
 
--- First, drop the unique index on email_hash
-DROP INDEX idx_users_email_hash ON users;
--- Then, drop the email_hash column
-ALTER TABLE users DROP COLUMN email_hash;
 
--- stop encrypting business_id in Submissions table
 
--- First, drop the index on business_id_hash
-DROP INDEX idx_business_id_hash ON submissions;
--- Then, drop the business_id_hash column
-ALTER TABLE submissions DROP COLUMN business_id_hash;
+
+
 
 
 

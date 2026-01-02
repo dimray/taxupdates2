@@ -26,15 +26,17 @@ class ApiAgentAuthorisation extends ApiCalls
             "agentType" => $agent_type
         ]);
 
+        // var_dump($url);
+        // var_dump($payload);
+        // exit;
+
         $headers = [
             "Accept: application/vnd.hmrc.1.0+json",
             "Authorization: Bearer " . $access_token,
             "Content-Type: application/json"
         ];
 
-        $response_array = $this->sendPostRequest($url, $payload, $headers);
-
-
+        $response_array = $this->sendPostRequest($url, $payload, $headers, 0, false);
 
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];
@@ -47,7 +49,6 @@ class ApiAgentAuthorisation extends ApiCalls
                 'location' => $response_headers['location'] ?? ""
             ];
         } else {
-
             return ApiErrors::dealWithError($response_code, $response);
         }
     }
@@ -64,7 +65,7 @@ class ApiAgentAuthorisation extends ApiCalls
 
         ];
 
-        $response_array = $this->sendGetRequest($url, $headers);
+        $response_array = $this->sendGetRequest($url, $headers, 0, false);
 
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];
@@ -100,7 +101,7 @@ class ApiAgentAuthorisation extends ApiCalls
             "Authorization: Bearer " . $access_token,
         ];
 
-        $response_array = $this->sendGetRequest($url, $headers);
+        $response_array = $this->sendGetRequest($url, $headers, 0, false);
 
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];
@@ -128,7 +129,7 @@ class ApiAgentAuthorisation extends ApiCalls
             "Content-Type: application/json"
         ];
 
-        $response_array = $this->sendDeleteRequest($url, $headers);
+        $response_array = $this->sendDeleteRequest($url, $headers, 0, false);
 
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];
@@ -163,7 +164,7 @@ class ApiAgentAuthorisation extends ApiCalls
             "Content-Type: application/json"
         ];
 
-        $response_array = $this->sendPostRequest($url, $payload, $headers);
+        $response_array = $this->sendPostRequest($url, $payload, $headers, 0, false);
 
         $response_code = $response_array['response_code'];
         $response = $response_array['response'];

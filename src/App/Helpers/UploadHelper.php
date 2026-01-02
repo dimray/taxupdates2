@@ -272,8 +272,8 @@ class UploadHelper
                 $key = $row[0];
                 $value = $row[1] ?? '';
 
-                if ($key === '') {
-                    continue;
+                if ($value === '') {
+                    $value = '0.00';
                 }
 
                 $data[$key] = $value;

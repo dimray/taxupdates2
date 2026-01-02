@@ -1,10 +1,22 @@
 <?php require "shared/bsas-adjustments.php"; ?>
 
-<p>If you need to enter adjustments for more than one country, submit your data for one country and you
-    will then be given the option to add other countries.</p>
+<?php if (!$add_country): ?>
+
+    <p>If you need to enter adjustments for more than one country, submit your data for one country and you
+        will then be given the option to add other countries.</p>
+
+<?php endif; ?>
 
 <form action="/business-source-adjustable-summary/process" method="POST" class="generic-form"
     id="zero-adjustments-form">
+
+    <?php if (!$add_country): ?>
+
+        <label class="inline-checkbox"><input type="checkbox" name="zeroAdjustments" id="zero-adjustments-toggle"
+                value="true"><span>Set All
+                Adjustments To Zero</span></label>
+
+    <?php endif; ?>
 
     <h2>Country</h2>
 

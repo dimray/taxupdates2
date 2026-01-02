@@ -7,13 +7,14 @@ namespace App\HmrcApi;
 class ApiTokens
 {
     public string $base_url;
-
+    public string $test_url;
     protected string $client_id;
     protected string $client_secret;
 
     public function __construct(protected ApiTokenStorage $tokenStorage)
     {
         $this->base_url = $_ENV['HMRC_API_BASE_URL'];
+        $this->test_url = $_ENV['HMRC_API_TEST_URL'];
         $this->client_id = $_ENV['HMRC_CLIENT_ID'];
         $this->client_secret = $_ENV['HMRC_CLIENT_SECRET'];
     }

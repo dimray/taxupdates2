@@ -62,6 +62,7 @@ details[open] {
 details:not(.details-menu)[open] {
   background-color: var(--details-bg);
   padding: 0.5rem;
+  max-width: 50rem;
 }
 
 details.reduced-styling summary {

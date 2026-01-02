@@ -112,5 +112,5 @@
 <?php endif; ?>
 
 <?php if (!$supporting_agent): ?>
-<p><a href="/individual-calculations/trigger-calculation">View Latest Tax Calculation</a></p>
+<p><a href="/individual-calculations/trigger-calculation">Tax Calculation</a></p>
 <?php endif; ?>

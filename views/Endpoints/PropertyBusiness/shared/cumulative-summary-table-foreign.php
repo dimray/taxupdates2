@@ -3,11 +3,15 @@
      <table class="number-table desktop-view">
 
          <thead>
-
              <tr>
                  <th></th>
-                 <?php foreach ($foreign_property_data as $country): ?>
-                     <th class="align-center"><?= getCountry($country['countryCode']) ?></th>
+                 <?php foreach ($foreign_property_data as $key => $data): ?>
+                     <?php if ($country_or_property === "country"): ?>
+
+                         <th class="align-right"><?= getCountry($key) ?></th>
+                     <?php else: ?>
+                         <th class="align-right"><?= getProperty($key, $foreign_properties) ?></th>
+                     <?php endif; ?>
                  <?php endforeach; ?>
              </tr>
 
@@ -20,37 +24,37 @@
 
              <tr>
                  <td>Rent Received</td>
-                 <?php foreach ($foreign_property_data as $country): ?>
-                     <td><?= esc(formatNumber($country['income']['rentAmount'] ?? 0)) ?></td>
+                 <?php foreach ($foreign_property_data as $data): ?>
+                     <td><?= esc(formatNumber($data['income']['rentAmount'] ?? 0)) ?></td>
                  <?php endforeach; ?>
              </tr>
              <tr>
                  <td>Lease Premiums</td>
-                 <?php foreach ($foreign_property_data as $country): ?>
+                 <?php foreach ($foreign_property_data as $data): ?>
                      <td>
-                         <?= esc(formatNumber($country['income']['premiumsOfLeaseGrant'] ?? 0)) ?></td>
+                         <?= esc(formatNumber($data['income']['premiumsOfLeaseGrant'] ?? 0)) ?></td>
                  <?php endforeach; ?>
              </tr>
              <tr>
                  <td>Other Property Income</td>
-                 <?php foreach ($foreign_property_data as $country): ?>
+                 <?php foreach ($foreign_property_data as $data): ?>
                      <td>
-                         <?= esc(formatNumber($country['income']['otherPropertyIncome'] ?? 0)) ?>
+                         <?= esc(formatNumber($data['income']['otherPropertyIncome'] ?? 0)) ?>
                      </td>
                  <?php endforeach; ?>
              </tr>
              <tr>
                  <td>Foreign Tax Deducted</td>
-                 <?php foreach ($foreign_property_data as $country): ?>
+                 <?php foreach ($foreign_property_data as $data): ?>
                      <td>
-                         <?= esc(formatNumber($country['income']['foreignTaxPaidOrDeducted'] ?? 0)) ?></td>
+                         <?= esc(formatNumber($data['income']['foreignTaxPaidOrDeducted'] ?? 0)) ?></td>
                  <?php endforeach; ?>
              </tr>
              <tr>
                  <td>UK Tax Deducted</td>
-                 <?php foreach ($foreign_property_data as $country): ?>
+                 <?php foreach ($foreign_property_data as $data): ?>
                      <td>
-                         <?= esc(formatNumber($country['income']['specialWithholdingTaxOrUkTaxPaid'] ?? 0)) ?></td>
+                         <?= esc(formatNumber($data['income']['specialWithholdingTaxOrUkTaxPaid'] ?? 0)) ?></td>
                  <?php endforeach; ?>
              </tr>
 
@@ -61,9 +65,9 @@
              <?php if ($consolidated_expenses): ?>
                  <tr>
                      <td>Consolidated Expenses</td>
-                     <?php foreach ($foreign_property_data as $country): ?>
+                     <?php foreach ($foreign_property_data as $data): ?>
                          <td>
-                             <?= esc(formatNumber($country['expenses']['consolidatedExpenses'] ?? 0)) ?></td>
+                             <?= esc(formatNumber($data['expenses']['consolidatedExpenses'] ?? 0)) ?></td>
                      <?php endforeach; ?>
                  </tr>
              <?php endif; ?>
@@ -72,57 +76,57 @@
 
                  <tr>
                      <td>Premises Costs</td>
-                     <?php foreach ($foreign_property_data as $country): ?>
+                     <?php foreach ($foreign_property_data as $data): ?>
                          <td>
-                             <?= esc(formatNumber($country['expenses']['premisesRunningCosts'] ?? 0)) ?></td>
+                             <?= esc(formatNumber($data['expenses']['premisesRunningCosts'] ?? 0)) ?></td>
                      <?php endforeach; ?>
                  </tr>
 
                  <tr>
                      <td>Repairs And Maintenance</td>
-                     <?php foreach ($foreign_property_data as $country): ?>
+                     <?php foreach ($foreign_property_data as $data): ?>
                          <td>
-                             <?= esc(formatNumber($country['expenses']['repairsAndMaintenance'] ?? 0)) ?></td>
+                             <?= esc(formatNumber($data['expenses']['repairsAndMaintenance'] ?? 0)) ?></td>
                      <?php endforeach; ?>
                  </tr>
 
                  <tr>
                      <td>Finance Costs</td>
-                     <?php foreach ($foreign_property_data as $country): ?>
+                     <?php foreach ($foreign_property_data as $data): ?>
                          <td>
-                             <?= esc(formatNumber($country['expenses']['financialCosts'] ?? 0)) ?></td>
+                             <?= esc(formatNumber($data['expenses']['financialCosts'] ?? 0)) ?></td>
                      <?php endforeach; ?>
                  </tr>
 
                  <tr>
                      <td>Professional Fees</td>
-                     <?php foreach ($foreign_property_data as $country): ?>
+                     <?php foreach ($foreign_property_data as $data): ?>
                          <td>
-                             <?= esc(formatNumber($country['expenses']['professionalFees'] ?? 0)) ?></td>
+                             <?= esc(formatNumber($data['expenses']['professionalFees'] ?? 0)) ?></td>
                      <?php endforeach; ?>
                  </tr>
 
                  <tr>
                      <td>Travel Costs</td>
-                     <?php foreach ($foreign_property_data as $country): ?>
+                     <?php foreach ($foreign_property_data as $data): ?>
                          <td>
-                             <?= esc(formatNumber($country['expenses']['travelCosts'] ?? 0)) ?></td>
+                             <?= esc(formatNumber($data['expenses']['travelCosts'] ?? 0)) ?></td>
                      <?php endforeach; ?>
                  </tr>
 
                  <tr>
                      <td>Services</td>
-                     <?php foreach ($foreign_property_data as $country): ?>
+                     <?php foreach ($foreign_property_data as $data): ?>
                          <td>
-                             <?= esc(formatNumber($country['expenses']['costOfServices'] ?? 0)) ?></td>
+                             <?= esc(formatNumber($data['expenses']['costOfServices'] ?? 0)) ?></td>
                      <?php endforeach; ?>
                  </tr>
 
                  <tr>
                      <td>Other Expenses</td>
-                     <?php foreach ($foreign_property_data as $country): ?>
+                     <?php foreach ($foreign_property_data as $data): ?>
                          <td>
-                             <?= esc(formatNumber($country['expenses']['other'] ?? 0)) ?></td>
+                             <?= esc(formatNumber($data['expenses']['other'] ?? 0)) ?></td>
                      <?php endforeach; ?>
                  </tr>
 
@@ -136,22 +140,28 @@
 
              <tr>
                  <td>Total Income</td>
-                 <?php foreach ($foreign_property_data as $country): ?>
-                     <td><?= esc(formatNumber($totals[$country['countryCode']]['total_income'] ?? '')) ?></td>
+                 <?php foreach ($totals as $total): ?>
+
+                     <td><?= esc(formatNumber($total['total_income'] ?? '')) ?></td>
+
                  <?php endforeach; ?>
              </tr>
 
              <tr>
                  <td>Total Expenses</td>
-                 <?php foreach ($foreign_property_data as $country): ?>
-                     <td><?= esc(formatNumber($totals[$country['countryCode']]['total_expenses'] ?? '')) ?></td>
+                 <?php foreach ($totals as $total): ?>
+
+                     <td><?= esc(formatNumber($total['total_expenses'] ?? '')) ?></td>
+
+
                  <?php endforeach; ?>
              </tr>
 
              <tr>
                  <td>Profit</td>
-                 <?php foreach ($foreign_property_data as $country): ?>
-                     <td><?= esc(formatNumber($totals[$country['countryCode']]['profit'] ?? '')) ?></td>
+                 <?php foreach ($totals as $total): ?>
+
+                     <td><?= esc(formatNumber($total['profit'] ?? '')) ?></td>
                  <?php endforeach; ?>
              </tr>
 
@@ -162,17 +172,17 @@
 
              <tr>
                  <td>Costs</td>
-                 <?php foreach ($foreign_property_data as $country): ?>
+                 <?php foreach ($foreign_property_data as $data): ?>
                      <td data-label="Residential Finance Costs">
-                         <?= esc(formatNumber($country['residentialFinance']['residentialFinancialCost'] ?? 0)) ?></td>
+                         <?= esc(formatNumber($data['residentialFinance']['residentialFinancialCost'] ?? 0)) ?></td>
                  <?php endforeach; ?>
              </tr>
 
              <tr>
                  <td>Costs Brought Forward</td>
-                 <?php foreach ($foreign_property_data as $country): ?>
+                 <?php foreach ($foreign_property_data as $data): ?>
                      <td>
-                         <?= esc(formatNumber($country['residentialFinance']['broughtFwdResidentialFinancialCost'] ?? 0)) ?>
+                         <?= esc(formatNumber($data['residentialFinance']['broughtFwdResidentialFinancialCost'] ?? 0)) ?>
                      </td>
                  <?php endforeach; ?>
              </tr>
@@ -183,9 +193,9 @@
 
              <tr>
                  <td>Foreign Tax Credit Relief</td>
-                 <?php foreach ($foreign_property_data as $country): ?>
+                 <?php foreach ($foreign_property_data as $data): ?>
                      <td>
-                         <?= $country['foreignTaxCreditRelief'] ? "Claimed" : "Not claimed" ?></td>
+                         <?= $data['foreignTaxCreditRelief'] ? "Claimed" : "Not claimed" ?></td>
                  <?php endforeach; ?>
              </tr>
 
@@ -196,33 +206,38 @@
 
 
      <div class="mobile-view">
-         <?php foreach ($foreign_property_data as $country): ?>
+         <?php foreach ($foreign_property_data as $key => $data): ?>
              <div class="card">
-                 <h2 class="header"><?= getCountry($country['countryCode']) ?></h2>
+
+                 <?php if ($country_or_property === "country"): ?>
+                     <h2 class="header"><?= getCountry($key) ?></h2>
+                 <?php else: ?>
+                     <h2 class="header"><?= getProperty($key, $foreign_properties) ?></h2>
+                 <?php endif; ?>
 
                  <div>
                      <h3>Income</h3>
                      <div class="data-row">
                          <div class="label">Rent Received</div>
-                         <div class="value"><?= esc(formatNumber($country['income']['rentAmount'] ?? 0)) ?></div>
+                         <div class="value"><?= esc(formatNumber($data['income']['rentAmount'] ?? 0)) ?></div>
                      </div>
                      <div class="data-row">
                          <div class="label">Lease Premiums</div>
-                         <div class="value"><?= esc(formatNumber($country['income']['premiumsOfLeaseGrant'] ?? 0)) ?></div>
+                         <div class="value"><?= esc(formatNumber($data['income']['premiumsOfLeaseGrant'] ?? 0)) ?></div>
                      </div>
                      <div class="data-row">
                          <div class="label">Other Property Income</div>
-                         <div class="value"><?= esc(formatNumber($country['income']['otherPropertyIncome'] ?? 0)) ?></div>
+                         <div class="value"><?= esc(formatNumber($data['income']['otherPropertyIncome'] ?? 0)) ?></div>
                      </div>
                      <div class="data-row">
                          <div class="label">Foreign Tax Deducted</div>
-                         <div class="value"><?= esc(formatNumber($country['income']['foreignTaxPaidOrDeducted'] ?? 0)) ?>
+                         <div class="value"><?= esc(formatNumber($data['income']['foreignTaxPaidOrDeducted'] ?? 0)) ?>
                          </div>
                      </div>
                      <div class="data-row">
                          <div class="label">UK Tax Deducted</div>
                          <div class="value">
-                             <?= esc(formatNumber($country['income']['specialWithholdingTaxOrUkTaxPaid'] ?? 0)) ?></div>
+                             <?= esc(formatNumber($data['income']['specialWithholdingTaxOrUkTaxPaid'] ?? 0)) ?></div>
                      </div>
                  </div>
 
@@ -231,40 +246,40 @@
                      <?php if ($consolidated_expenses): ?>
                          <div class="data-row">
                              <div class="label">Consolidated Expenses</div>
-                             <div class="value"><?= esc(formatNumber($country['expenses']['consolidatedExpenses'] ?? 0)) ?>
+                             <div class="value"><?= esc(formatNumber($data['expenses']['consolidatedExpenses'] ?? 0)) ?>
                              </div>
                          </div>
                      <?php endif; ?>
                      <?php if ($non_consolidated_expenses): ?>
                          <div class="data-row">
                              <div class="label">Premises Costs</div>
-                             <div class="value"><?= esc(formatNumber($country['expenses']['premisesRunningCosts'] ?? 0)) ?>
+                             <div class="value"><?= esc(formatNumber($data['expenses']['premisesRunningCosts'] ?? 0)) ?>
                              </div>
                          </div>
                          <div class="data-row">
                              <div class="label">Repairs And Maintenance</div>
-                             <div class="value"><?= esc(formatNumber($country['expenses']['repairsAndMaintenance'] ?? 0)) ?>
+                             <div class="value"><?= esc(formatNumber($data['expenses']['repairsAndMaintenance'] ?? 0)) ?>
                              </div>
                          </div>
                          <div class="data-row">
                              <div class="label">Finance Costs</div>
-                             <div class="value"><?= esc(formatNumber($country['expenses']['financialCosts'] ?? 0)) ?></div>
+                             <div class="value"><?= esc(formatNumber($data['expenses']['financialCosts'] ?? 0)) ?></div>
                          </div>
                          <div class="data-row">
                              <div class="label">Professional Fees</div>
-                             <div class="value"><?= esc(formatNumber($country['expenses']['professionalFees'] ?? 0)) ?></div>
+                             <div class="value"><?= esc(formatNumber($data['expenses']['professionalFees'] ?? 0)) ?></div>
                          </div>
                          <div class="data-row">
                              <div class="label">Travel Costs</div>
-                             <div class="value"><?= esc(formatNumber($country['expenses']['travelCosts'] ?? 0)) ?></div>
+                             <div class="value"><?= esc(formatNumber($data['expenses']['travelCosts'] ?? 0)) ?></div>
                          </div>
                          <div class="data-row">
                              <div class="label">Services</div>
-                             <div class="value"><?= esc(formatNumber($country['expenses']['costOfServices'] ?? 0)) ?></div>
+                             <div class="value"><?= esc(formatNumber($data['expenses']['costOfServices'] ?? 0)) ?></div>
                          </div>
                          <div class="data-row">
                              <div class="label">Other Expenses</div>
-                             <div class="value"><?= esc(formatNumber($country['expenses']['other'] ?? 0)) ?></div>
+                             <div class="value"><?= esc(formatNumber($data['expenses']['other'] ?? 0)) ?></div>
                          </div>
                      <?php endif; ?>
                  </div>
@@ -273,18 +288,25 @@
                      <h3>Summary</h3>
                      <div class="data-row">
                          <div class="label">Total Income</div>
-                         <div class="value"><?= esc(formatNumber($totals[$country['countryCode']]['total_income'] ?? '')) ?>
+
+                         <div class="value"><?= esc(formatNumber($totals[$key]['total_income'] ?? '')) ?>
                          </div>
+
                      </div>
                      <div class="data-row">
                          <div class="label">Total Expenses</div>
+
                          <div class="value">
-                             <?= esc(formatNumber($totals[$country['countryCode']]['total_expenses'] ?? '')) ?>
+                             <?= esc(formatNumber($totals[$key]['total_expenses'] ?? '')) ?>
                          </div>
+
                      </div>
                      <div class="data-row">
                          <div class="label">Profit</div>
-                         <div class="value"><?= esc(formatNumber($totals[$country['countryCode']]['profit'] ?? '')) ?></div>
+
+                         <div class="value"><?= esc(formatNumber($totals[$key]['profit'] ?? '')) ?>
+                         </div>
+
                      </div>
                  </div>
 
@@ -293,12 +315,13 @@
                      <div class="data-row">
                          <div class="label">Costs</div>
                          <div class="value">
-                             <?= esc(formatNumber($country['residentialFinance']['residentialFinancialCost'] ?? 0)) ?></div>
+                             <?= esc(formatNumber($data['residentialFinance']['residentialFinancialCost'] ?? 0)) ?>
+                         </div>
                      </div>
                      <div class="data-row">
                          <div class="label">Costs Brought Forward</div>
                          <div class="value">
-                             <?= esc(formatNumber($country['residentialFinance']['broughtFwdResidentialFinancialCost'] ?? 0)) ?>
+                             <?= esc(formatNumber($data['residentialFinance']['broughtFwdResidentialFinancialCost'] ?? 0)) ?>
                          </div>
                      </div>
                  </div>
@@ -307,7 +330,7 @@
                      <h3>Other</h3>
                      <div class="data-row">
                          <div class="label">Foreign Tax Credit Relief</div>
-                         <div class="value"><?= $country['foreignTaxCreditRelief'] ? "Claimed" : "Not claimed" ?></div>
+                         <div class="value"><?= $data['foreignTaxCreditRelief'] ? "Claimed" : "Not claimed" ?></div>
                      </div>
                  </div>
              </div>

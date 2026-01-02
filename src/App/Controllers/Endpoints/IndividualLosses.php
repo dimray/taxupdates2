@@ -25,7 +25,9 @@ class IndividualLosses extends Controller
 
         $business_details = Helper::setBusinessDetails();
 
-        return $this->view("Endpoints/IndividualLosses/bfwd-index.php", compact("heading", "business_details", "business_id_query_string"));
+        $hide_tax_year = true;
+
+        return $this->view("Endpoints/IndividualLosses/bfwd-index.php", compact("heading", "business_details", "business_id_query_string", "hide_tax_year"));
     }
 
     public function createBroughtForwardLoss()
@@ -35,7 +37,7 @@ class IndividualLosses extends Controller
         $type_of_loss = $_SESSION['type_of_business'] ?? '';
 
         if (empty($business_id) || empty($type_of_loss)) {
-            return $this->redirect("/business-details/list-all-businesses");
+            return $this->redirect("/business-details/list-all-businesses?year_end=true");
         }
 
         $errors = $this->flashErrors();
@@ -51,7 +53,9 @@ class IndividualLosses extends Controller
             'year_4' => TaxYearHelper::getCurrentTaxYear(-4)
         ];
 
-        return $this->view("Endpoints/IndividualLosses/bfwd-create.php", compact("heading", "business_details", "errors", "tax_years"));
+        $hide_tax_year = true;
+
+        return $this->view("Endpoints/IndividualLosses/bfwd-create.php", compact("heading", "business_details", "errors", "tax_years", "hide_tax_year"));
     }
 
     public function registerBroughtForwardLoss()
@@ -306,8 +310,23 @@ class IndividualLosses extends Controller
     {
         $nino = Helper::getNino();
         $year_claimed_for = $_SESSION['tax_year'];
+        $all_businesses = $this->request->get['all_businesses'] ?? false;
 
-        $response = $this->apiIndividualLosses->listLossClaims($nino, $year_claimed_for);
+        if ($all_businesses) {
+            $query_string = "";
+        } else {
+
+            $business_id = $_SESSION['business_id'];
+
+            $query_params = [
+                'businessId' => $business_id
+            ];
+
+            $query_string = "?" . http_build_query($query_params) ?? "";
+        }
+
+        $response = $this->apiIndividualLosses->listLossClaims($nino, $year_claimed_for, $query_string);
+
 
         if ($response['type'] === 'redirect') {
             return $this->redirect($response['location']);
@@ -327,7 +346,13 @@ class IndividualLosses extends Controller
             }
         }
 
-        return $this->view("Endpoints/IndividualLosses/loss-claims-list.php", compact("heading", "claims", "claims_string", "sideways_claim_count"));
+        if (!$all_businesses) {
+            $business_details = Helper::setBusinessDetails();
+        } else {
+            $business_details = [];
+        }
+
+        return $this->view("Endpoints/IndividualLosses/loss-claims-list.php", compact("heading", "claims", "claims_string", "sideways_claim_count", "business_details"));
     }
 
     public function deleteLossClaim()
@@ -496,6 +521,6 @@ class IndividualLosses extends Controller
             Flash::addMessage("Unable to update sequence", Flash::WARNING);
         }
 
-        return $this->redirect("/individual-losses/list-loss-claims");
+        return $this->redirect("/individual-losses/list-loss-claims?all_businesses=true");
     }
 }

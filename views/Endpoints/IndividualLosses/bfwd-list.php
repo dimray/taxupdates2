@@ -118,7 +118,7 @@
             <?php endforeach; ?>
         </select>
     </div>
-    <button type="submit">Submit</button>
+    <button class="form-button" type="submit">Submit</button>
 </form>
 
 <hr>
@@ -126,8 +126,9 @@
 <p>HMRC's systems do
     not automatically
     transfer pre-Making Tax Digital losses, therefore you need to add brought forward losses before they will
-    show here. Losses
-    can be added in the section relating to the business which made the loss.
+    show here. To add a Pre-MTD loss, click the link below then select the business the loss relates to.
 </p>
 
-<p><a href="/individual-losses/create-brought-forward-loss">Add A Pre-MTD Loss</a></p>
+<p>
+    <a class="hmrc-connection" href="/individual-losses/create-brought-forward-loss">Add A Pre-MTD Loss</class=a>
+</p>

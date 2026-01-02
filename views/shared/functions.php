@@ -243,7 +243,7 @@ function formatDateTime($input)
     }
 }
 
-function getCountry($country_code): string
+function getCountry(string $country_code): string
 {
     $country_data = require ROOT_PATH . "config/mappings/country-codes.php";
 
@@ -258,4 +258,15 @@ function getCountry($country_code): string
     }
 
     return $country_string;
+}
+
+function getProperty(string $property_id, array $foreign_properties): string
+{
+    foreach ($foreign_properties as $property) {
+        if ($property['propertyId'] === $property_id) {
+            return $property['propertyName'];
+        }
+    }
+
+    return '';
 }

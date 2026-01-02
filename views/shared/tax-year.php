@@ -66,8 +66,6 @@ foreach ($_GET as $key => $value) {
     </select>
 
 
-
-
 </form>
 
 <?php $include_change_tax_year_script = true; ?>

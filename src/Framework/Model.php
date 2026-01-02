@@ -89,6 +89,7 @@ abstract class Model
                 default => PDO::PARAM_STR
             };
 
+
             $stmt->bindValue($i++, $value, $type);
         }
 

@@ -43,89 +43,89 @@
 
              <?php if (isset($expenses['consolidatedExpenses'])): ?>
 
-                 <tr>
-                     <td>Consolidated Expenses</td>
-                     <td>
-                         <?= esc(formatNumber($expenses['consolidatedExpenses'] ?? 0)) ?>
-                     </td>
-                 </tr>
+             <tr>
+                 <td>Consolidated Expenses</td>
+                 <td>
+                     <?= esc(formatNumber($expenses['consolidatedExpenses'] ?? 0)) ?>
+                 </td>
+             </tr>
 
              <?php else: ?>
 
-                 <tr>
-                     <td>Premises Costs</td>
-                     <td>
-                         <?= esc(formatNumber($expenses['premisesRunningCosts'] ?? 0)) ?>
-                     </td>
-                 </tr>
+             <tr>
+                 <td>Premises Costs</td>
+                 <td>
+                     <?= esc(formatNumber($expenses['premisesRunningCosts'] ?? 0)) ?>
+                 </td>
+             </tr>
 
-                 <tr>
-                     <td>Repairs And Maintenance</td>
-                     <td>
-                         <?= esc(formatNumber($expenses['repairsAndMaintenance'] ?? 0)) ?>
-                     </td>
-                 </tr>
+             <tr>
+                 <td>Repairs And Maintenance</td>
+                 <td>
+                     <?= esc(formatNumber($expenses['repairsAndMaintenance'] ?? 0)) ?>
+                 </td>
+             </tr>
 
-                 <tr>
-                     <td>Professional Fees</td>
-                     <td>
-                         <?= esc(formatNumber($expenses['professionalFees'] ?? 0)) ?>
-                     </td>
-                 </tr>
+             <tr>
+                 <td>Professional Fees</td>
+                 <td>
+                     <?= esc(formatNumber($expenses['professionalFees'] ?? 0)) ?>
+                 </td>
+             </tr>
 
-                 <tr>
-                     <td>Cost Of Services</td>
-                     <td>
-                         <?= esc(formatNumber($expenses['costOfServices'] ?? 0)) ?>
-                     </td>
-                 </tr>
+             <tr>
+                 <td>Cost Of Services</td>
+                 <td>
+                     <?= esc(formatNumber($expenses['costOfServices'] ?? 0)) ?>
+                 </td>
+             </tr>
 
-                 <tr>
-                     <td>Travel Costs</td>
-                     <td>
-                         <?= esc(formatNumber($expenses['travelCosts'] ?? 0)) ?>
-                     </td>
-                 </tr>
+             <tr>
+                 <td>Travel Costs</td>
+                 <td>
+                     <?= esc(formatNumber($expenses['travelCosts'] ?? 0)) ?>
+                 </td>
+             </tr>
 
-                 <tr>
-                     <td>Deductible Finance Costs</td>
-                     <td>
-                         <?= esc(formatNumber($expenses['financialCosts'] ?? 0)) ?>
-                     </td>
-                 </tr>
+             <tr>
+                 <td>Deductible Finance Costs</td>
+                 <td>
+                     <?= esc(formatNumber($expenses['financialCosts'] ?? 0)) ?>
+                 </td>
+             </tr>
 
-                 <tr>
-                     <td>Other Costs</td>
-                     <td>
-                         <?= esc(formatNumber($expenses['other'] ?? 0)) ?>
-                     </td>
-                 </tr>
+             <tr>
+                 <td>Other Costs</td>
+                 <td>
+                     <?= esc(formatNumber($expenses['other'] ?? 0)) ?>
+                 </td>
+             </tr>
 
              <?php endif; ?>
 
              <?php if (!empty($rentaroom)): ?>
 
-                 <tr>
-                     <th colspan="2" class="subheading">RentARoom</th>
-                 </tr>
+             <tr>
+                 <th colspan="2" class="subheading">RentARoom</th>
+             </tr>
 
-                 <tr>
-                     <td>
-                         Rents Received
-                     </td>
-                     <td>
-                         <?= esc(formatNumber($rentaroom['rentsReceived'] ?? 0)) ?>
-                     </td>
-                 </tr>
+             <tr>
+                 <td>
+                     Rents Received
+                 </td>
+                 <td>
+                     <?= esc(formatNumber($rentaroom['rentsReceived'] ?? 0)) ?>
+                 </td>
+             </tr>
 
-                 <tr>
-                     <td>
-                         Allowance Claimed
-                     </td>
-                     <td>
-                         <?= esc(formatNumber($rentaroom['amountClaimed'] ?? 0)) ?>
-                     </td>
-                 </tr>
+             <tr>
+                 <td>
+                     Allowance Claimed
+                 </td>
+                 <td>
+                     <?= esc(formatNumber($rentaroom['amountClaimed'] ?? 0)) ?>
+                 </td>
+             </tr>
 
              <?php endif; ?>
 
@@ -148,11 +148,11 @@
 
              <?php if (!empty($rentaroom)): ?>
 
-                 <tr>
-                     <td>RentARoom Profit</td>
-                     <td><?= esc(formatNumber($rentaroom_profit)) ?></td>
+             <tr>
+                 <td>RentARoom Profit</td>
+                 <td><?= esc(formatNumber($rentaroom_profit)) ?></td>
 
-                 </tr>
+             </tr>
 
              <?php endif; ?>
 
@@ -227,63 +227,63 @@
 
                  <?php if (isset($expenses['consolidatedExpenses'])): ?>
 
-                     <div class="data-row">
-                         <div class="label">Consolidated Expenses</div>
-                         <div class="value">
-                             <?= esc(formatNumber($expenses['consolidatedExpenses'] ?? 0)) ?>
-                         </div>
+                 <div class="data-row">
+                     <div class="label">Consolidated Expenses</div>
+                     <div class="value">
+                         <?= esc(formatNumber($expenses['consolidatedExpenses'] ?? 0)) ?>
                      </div>
+                 </div>
 
                  <?php else: ?>
 
-                     <div class="data-row">
-                         <div class="label">Premises Costs</div>
-                         <div class="value">
-                             <?= esc(formatNumber($expenses['premisesRunningCosts'] ?? 0)) ?>
-                         </div>
+                 <div class="data-row">
+                     <div class="label">Premises Costs</div>
+                     <div class="value">
+                         <?= esc(formatNumber($expenses['premisesRunningCosts'] ?? 0)) ?>
                      </div>
+                 </div>
 
-                     <div class="data-row">
-                         <div class="label">Repairs And Maintenance</div>
-                         <div class="value">
-                             <?= esc(formatNumber($expenses['repairsAndMaintenance'] ?? 0)) ?>
-                         </div>
+                 <div class="data-row">
+                     <div class="label">Repairs And Maintenance</div>
+                     <div class="value">
+                         <?= esc(formatNumber($expenses['repairsAndMaintenance'] ?? 0)) ?>
                      </div>
+                 </div>
 
-                     <div class="data-row">
-                         <div class="label">Professional Fees</div>
-                         <div class="value">
-                             <?= esc(formatNumber($expenses['professionalFees'] ?? 0)) ?>
-                         </div>
+                 <div class="data-row">
+                     <div class="label">Professional Fees</div>
+                     <div class="value">
+                         <?= esc(formatNumber($expenses['professionalFees'] ?? 0)) ?>
                      </div>
+                 </div>
 
-                     <div class="data-row">
-                         <div class="label">Cost Of Services</div>
-                         <div class="value">
-                             <?= esc(formatNumber($expenses['costOfServices'] ?? 0)) ?>
-                         </div>
+                 <div class="data-row">
+                     <div class="label">Cost Of Services</div>
+                     <div class="value">
+                         <?= esc(formatNumber($expenses['costOfServices'] ?? 0)) ?>
                      </div>
+                 </div>
 
-                     <div class="data-row">
-                         <div class="label">Travel Costs</div>
-                         <div class="value">
-                             <?= esc(formatNumber($expenses['travelCosts'] ?? 0)) ?>
-                         </div>
+                 <div class="data-row">
+                     <div class="label">Travel Costs</div>
+                     <div class="value">
+                         <?= esc(formatNumber($expenses['travelCosts'] ?? 0)) ?>
                      </div>
+                 </div>
 
-                     <div class="data-row">
-                         <div class="label">Deductible Finance Costs</div>
-                         <div class="value">
-                             <?= esc(formatNumber($expenses['financialCosts'] ?? 0)) ?>
-                         </div>
+                 <div class="data-row">
+                     <div class="label">Deductible Finance Costs</div>
+                     <div class="value">
+                         <?= esc(formatNumber($expenses['financialCosts'] ?? 0)) ?>
                      </div>
+                 </div>
 
-                     <div class="data-row">
-                         <div class="label">Other Costs</div>
-                         <div class="value">
-                             <?= esc(formatNumber($expenses['other'] ?? 0)) ?>
-                         </div>
+                 <div class="data-row">
+                     <div class="label">Other Costs</div>
+                     <div class="value">
+                         <?= esc(formatNumber($expenses['other'] ?? 0)) ?>
                      </div>
+                 </div>
 
                  <?php endif; ?>
 
@@ -291,29 +291,29 @@
 
              <?php if (!empty($rentaroom)): ?>
 
-                 <div>
+             <div>
 
-                     <h3>RentARoom</h3>
+                 <h3>RentARoom</h3>
 
-                     <div class="data-row">
-                         <div class="label">
-                             Rents Received
-                         </div>
-                         <div class="value">
-                             <?= esc(formatNumber($rentaroom['rentsReceived'] ?? 0)) ?>
-                         </div>
+                 <div class="data-row">
+                     <div class="label">
+                         Rents Received
                      </div>
-
-                     <div class="data-row">
-                         <div class="label">
-                             Allowance Claimed
-                         </div>
-                         <div class="value">
-                             <?= esc(formatNumber($rentaroom['amountClaimed'] ?? 0)) ?>
-                         </div>
+                     <div class="value">
+                         <?= esc(formatNumber($rentaroom['rentsReceived'] ?? 0)) ?>
                      </div>
-
                  </div>
+
+                 <div class="data-row">
+                     <div class="label">
+                         Allowance Claimed
+                     </div>
+                     <div class="value">
+                         <?= esc(formatNumber($rentaroom['amountClaimed'] ?? 0)) ?>
+                     </div>
+                 </div>
+
+             </div>
 
              <?php endif; ?>
 
@@ -333,11 +333,11 @@
 
                  <?php if (!empty($rentaroom)): ?>
 
-                     <div class="data-row">
-                         <div class="label">RentARoom Profit</div>
-                         <div class="data"><?= esc(formatNumber($rentaroom_profit)) ?></div>
+                 <div class="data-row">
+                     <div class="label">RentARoom Profit</div>
+                     <div class="data"><?= esc(formatNumber($rentaroom_profit)) ?></div>
 
-                     </div>
+                 </div>
 
                  <?php endif; ?>
 

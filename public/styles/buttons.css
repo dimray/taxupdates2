@@ -1,9 +1,10 @@
 button {
   cursor: pointer;
-  border-radius: 0;
+  border-radius: 2px;
   border: 0;
   padding: 0;
   padding-inline: 1rem;
+  padding-block: 0.2rem;
   background-color: var(--button-bg);
 }
 
@@ -22,9 +23,9 @@ button:disabled {
 .form-button {
   background-color: var(--form-button-bg);
   color: white;
-  padding-block: 0.3rem;
+
   font-weight: 500;
-  font-size: 1.05em;
+
   text-transform: uppercase;
   border: 2px solid var(--form-button-bg);
 }
@@ -38,7 +39,6 @@ button:disabled {
 }
 
 .button {
-  border: 1px solid #999;
   background-color: var(--button-bg);
   /* font-weight: 500; */
   font-size: 1.1rem;
@@ -48,6 +48,7 @@ button:disabled {
   font: inherit;
   cursor: pointer;
   color: var(--delete-text);
+  background-color: var(--delete-bg);
   padding-inline: 1rem;
   padding-block-end: 0.2rem;
 }
@@ -76,13 +77,13 @@ button:disabled {
   color: var(--delete-text);
   font-size: 0.9rem;
   background-color: transparent;
+  cursor: pointer;
 }
 
 .delete:hover,
 .delete:focus,
 .delete:active {
   background: var(--delete-bg-hover);
-  cursor: pointer;
 }
 
 .delete-button {

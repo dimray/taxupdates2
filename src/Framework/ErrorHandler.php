@@ -42,16 +42,11 @@ class ErrorHandler
         } else {
 
             ini_set("display_errors", "0");
-
             ini_set("log_errors", "1");
-
-            //require "views/$template";
 
             require ROOT_PATH . "views/$template";
         }
 
-        if ($show_errors) {
-            throw $exception;
-        }
+        throw $exception;
     }
 }

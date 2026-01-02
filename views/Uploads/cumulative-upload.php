@@ -64,28 +64,49 @@
 
     </details>
 
-
-
-
-    <h3>Upload Your Data</h3>
-
-
     <?php if ($type_of_business === "foreign-property"): ?>
 
-        <?php include ROOT_PATH . "views/shared/select-country.php"; ?>
+        <hr>
 
-        <p>If you have properties in more than one country, submit your data for one country and you
-            will then be given the option to add further countries.</p>
+        <?php if (!empty($country_codes)): ?>
+
+            <?php include ROOT_PATH . "views/shared/select-country.php"; ?>
+
+            <p class="small">If you have properties in more than one country, upload one country's data and you
+                will then be given the option to add further countries.</p>
+
+            <input type="hidden" name="country_or_property" value="country">
+
+        <?php else: ?>
+
+            <?php include ROOT_PATH . "views/shared/select-foreign-property.php"; ?>
+
+            <?php $source = urlencode("/uploads/create-cumulative-upload"); ?>
+
+            <p class="small">If you have more than one property, upload one property's data and you will then be given the
+                option to
+                add further properties.
+            </p>
+
+            <p class="small">If your property is not shown in the drop-down box, you can add it <a
+                    href="/property-business/create-foreign-property?source=<?= $source  ?>">here</a>.</p>
 
 
+            <input type="hidden" name="country_or_property" value="property">
+
+        <?php endif; ?>
+
+
+        <hr>
 
         <span class="form-input">Foreign Tax Credit Relief</span>
         <div class="inline-checkbox">
-            <input type="checkbox" name="foreign_tax_credit_relief" id="foreign_tax_credit_relief" value="1" checked>
-            <label for="foreign_tax_credit_relief">Claim Foreign Tax Credit Relief for this country</label>
+            <input type="checkbox" name="foreign_tax_credit_relief" id="foreign_tax_credit_relief" value="1">
+            <label for="foreign_tax_credit_relief">Tick Box To Claim Foreign Tax Credit Relief for this property</label>
         </div>
 
         <hr>
+
 
     <?php endif; ?>
 
@@ -100,6 +121,9 @@
     */
     ?>
 
+    <p class="upload_label">Upload Your File<span class="asterisk"> *</span></p>
+
+    <br>
 
     <?php include ROOT_PATH . "views/shared/data-upload.php"; ?>
 
@@ -107,23 +131,18 @@
 
     <?php include ROOT_PATH . "views/shared/errors.php"; ?>
 
-
+    <br><br>
 
     <div>
-        <button class="link" type="submit">2. Upload selected file</button>
+        <button class="form-button" type="submit">Upload selected file</button>
     </div>
 
+    <br>
+    <hr>
+
+    <?php include ROOT_PATH . "views/shared/mandatory-fields-simple.php"; ?>
+
 </form>
-
-<br>
-
-
-
-
-
-
-
-
 
 
 <p><a href="/obligations/retrieve-cumulative-obligations">Cancel</a></p>

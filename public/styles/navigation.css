@@ -10,14 +10,13 @@ summary,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-inline: 0.5rem;
+  padding-inline: 0;
   background-color: var(--header-color);
   position: relative;
 }
 
 .logo {
   font-size: 2rem;
-  font-weight: bold;
 
   margin-block: 0;
 }
@@ -25,6 +24,7 @@ summary,
 .logo a {
   color: var(--header-text);
   text-decoration: none;
+  font-weight: 700;
 }
 
 .logo a:hover,
@@ -51,26 +51,23 @@ summary,
   padding-inline: 1rem;
   color: hsl(0, 0%, 90%);
   white-space: nowrap;
-  font-weight: 400;
+  font-weight: 500;
   text-transform: capitalize;
+  padding-block-end: 2px;
 }
 
 .navLink:hover,
 .navLink:focus,
 .navLink:active {
   color: hsl(0, 0%, 100%);
-  background-color: hsla(0, 0%, 100%, 15%);
+  background-color: hsl(0, 0%, 100%, 0.15);
 }
 
 .navLink.active {
-  background-color: hsla(0, 0%, 100%, 40%);
-  border-radius: 5px;
+  background-color: hsla(0, 0%, 100%, 90%);
+  color: var(--header-color);
+  border-radius: 2px;
 }
-
-/* .navLink.active:hover {
-  color: black;
-  background-color: white;
-} */
 
 .topLink {
   border-radius: 0;
@@ -131,15 +128,9 @@ details summary {
   display: none;
 }
 
-.logout {
-  /* font-weight: 200; */
-  /* font-size: 1rem; */
-  /* line-height: 2; */
+.admin-link {
   color: hsl(0, 0%, 75%);
-}
-
-.logout:hover {
-  color: hsl(0, 0%, 85%);
+  font-weight: 400;
 }
 
 /* Mobile styles */

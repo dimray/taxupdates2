@@ -111,20 +111,23 @@ class  ApiCalls extends ApiTokens
         ];
     }
 
-    public function sendGetRequest(string $url, array $headers, int $retry_count = 0)
+    public function sendGetRequest(string $url, array $headers, int $retry_count = 0, $fraud_headers = true)
     {
-        // fraud headers
-        if (!empty($_SERVER['REMOTE_ADDR'])) {
-            $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+        if ($fraud_headers) {
+
+            if (!empty($_SERVER['REMOTE_ADDR'])) {
+                $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+            }
+
+            if (!empty($_SERVER['REMOTE_PORT'])) {
+                $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
+            }
+
+            $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
+
+            $headers = array_merge($headers, $gov_headers);
         }
 
-        if (!empty($_SERVER['REMOTE_PORT'])) {
-            $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
-        }
-
-        $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
-
-        $headers = array_merge($headers, $gov_headers);
 
         $response = $this->performRequest('GET', $url, $headers, '', $retry_count);
 
@@ -135,20 +138,23 @@ class  ApiCalls extends ApiTokens
         return $response;
     }
 
-    public function sendPostRequest(string $url, string $payload, array $headers, int $retry_count = 0)
+    public function sendPostRequest(string $url, string $payload, array $headers, int $retry_count = 0, $fraud_headers = true)
     {
-        // fraud headers
-        if (!empty($_SERVER['REMOTE_ADDR'])) {
-            $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+        if ($fraud_headers) {
+
+            if (!empty($_SERVER['REMOTE_ADDR'])) {
+                $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+            }
+
+            if (!empty($_SERVER['REMOTE_PORT'])) {
+                $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
+            }
+
+            $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
+
+            $headers = array_merge($headers, $gov_headers);
         }
 
-        if (!empty($_SERVER['REMOTE_PORT'])) {
-            $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
-        }
-
-        $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
-
-        $headers = array_merge($headers, $gov_headers);
 
         $response = $this->performRequest('POST', $url, $headers, $payload, $retry_count);
 
@@ -159,20 +165,23 @@ class  ApiCalls extends ApiTokens
         return $response;
     }
 
-    public function sendPutRequest(string $url, string $payload, array $headers,  int $retry_count = 0)
+    public function sendPutRequest(string $url, string $payload, array $headers,  int $retry_count = 0, $fraud_headers = true)
     {
-        // fraud headers
-        if (!empty($_SERVER['REMOTE_ADDR'])) {
-            $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+        if ($fraud_headers) {
+
+            if (!empty($_SERVER['REMOTE_ADDR'])) {
+                $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+            }
+
+            if (!empty($_SERVER['REMOTE_PORT'])) {
+                $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
+            }
+
+            $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
+
+            $headers = array_merge($headers, $gov_headers);
         }
 
-        if (!empty($_SERVER['REMOTE_PORT'])) {
-            $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
-        }
-
-        $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
-
-        $headers = array_merge($headers, $gov_headers);
 
         $response = $this->performRequest('PUT', $url, $headers, $payload, $retry_count);
 
@@ -183,20 +192,22 @@ class  ApiCalls extends ApiTokens
         return $response;
     }
 
-    public function sendDeleteRequest(string $url, array $headers,  int $retry_count = 0)
+    public function sendDeleteRequest(string $url, array $headers,  int $retry_count = 0, $fraud_headers = true)
     {
-        // fraud headers
-        if (!empty($_SERVER['REMOTE_ADDR'])) {
-            $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+        if ($fraud_headers) {
+
+            if (!empty($_SERVER['REMOTE_ADDR'])) {
+                $_SESSION['user_ip'] = $_SERVER['REMOTE_ADDR'];
+            }
+
+            if (!empty($_SERVER['REMOTE_PORT'])) {
+                $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
+            }
+
+            $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
+
+            $headers = array_merge($headers, $gov_headers);
         }
-
-        if (!empty($_SERVER['REMOTE_PORT'])) {
-            $_SESSION['user_port'] = $_SERVER['REMOTE_PORT'];
-        }
-
-        $gov_headers = $this->apiFraudPreventionHeaders->setHeaders();
-
-        $headers = array_merge($headers, $gov_headers);
 
         $response = $this->performRequest('DELETE', $url, $headers, '',  $retry_count);
 

@@ -269,6 +269,7 @@ class ApiIndividualLosses extends ApiCalls
 
         $response_array = $this->sendGetRequest($url, $headers);
 
+
         // FRAUD PREVENTION HEADERS
         $feedback = $this->testHeaders->getFeedback('IndividualLosses');
         Helper::logFeedback("IndividualLosses", $feedback);

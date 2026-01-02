@@ -131,4 +131,4 @@
 
 <?php endif; ?>
 
-<p><a href="/business-details/retrieve-business-details">Business Details and Admin</a></p>
+<p><a class="hmrc-connection" href="/business-details/retrieve-business-details">Business Details and Admin</a></p>

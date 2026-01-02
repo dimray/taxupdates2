@@ -8,7 +8,7 @@
 
      <input type="hidden" name="calculation_id" value="<?= $calculation_id ?>">
 
-     <button class="button" id="countdown-button" disabled=false>View Calculation</button>
+     <button class="button hidden" id="countdown-button" disabled=false>View Calculation</button>
 
  </form>
 

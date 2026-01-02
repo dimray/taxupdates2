@@ -23,7 +23,9 @@ class AgentAuthorisation extends Controller
             $heading = "HMRC Agent Authorisation";
         }
 
-        return $this->view("Endpoints/AgentAuthorisation/unauthorised.php", compact("heading"));
+        $hide_client_name = true;
+
+        return $this->view("Endpoints/AgentAuthorisation/unauthorised.php", compact("heading", "hide_client_name"));
     }
 
     public function requestNewAuthorisation()
@@ -33,9 +35,11 @@ class AgentAuthorisation extends Controller
 
         $errors = $this->flashErrors();
 
+        $hide_client_name = true;
+
         return $this->view(
             "Endpoints/AgentAuthorisation/request-new-authorisation.php",
-            compact("heading", "errors")
+            compact("heading", "errors", "hide_client_name")
         );
     }
 
@@ -43,6 +47,7 @@ class AgentAuthorisation extends Controller
     {
         $postcode = $this->request->get['postcode'] ?? "";
         $postcode = strtoupper((string) $postcode);
+        $postcode = str_replace(' ', '', $postcode);
 
         if (!Validate::postcode($postcode)) {
             $this->addError("Postcode format is not correct");
@@ -61,6 +66,9 @@ class AgentAuthorisation extends Controller
         $arn = $_SESSION['arn'];
 
         $nino = $_SESSION['client']['nino'];
+
+        // var_dump($arn, $nino, $postcode);
+        // exit;
 
         $response = $this->apiAgentAuthorisation->createNewAuthorisation($arn, $nino, $postcode, $agent_type);
 
@@ -110,6 +118,8 @@ class AgentAuthorisation extends Controller
             return $this->redirect($response['location']);
         }
 
+
+
         // if error or url is empty
         return $this->redirect("/agent-authorisation/list-authorisation-requests");
     }
@@ -125,7 +135,9 @@ class AgentAuthorisation extends Controller
 
         $heading = "Client Link for " . $_SESSION['client']['name'];
 
-        return $this->view("Endpoints/AgentAuthorisation/show-client-link.php", compact("heading", "invitation_id", "invitation_url"));
+        $hide_client_name = true;
+
+        return $this->view("Endpoints/AgentAuthorisation/show-client-link.php", compact("heading", "invitation_id", "invitation_url", "hide_client_name"));
     }
 
     public function listAuthorisationRequests()
@@ -166,7 +178,9 @@ class AgentAuthorisation extends Controller
 
         $heading = "Agent Authorisation Requests";
 
-        return $this->view("Endpoints/AgentAuthorisation/show-all-requests.php", compact("heading", "requests"));
+        $hide_client_name = true;
+
+        return $this->view("Endpoints/AgentAuthorisation/show-all-requests.php", compact("heading", "requests", "hide_client_name"));
     }
 
     public function confirmCancelInvitation()
@@ -216,7 +230,9 @@ class AgentAuthorisation extends Controller
 
         $errors = $this->flashErrors();
 
-        return $this->view("Endpoints/AgentAuthorisation/request-status.php", compact("heading", "nino", "errors"));
+        $hide_client_name = true;
+
+        return $this->view("Endpoints/AgentAuthorisation/request-status.php", compact("heading", "nino", "errors", "hide_client_name"));
     }
 
     public function getStatusOfRelationship()
@@ -264,7 +280,9 @@ class AgentAuthorisation extends Controller
 
         $heading = "Relationship status for " . $_SESSION['client']['name'];
 
-        return $this->view("Endpoints/AgentAuthorisation/show-status.php", compact("heading", "authorised"));
+        $hide_client_name = true;
+
+        return $this->view("Endpoints/AgentAuthorisation/show-status.php", compact("heading", "authorised", "hide_client_name"));
     }
 
     public function updateAuthorisationOnError()

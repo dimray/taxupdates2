@@ -241,6 +241,7 @@ class BusinessSourceAdjustableSummary extends Controller
 
         $zero_adjustments = $_SESSION['bsas'][$_SESSION['business_id']]['zeroAdjustments'] ?? [];
 
+
         $bsas_data = [];
 
         if (!empty($zero_adjustments)) {
@@ -252,6 +253,8 @@ class BusinessSourceAdjustableSummary extends Controller
 
             $bsas_data['countryLevelDetail'] = [];
 
+            unset($foreign_property_data['countryCode']);
+
             foreach ($foreign_property_data as $country => $data) {
                 // skips the countryCode used for identifying current country, if still set 
                 if (!is_array($data) || !isset($data['countryCode'])) {
@@ -260,8 +263,8 @@ class BusinessSourceAdjustableSummary extends Controller
 
                 $bsas_data['countryLevelDetail'][] = [
                     'countryCode' => $data['countryCode'],
-                    'income' => $data['income'],
-                    'expenses' => $data['expenses'],
+                    'income' => $data['income'] ?? [],
+                    'expenses' => $data['expenses'] ?? [],
                 ];
             }
         } else {
@@ -295,10 +298,26 @@ class BusinessSourceAdjustableSummary extends Controller
             ];
         } elseif ($type_of_business === "foreign-property") {
 
+            if (!$zero_adjustments) {
+
+                foreach ($bsas_data['countryLevelDetail'] as $index => $data) {
+
+                    if (empty($data['income'])) {
+                        unset($bsas_data['countryLevelDetail'][$index]['income']);
+                    }
+
+                    if (empty($data['expenses'])) {
+                        unset($bsas_data['countryLevelDetail'][$index]['expenses']);
+                    }
+                }
+            }
+
             $bsas_data = [
                 'foreignProperty' => $bsas_data
             ];
         }
+
+
 
         // self-employment is just $bsas_data
         $response = $this->apiBusinessSourceAdjustableSummary->submitAccountingAdjustments($nino, $type_of_business, $calculation_id, $tax_year, $bsas_data);

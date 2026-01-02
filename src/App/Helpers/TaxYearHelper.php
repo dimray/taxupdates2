@@ -145,4 +145,59 @@ class TaxYearHelper
 
         return $today > $end_date;
     }
+
+    public static function getLatestTaxYear(string $year1, string $year2): string
+    {
+        // 1. Extract the numeric start year from the first tax year string
+        // e.g., '2026-27' becomes 2026
+        $start_year_1 = (int) substr($year1, 0, 4);
+
+        // 2. Extract the numeric start year from the second tax year string
+        // e.g., '2028-29' becomes 2028
+        $start_year_2 = (int) substr($year2, 0, 4);
+
+        // 3. Compare the start years. The larger number corresponds to the later tax year.
+        if ($start_year_1 >= $start_year_2) {
+            return $year1;
+        } else {
+            return $year2;
+        }
+    }
+
+    public static function getTaxYearFromDate(string $date_string): string
+    {
+        if (empty($date_string)) {
+            return "";
+        }
+        // 1. Convert the date string into a DateTime object
+        // Assumes input format is standard YYYY-MM-DD
+        $date = new DateTime($date_string);
+        $year = (int) $date->format('Y');
+
+        // Define the cutoff date: 5 April of the current year
+        $tax_year_end_cutoff = new DateTime("$year-04-05");
+
+        // 2. Determine the Tax Year start/end years
+
+        // If the date is BEFORE or ON 5 April (e.g., Jan 2026, Apr 5 2026)
+        // The date belongs to the tax year that ENDS in $year.
+        // Example: 02 Jan 2026 is in the 2025-26 tax year.
+        if ($date <= $tax_year_end_cutoff) {
+            $start_year = $year - 1;
+            $end_year = $year;
+        }
+        // If the date is AFTER 5 April (e.g., Apr 6 2026, Dec 2026)
+        // The date belongs to the tax year that STARTS in $year.
+        // Example: 06 Apr 2026 is in the 2026-27 tax year.
+        else {
+            $start_year = $year;
+            $end_year = $year + 1;
+        }
+
+        // 3. Format the result
+        // Get the last two digits of the end year (e.g., 2027 becomes 27)
+        $end_year_short = substr((string) $end_year, -2);
+
+        return "{$start_year}-{$end_year_short}";
+    }
 }

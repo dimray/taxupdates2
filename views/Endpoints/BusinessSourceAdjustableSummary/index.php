@@ -1,6 +1,6 @@
 <p>Use this section to submit and view
     adjustments to the figures in your Cumulative Summary. There is no requirement to submit accounting adjustments
-    unless you need to.</p>
+    unless they are needed.</p>
 
 <p>If an annual or quarterly update is submitted after making accounting adjustments, submitted adjustments become
     invalid and should be resubmitted.</p>

@@ -117,18 +117,11 @@ class CreateTestUser extends Controller
         return $responseArray;
     }
 
-    public function createOrganisation()
-    {
-        $responseArray = $this->create("organisations", ["mtd-vat"]);
-
-        var_dump($responseArray);
-        exit;
-    }
 
     public function createIndividual()
     {
 
-        $responseArray = $this->create("individuals", ["mtd-vat"]);
+        $responseArray = $this->create("individuals", ["mtd-income-tax"]);
 
         var_dump($responseArray);
         exit;

@@ -19,9 +19,9 @@
     take effect,
     then confirm.</p>
 
-<br>
 
-<hr>
+
+
 
 <!-- don't use shared tax year form as don't want to update period every time the year is changed-->
 <form class="inline-form-center hmrc-connection" action="/business-details/update-reporting-period" method="GET">
@@ -36,10 +36,11 @@
         <option value="<?= $previous_year ?>"><?= $previous_year ?></option>
     </select>
 
-    <button type="submit">Confirm</button>
+    <button class="form-button" type="submit">Confirm</button>
 
 </form>
-<br>
-<hr>
+
+
+
 
 <a class="hmrc-connection" href="/business-details/retrieve-business-details">Cancel</a>

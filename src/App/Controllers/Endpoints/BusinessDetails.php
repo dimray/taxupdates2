@@ -53,12 +53,13 @@ class BusinessDetails extends Controller
 
     public function retrieveBusinessDetails()
     {
+        // business dets already set in retrieve cumulative obligations. This is just resetting if necessary
         if (isset($this->request->get['business_id'])) {
-            $_SESSION['business_id'] = $this->request->get['business_id'];
+            $_SESSION['business_id'] = $this->request->get['business_id'] ?? '';
         }
 
         if (isset($this->request->get['type_of_business'])) {
-            $_SESSION['type_of_business'] = $this->request->get['type_of_business'];
+            $_SESSION['type_of_business'] = $this->request->get['type_of_business'] ?? '';
         }
 
         if (isset($this->request->get['trading_name'])) {
@@ -137,6 +138,12 @@ class BusinessDetails extends Controller
 
         $type_of_business = $_SESSION['type_of_business'] === "self-employment" ? "self-employment" : "property-business";
 
+        $foreign_property = false;
+
+        if ($_SESSION['type_of_business'] === "foreign-property") {
+            $foreign_property = true;
+        }
+
         $heading = "Business Details";
 
         $tax_year = $_SESSION['tax_year'];
@@ -144,7 +151,7 @@ class BusinessDetails extends Controller
 
         return $this->view(
             "Endpoints/BusinessDetails/show.php",
-            compact("heading", "current_period", "business_details", "type_of_business")
+            compact("heading", "current_period", "business_details", "type_of_business", "foreign_property")
         );
     }
 
@@ -341,6 +348,8 @@ class BusinessDetails extends Controller
 
     public function processCreateUpdatePeriodsOfAccount()
     {
-        // TO DO, support request sent 26 sept
+        // TO DO, support request sent 26 sept and follow-up 23 Dec
+
+        return $this->redirect("/business-details/retrieve-periods-of-account");
     }
 }

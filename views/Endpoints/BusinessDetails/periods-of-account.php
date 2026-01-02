@@ -7,8 +7,13 @@
     <?php displayArrayAsList($periods_of_account); ?>
 </div>
 
+<?php
+    /*
+this doesn't currently work. support request is outstanding
 <p><a href="/business-details/create-update-periods-of-account?<?= esc($periods_query_string) ?>">Adjust Periods Of
-        Account</a></p>
+Account</a></p>
+*/
+?>
 
 <?php else: ?>
 

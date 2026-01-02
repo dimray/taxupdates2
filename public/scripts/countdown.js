@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
       clearInterval(interval);
       document.getElementById("countdown-msg").classList.add("hidden");
       button.disabled = false;
+      button.classList.remove("hidden");
     }
   }, 1000);
 });

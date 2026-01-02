@@ -45,9 +45,3 @@
     <p>No submissions found for this tax year.</p>
 
 <?php endif; ?>
-
-<?php if ($_SESSION['user_role'] === "agent"): ?>
-    <p><a href="/clients/show-clients">Clients</a></p>
-<?php else: ?>
-    <p><a href="/business-details/list-all-businesses">Businesses</a></p>
-<?php endif; ?>

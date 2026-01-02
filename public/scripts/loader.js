@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const loader = document.getElementById("loader");
+  if (!loader) return;
   // Variable to hold the ID of the timeout function
   let loaderTimeout;
   const DELAY_MS = 1000; // 1 second delay

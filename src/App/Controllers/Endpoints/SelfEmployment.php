@@ -69,9 +69,14 @@ class SelfEmployment extends Controller
 
         $hide_tax_year = true;
 
+        $supporting_agent  = false;
+        if (isset($_SESSION['client']['agent_type']) && $_SESSION['client']['agent_type'] === "supporting") {
+            $supporting_agent = true;
+        }
+
         return $this->view(
             "Endpoints/SelfEmployment/show-cumulative-summary.php",
-            compact("heading", "hide_tax_year", "business_details", "response", "income", "expenses", "disallowed", "total_income", "total_expenses", "total_disallowed", "total_allowed", "profit")
+            compact("heading", "hide_tax_year", "supporting_agent", "business_details", "response", "income", "expenses", "disallowed", "total_income", "total_expenses", "total_disallowed", "total_allowed", "profit")
         );
     }
 
