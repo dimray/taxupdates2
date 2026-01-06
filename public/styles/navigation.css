@@ -130,7 +130,7 @@ details summary {
 
 .admin-link {
   color: hsl(0, 0%, 75%);
-  font-weight: 400;
+  /* font-weight: 400; */
 }
 
 /* Mobile styles */

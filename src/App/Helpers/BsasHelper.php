@@ -23,30 +23,55 @@ class BsasHelper
 
         $errors = [];
 
-
         if ($business_type === "foreign-property") {
 
-            $country_code = $data['country_code'] ?? '';
+            if ($_SESSION['tax_year'] === "2025-26") {
 
-            if (empty($country_code)) {
-                $errors[] = "Country code is required";
-            }
+                $country_code = $data['country_code'] ?? '';
 
-            // this is to display the right country's data if there are errors, and is overwritten as each country is saved.
-            $_SESSION['bsas'][$_SESSION['business_id']]['countryCode'] = $country_code;
+                if (empty($country_code)) {
+                    $errors[] = "Country is required";
+                }
 
-            // this is for the final array if no errors
-            $_SESSION['bsas'][$_SESSION['business_id']][$country_code]['countryCode'] = $country_code;
+                // this is to display the right country's data if there are errors, and is overwritten as each country is saved.
+                $_SESSION['bsas'][$_SESSION['business_id']]['countryCode'] = $country_code;
 
-            // save to session
-            if (!empty($income)) {
-                $income = SubmissionsHelper::formatArrayValuesAsFloat($income);
-                $_SESSION['bsas'][$_SESSION['business_id']][$country_code]['income'] = $income;
-            }
+                // this is for the final array if no errors
+                $_SESSION['bsas'][$_SESSION['business_id']][$country_code]['countryCode'] = $country_code;
 
-            if (!empty($expenses)) {
-                $expenses = SubmissionsHelper::formatArrayValuesAsFloat($expenses);
-                $_SESSION['bsas'][$_SESSION['business_id']][$country_code]['expenses'] = $expenses;
+                // save to session
+                if (!empty($income)) {
+                    $income = SubmissionsHelper::formatArrayValuesAsFloat($income);
+                    $_SESSION['bsas'][$_SESSION['business_id']][$country_code]['income'] = $income;
+                }
+
+                if (!empty($expenses)) {
+                    $expenses = SubmissionsHelper::formatArrayValuesAsFloat($expenses);
+                    $_SESSION['bsas'][$_SESSION['business_id']][$country_code]['expenses'] = $expenses;
+                }
+            } else {
+
+                $property_id = $data['hmrc_property_id'] ?? '';
+                if (empty($property_id)) {
+                    $errors[] = "Property is required";
+                }
+
+                // this is to display the right country's data if there are errors, and is overwritten as each country is saved.
+                $_SESSION['bsas'][$_SESSION['business_id']]['propertyId'] = $property_id;
+
+                // this is for the final array if no errors
+                $_SESSION['bsas'][$_SESSION['business_id']][$property_id]['propertyId'] = $property_id;
+
+                // save to session
+                if (!empty($income)) {
+                    $income = SubmissionsHelper::formatArrayValuesAsFloat($income);
+                    $_SESSION['bsas'][$_SESSION['business_id']][$property_id]['income'] = $income;
+                }
+
+                if (!empty($expenses)) {
+                    $expenses = SubmissionsHelper::formatArrayValuesAsFloat($expenses);
+                    $_SESSION['bsas'][$_SESSION['business_id']][$property_id]['expenses'] = $expenses;
+                }
             }
         } else {
 

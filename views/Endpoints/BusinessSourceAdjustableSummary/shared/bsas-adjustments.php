@@ -1,4 +1,4 @@
-<?php if (!$add_country): ?>
+<?php if (!$add_another): ?>
 
     <h2>Adjustments</h2>
 

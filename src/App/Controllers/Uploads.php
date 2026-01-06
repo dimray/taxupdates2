@@ -13,7 +13,7 @@ use Framework\Controller;
 
 class Uploads extends Controller
 {
-    public function __construct(private ForeignPropertyHelper $foreign_property_helper) {}
+    public function __construct(private ForeignPropertyHelper $foreignPropertyHelper) {}
 
     public function createCumulativeUpload()
     {
@@ -55,6 +55,8 @@ class Uploads extends Controller
         $country_codes = [];
         $foreign_properties = [];
         $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
 
 
 
@@ -67,15 +69,16 @@ class Uploads extends Controller
                 if (isset($_SESSION['foreign_properties'])) {
                     $foreign_properties = $_SESSION['foreign_properties'];
                 } else {
-                    $foreign_properties = $this->foreign_property_helper->getForeignProperties($nino);
+
+                    $foreign_properties = $this->foreignPropertyHelper->getForeignProperties($nino, $business_id, $tax_year);
                     $_SESSION['foreign_properties'] = $foreign_properties;
                 }
             }
 
             // ********************
             // FOR TESTING remove for production
-            $foreign_properties = $this->foreign_property_helper->getForeignProperties($nino);
-            $country_codes = [];
+            // $foreign_properties = $this->foreignPropertyHelper->getForeignProperties($nino, $business_id, $tax_year);
+            // $country_codes = [];
             // ****************************
         }
 
@@ -346,8 +349,10 @@ class Uploads extends Controller
         }
 
         $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
 
-        $foreign_properties = $this->foreign_property_helper->getForeignProperties($nino);
+        $foreign_properties = $this->foreignPropertyHelper->getForeignProperties($nino, $business_id, $tax_year);
         $selected_properties = [];
         $session_property_ids = array_keys($_SESSION['cumulative_data'][$_SESSION['business_id']]);
 
@@ -387,7 +392,7 @@ class Uploads extends Controller
 
         // ********************
         // For TESTING remove at production
-        $country_or_property = "property";
+        // $country_or_property = "property";
         // End for TESTING
         // ********************
 
@@ -429,8 +434,10 @@ class Uploads extends Controller
         $foreign_property_data = $cumulative_data;
 
         $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
 
-        $foreign_properties = $this->foreign_property_helper->getForeignProperties($nino);
+        $foreign_properties = $this->foreignPropertyHelper->getForeignProperties($nino, $business_id, $tax_year);
 
         return $this->view(
             "Endpoints/PropertyBusiness/approve-cumulative-summary-foreign.php",

@@ -266,6 +266,9 @@ class ApiPropertyBusiness extends ApiCalls
 
     public function retrieveForeignPropertyDetails(string $nino, string $business_id, string $tax_year): array
     {
+        // ****************************************
+        // tax year is hard coded in foreignPropertyHelper. Needs to be removed for production
+        // ****************************************
         $url = $this->base_url . "/individuals/business/property/foreign/{$nino}/{$business_id}/details/{$tax_year}";
 
         $headers = [

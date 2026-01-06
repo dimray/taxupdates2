@@ -7,9 +7,15 @@
 
              <tr>
                  <th></th>
-                 <?php foreach ($foreign_property_data as $country => $data): ?>
-                     <th class="align-right"><?= getCountry($country) ?></th>
+
+                 <?php foreach ($foreign_property_data as $key => $data): ?>
+                     <?php if ($country_or_property === "country"): ?>
+                         <th class="align-right"><?= getCountry($key) ?></th>
+                     <?php else: ?>
+                         <th class="align-right"><?= getProperty($key, $foreign_properties) ?></th>
+                     <?php endif; ?>
                  <?php endforeach; ?>
+
              </tr>
 
          </thead>
@@ -126,11 +132,15 @@
 
      <div class="mobile-view">
 
-         <?php foreach ($foreign_property_data as $country => $data): ?>
+         <?php foreach ($foreign_property_data as $key => $data): ?>
 
              <div class="card">
 
-                 <h3><?= getCountry($country) ?></h3>
+                 <?php if ($country_or_property === "country"): ?>
+                     <h3><?= getCountry($country) ?></h3>
+                 <?php else: ?>
+                     <h3><?= getProperty($key, $foreign_properties) ?></h3>
+                 <?php endif; ?>
 
                  <h3>Adjustments</h3>
 

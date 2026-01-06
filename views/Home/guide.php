@@ -5,27 +5,30 @@
     <ul>
 
         <li>Cumulative Updates need to be submitted quarterly for each self-employment or property business. Each
-            update gives income and expense figures for the tax year to-date. For example, if the first update covers 3
+            update gives income and expense figures for the tax year to date. The first update covers 3
             months from
             April to
             June, the second update will overwrite the first, covering 6 months from April to September, and so on.</li>
 
 
-        <li>Legally, amounts cannot be keyed into a submission page, instead records need to be kept 'digitally'.
+        <li>
             Keeping
             records
-            in a spreadsheet meets this requirement, and free MTD-compliant spreadsheets are provided.</li>
+            in a spreadsheet meets the requirement to keep digital records, and free
+            MTD-compliant spreadsheets
+            are provided.</li>
 
-        <li>Use either the provided spreadsheets, or your own spreadsheet, to categorise business income and
+        <li>Use either the provided spreadsheets, or your own spreadsheets, to categorise business income and
             expenses. The
             categories used must match those required by HMRC, the correct categories are shown in the
             spreadsheets.</li>
 
         <li>At the end of each quarter, upload the information from your spreadsheet to TaxUpdates to submit it to HMRC.
-            The
-            process is simple, further guidance is provided in the spreadsheets and on the upload page.</li>
+        </li>
 
     </ul>
+
+
 
 </div>
 

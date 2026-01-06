@@ -7,5 +7,5 @@
 
 <p>Do you need to add data for any other countries?</p>
 
-<p><a href="/business-source-adjustable-summary/create?add_country=true">Yes, add another country</a></p>
+<p><a href="/business-source-adjustable-summary/create?add_another=true">Yes, add another country</a></p>
 <p><a href="/business-source-adjustable-summary/finalise">No, finalise adjustments</a></p>

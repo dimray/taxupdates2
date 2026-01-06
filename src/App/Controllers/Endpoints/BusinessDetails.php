@@ -22,24 +22,27 @@ class BusinessDetails extends Controller
 
         $nino = Helper::getNino();
 
-        $response = $this->apiBusinessDetails->listAllBusinesses($nino);
-
-        if ($response['type'] === 'redirect') {
-            return $this->redirect($response['location']);
-        }
-
-        $businesses  = [];
-
-        if ($response['type'] === 'success') {
-            $businesses = $response['businesses'] ?? [];
-        }
-
-        if (empty($year_end)) {
-            $heading = "Select Business To Update";
+        if (isset($_SESSION[$nino]['cache']['businesses'])) {
+            $businesses = $_SESSION[$nino]['cache']['businesses'];
         } else {
-            $heading = "Select Business To Update";
+
+            $response = $this->apiBusinessDetails->listAllBusinesses($nino);
+
+            if ($response['type'] === 'redirect') {
+                return $this->redirect($response['location']);
+            }
+
+            $businesses  = [];
+
+            if ($response['type'] === 'success') {
+                $businesses = $response['businesses'] ?? [];
+
+                $_SESSION[$nino]['cache']['businesses'] = $businesses;
+            }
         }
 
+
+        $heading = "Select Business To Update";
 
         $hide_tax_year = true;
 
@@ -88,51 +91,60 @@ class BusinessDetails extends Controller
 
         $nino = Helper::getNino();
 
-        $response = $this->apiBusinessDetails->retrieveBusinessDetails($nino, $_SESSION['business_id'], $test_headers);
+        $business_id = $_SESSION['business_id'];
 
-        if ($response['type'] === 'redirect') {
-            return $this->redirect($response['location']);
-        }
+        if (isset($_SESSION[$nino]['cache'][$business_id]['business_details'])) {
+            $business_details = $_SESSION[$nino]['cache'][$business_id]['business_details'];
+            $current_period = $_SESSION[$nino]['cache'][$business_id]['period_type'];
+        } else {
 
-        $business_details = [];
+            $response = $this->apiBusinessDetails->retrieveBusinessDetails($nino, $_SESSION['business_id'], $test_headers);
 
-        $current_period = "";
-
-        if ($response['type'] === 'success') {
-            $business = $response['business'] ?? [];
-
-            if (!empty($business['businessId'])) {
-                $business_details['businessId'] = $business['businessId'];
-            }
-            if (!empty($business['typeOfBusiness'])) {
-                $business_details['typeOfBusiness'] = $business['typeOfBusiness'];
-            }
-            if (!empty($business['tradingName'])) {
-                $business_details['tradingName'] = $business['tradingName'];
-            }
-            if (!empty($business['businessAddressPostcode'])) {
-                $business_details['postcode'] = $business['businessAddressPostcode'];
-            }
-            if (!empty($business['commencementDate'])) {
-                $business_details['commencementDate'] = $business['commencementDate'];
-            }
-            if (!empty($business['cessationDate'])) {
-                $business_details['cessationDate'] = $business['cessationDate'];
-            }
-            if (!empty($business['accountingType'])) {
-                $business_details['accountingType'] = $business['accountingType'];
+            if ($response['type'] === 'redirect') {
+                return $this->redirect($response['location']);
             }
 
-            $current_period = $business['quarterlyTypeChoice']['quarterlyPeriodType'] ?? "standard";
+            $business_details = [];
 
-            $_SESSION['period_type'] = $current_period;
+            $current_period = "";
 
-            if ($current_period === 'standard') {
+            if ($response['type'] === 'success') {
+                $business = $response['business'] ?? [];
 
-                $business_details['quarterlyPeriods'] = ucfirst($current_period) . " (6 April to 5 April)";
-            } else {
+                if (!empty($business['businessId'])) {
+                    $business_details['businessId'] = $business['businessId'];
+                }
+                if (!empty($business['typeOfBusiness'])) {
+                    $business_details['typeOfBusiness'] = $business['typeOfBusiness'];
+                }
+                if (!empty($business['tradingName'])) {
+                    $business_details['tradingName'] = $business['tradingName'];
+                }
+                if (!empty($business['businessAddressPostcode'])) {
+                    $business_details['postcode'] = $business['businessAddressPostcode'];
+                }
+                if (!empty($business['commencementDate'])) {
+                    $business_details['commencementDate'] = $business['commencementDate'];
+                }
+                if (!empty($business['cessationDate'])) {
+                    $business_details['cessationDate'] = $business['cessationDate'];
+                }
+                if (!empty($business['accountingType'])) {
+                    $business_details['accountingType'] = $business['accountingType'];
+                }
 
-                $business_details['quarterlyPeriods'] = ucfirst($current_period) . " (1 April to 31 March)";
+                $current_period = $business['quarterlyTypeChoice']['quarterlyPeriodType'] ?? "standard";
+
+                if ($current_period === 'standard') {
+
+                    $business_details['quarterlyPeriods'] = ucfirst($current_period) . " (6 April to 5 April)";
+                } else {
+
+                    $business_details['quarterlyPeriods'] = ucfirst($current_period) . " (1 April to 31 March)";
+                }
+
+                $_SESSION[$nino]['cache'][$business_id]['period_type'] = $current_period;
+                $_SESSION[$nino]['cache'][$business_id]['business_details'] = $business_details;
             }
         }
 

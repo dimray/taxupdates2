@@ -1,6 +1,8 @@
+<h2>Simple Tax Filing</h2>
+
 <p>Welcome to TaxUpdates. You can use this site to meet your tax filing obligations under Making Tax Digital For Income
-    Tax,
-    including the following:</p>
+    Tax, keeping your records however you like with no tie-in to specific software.
+    TaxUpdates lets you do the following:</p>
 
 <div class="list">
     <ul>

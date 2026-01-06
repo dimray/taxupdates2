@@ -6,7 +6,9 @@ namespace App\Controllers\Endpoints;
 
 use App\Flash;
 use App\Helpers\BsasHelper;
+use App\Helpers\ForeignPropertyHelper;
 use App\Helpers\Helper;
+use App\Helpers\PeriodsOfAccountHelper;
 use App\Helpers\SubmissionsHelper;
 use App\Helpers\TaxYearHelper;
 use App\HmrcApi\Endpoints\ApiBusinessSourceAdjustableSummary;
@@ -16,7 +18,7 @@ use DateTime;
 
 class BusinessSourceAdjustableSummary extends Controller
 {
-    public function __construct(private ApiBusinessSourceAdjustableSummary $apiBusinessSourceAdjustableSummary, private Submission $submission) {}
+    public function __construct(private ApiBusinessSourceAdjustableSummary $apiBusinessSourceAdjustableSummary, private Submission $submission, private PeriodsOfAccountHelper $periodsOfAccountHelper, private ForeignPropertyHelper $foreignPropertyHelper) {}
 
     public function index()
     {
@@ -31,22 +33,32 @@ class BusinessSourceAdjustableSummary extends Controller
 
     public function trigger()
     {
-        $start_date = TaxYearHelper::getTaxYearStartDate($_SESSION['tax_year']);
-        $end_date = TaxYearHelper::getTaxYearEndDate($_SESSION['tax_year']);
+        $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
 
-        if ($_SESSION['period_type'] !== "standard") {
-            $start_date = (new DateTime($start_date))->modify("-5 days")->format("Y-m-d");
-            $end_date = (new DateTime($end_date))->modify("-5 days")->format("Y-m-d");
+        $start_date = TaxYearHelper::getTaxYearStartDate($tax_year);
+        $end_date = TaxYearHelper::getTaxYearEndDate($tax_year);
+
+
+
+        if (isset($_SESSION['period_type'])) {
+            if ($_SESSION['period_type'] !== "standard") {
+                $start_date = (new DateTime($start_date))->modify("-5 days")->format("Y-m-d");
+                $end_date = (new DateTime($end_date))->modify("-5 days")->format("Y-m-d");
+            }
+        } else {
+            $periods = $this->periodsOfAccountHelper->getPeriodsOfAccount($nino, $business_id);
+            if ($periods === "calendar") {
+                $start_date = (new DateTime($start_date))->modify("-5 days")->format("Y-m-d");
+                $end_date = (new DateTime($end_date))->modify("-5 days")->format("Y-m-d");
+            }
         }
 
         $accounting_period = [
             'startDate' => $start_date,
             'endDate' => $end_date
         ];
-
-        $nino = Helper::getNino();
-
-        $business_id = $_SESSION['business_id'];
 
         $type_of_business = $_SESSION['type_of_business'];
 
@@ -69,11 +81,15 @@ class BusinessSourceAdjustableSummary extends Controller
 
     public function create()
     {
-        $add_country = $this->request->get['add_country'] ?? false;
+        // *************TEST ONLY DELETE FOR PRODUCTION
+        $_SESSION['tax_year'] = "2026-27";
+        // *************TEST ONLY DELETE FOR PRODUCTION
+
+        $add_another = $this->request->get['add_another'] ?? false;
 
         $type = $_SESSION['type_of_business'];
 
-        if ($type !== "foreign-property") {
+        if ($type !== "foreign-property" || !$add_another) {
 
             if (empty($_SESSION['errors'])) {
                 unset($_SESSION['bsas']);
@@ -99,23 +115,59 @@ class BusinessSourceAdjustableSummary extends Controller
             );
         } elseif ($type === "foreign-property") {
 
-            if (empty($errors)) {
-                // this clears only the country code, not the annual submission data
-                unset($_SESSION['bsas'][$_SESSION['business_id']]['countryCode']);
+            $country_code = "";
+            $country_codes = [];
+            $country_data = [];
+            $property_id = "";
+            $foreign_properties = [];
+            $property_data = [];
+            $country_or_property = "property";
+
+
+            if ($_SESSION['tax_year'] === "2025-26") {
+
+                $country_or_property = "country";
+
+                if (empty($errors)) {
+                    // this clears only the country code, not the annual submission data
+                    unset($_SESSION['bsas'][$_SESSION['business_id']]['countryCode']);
+                }
+                // country code is saved by AnnualSubmissionHelper if there are errors
+                $country_code = $_SESSION['bsas'][$_SESSION['business_id']]['countryCode'] ?? '';
+
+                // get current country's data from the submission
+                $country_data = $_SESSION['bsas'][$_SESSION['business_id']][$country_code] ?? [];
+                $income = $country_data['income'] ?? [];
+                $expenses = $country_data['expenses'] ?? [];
+
+                $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
+            } else {
+
+
+                if (empty($errors)) {
+                    // this clears only the property id, not the annual submission data
+                    unset($_SESSION['bsas'][$_SESSION['business_id']]['propertyId']);
+                }
+
+                // property id is saved by AnnualSubmissionHelper if there are errors
+                $property_id = $_SESSION['bsas'][$_SESSION['business_id']]['propertyId'] ?? '';
+
+                // get current property's data from the submission
+                $property_data = $_SESSION['bsas'][$_SESSION['business_id']][$property_id] ?? [];
+                $income = $property_data['income'] ?? [];
+                $expenses = $property_data['expenses'] ?? [];
+
+                $nino = Helper::getNino();
+                $business_id = $_SESSION['business_id'];
+                $tax_year = $_SESSION['tax_year'];
+
+                $foreign_properties = $this->foreignPropertyHelper->getForeignProperties($nino, $business_id, $tax_year);
             }
-            // country code is saved by AnnualSubmissionHelper if there are errors
-            $country_code = $_SESSION['bsas'][$_SESSION['business_id']]['countryCode'] ?? '';
 
-            // get current country's data from the submission
-            $country_data = $_SESSION['bsas'][$_SESSION['business_id']][$country_code] ?? [];
-            $income = $country_data['income'] ?? [];
-            $expenses = $country_data['expenses'] ?? [];
-
-            $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
 
             return $this->view(
                 "Endpoints/BusinessSourceAdjustableSummary/create-bsas-$type.php",
-                compact("heading", "business_details", "errors", "income", "expenses", "country_code", "country_codes", "add_country")
+                compact("heading", "business_details", "errors", "income", "expenses", "country_code", "country_codes", "property_id", "foreign_properties", "property_data", "add_another", "country_or_property")
             );
         }
     }
@@ -123,6 +175,7 @@ class BusinessSourceAdjustableSummary extends Controller
     public function process()
     {
         $data = $this->request->post;
+
 
 
         if (isset($data['zeroAdjustments'])) {
@@ -144,7 +197,11 @@ class BusinessSourceAdjustableSummary extends Controller
         }
 
         if ($_SESSION['type_of_business'] === "foreign-property") {
-            return $this->redirect("/business-source-adjustable-summary/add-country");
+            if ($_SESSION['tax_year'] === "2025-26") {
+                return $this->redirect("/business-source-adjustable-summary/add-country");
+            } else {
+                return $this->redirect("/business-source-adjustable-summary/add-property");
+            }
         } else {
             return $this->redirect("/business-source-adjustable-summary/finalise");
         }
@@ -177,6 +234,36 @@ class BusinessSourceAdjustableSummary extends Controller
         }
 
         return $this->view("Endpoints/BusinessSourceAdjustableSummary/add-country.php", compact("heading", "business_details", "country_names"));
+    }
+
+    public function addProperty()
+    {
+
+        $business_details = Helper::setBusinessDetails();
+
+        if ($_SESSION['type_of_business'] !== 'foreign-property' || empty($_SESSION['bsas'][$_SESSION['business_id']])) {
+            return $this->redirect("/business-source-adjustable-summary/create");
+        }
+
+        $heading = "Accounting Adjustments";
+
+        $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
+
+        $foreign_properties = $this->foreignPropertyHelper->getForeignProperties($nino, $business_id, $tax_year);
+        $session_property_ids = array_keys($_SESSION['bsas'][$_SESSION['business_id']]);
+
+
+        $selected_properties = [];
+
+        foreach ($foreign_properties as $property) {
+            if (in_array($property['propertyId'], $session_property_ids)) {
+                $selected_properties[] = $property;
+            }
+        }
+
+        return $this->view("Endpoints/BusinessSourceAdjustableSummary/add-property.php", compact("heading", "business_details", "selected_properties", "foreign_properties"));
     }
 
     public function finalise()
@@ -218,14 +305,25 @@ class BusinessSourceAdjustableSummary extends Controller
             );
         } elseif ($type === "foreign-property") {
 
+            $country_or_property = $_SESSION['tax_year'] === "2025-26" ? "country" : "property";
+
             $foreign_property_data = $bsas_data;
+
+            $nino = Helper::getNino();
+            $business_id = $_SESSION['business_id'];
+            $tax_year = $_SESSION['tax_year'];
+
+            $foreign_properties = $this->foreignPropertyHelper->getForeignProperties($nino, $business_id, $tax_year);
 
             // unset the country tracker
             unset($foreign_property_data['countryCode']);
+            unset($foreign_property_data['propertyId']);
+
+
 
             return $this->view(
                 "Endpoints/BusinessSourceAdjustableSummary/finalise-bsas-$type.php",
-                compact("errors", "heading", "hide_tax_year", "business_details", "foreign_property_data", "zero_adjustments")
+                compact("errors", "heading", "hide_tax_year", "business_details", "foreign_property_data", "zero_adjustments", "foreign_properties", "country_or_property")
             );
         }
     }
@@ -241,8 +339,9 @@ class BusinessSourceAdjustableSummary extends Controller
 
         $zero_adjustments = $_SESSION['bsas'][$_SESSION['business_id']]['zeroAdjustments'] ?? [];
 
-
         $bsas_data = [];
+
+        $country_or_property = $_SESSION['tax_year'] === "2025-26" ? "country" : "property";
 
         if (!empty($zero_adjustments)) {
 
@@ -251,21 +350,42 @@ class BusinessSourceAdjustableSummary extends Controller
 
             $foreign_property_data = $_SESSION['bsas'][$_SESSION['business_id']] ?? [];
 
-            $bsas_data['countryLevelDetail'] = [];
+            if ($country_or_property === "country") {
+                $bsas_data['countryLevelDetail'] = [];
 
-            unset($foreign_property_data['countryCode']);
+                // removes the top  level countryCode, which is no longer needed
+                unset($foreign_property_data['countryCode']);
 
-            foreach ($foreign_property_data as $country => $data) {
-                // skips the countryCode used for identifying current country, if still set 
-                if (!is_array($data) || !isset($data['countryCode'])) {
-                    continue;
+                foreach ($foreign_property_data as $data) {
+                    // skips the countryCode used for identifying current country, if still set 
+                    if (!is_array($data) || !isset($data['countryCode'])) {
+                        continue;
+                    }
+
+                    $bsas_data['countryLevelDetail'][] = [
+                        'countryCode' => $data['countryCode'],
+                        'income' => $data['income'] ?? [],
+                        'expenses' => $data['expenses'] ?? [],
+                    ];
                 }
+            } else {
+                $bsas_data['propertyLevelDetail'] = [];
 
-                $bsas_data['countryLevelDetail'][] = [
-                    'countryCode' => $data['countryCode'],
-                    'income' => $data['income'] ?? [],
-                    'expenses' => $data['expenses'] ?? [],
-                ];
+                // removes the top level propertyId, which is no longer needed
+                unset($foreign_property_data['propertyId']);
+
+                foreach ($foreign_property_data as $data) {
+                    // skips the countryCode used for identifying current country, if still set 
+                    if (!is_array($data) || !isset($data['propertyId'])) {
+                        continue;
+                    }
+
+                    $bsas_data['propertyLevelDetail'][] = [
+                        'propertyId' => $data['propertyId'],
+                        'income' => $data['income'] ?? [],
+                        'expenses' => $data['expenses'] ?? [],
+                    ];
+                }
             }
         } else {
             // uk-property or self-employment
@@ -300,14 +420,29 @@ class BusinessSourceAdjustableSummary extends Controller
 
             if (!$zero_adjustments) {
 
-                foreach ($bsas_data['countryLevelDetail'] as $index => $data) {
+                if ($country_or_property === "country") {
 
-                    if (empty($data['income'])) {
-                        unset($bsas_data['countryLevelDetail'][$index]['income']);
+                    foreach ($bsas_data['countryLevelDetail'] as $index => $data) {
+
+                        if (empty($data['income'])) {
+                            unset($bsas_data['countryLevelDetail'][$index]['income']);
+                        }
+
+                        if (empty($data['expenses'])) {
+                            unset($bsas_data['countryLevelDetail'][$index]['expenses']);
+                        }
                     }
+                } else {
 
-                    if (empty($data['expenses'])) {
-                        unset($bsas_data['countryLevelDetail'][$index]['expenses']);
+                    foreach ($bsas_data['propertyLevelDetail'] as $index => $data) {
+
+                        if (empty($data['income'])) {
+                            unset($bsas_data['propertyLevelDetail'][$index]['income']);
+                        }
+
+                        if (empty($data['expenses'])) {
+                            unset($bsas_data['propertyLevelDetail'][$index]['expenses']);
+                        }
                     }
                 }
             }

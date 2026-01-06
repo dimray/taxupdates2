@@ -191,6 +191,7 @@ class AnnualSubmissionHelper
 
     public static function validatePropertyBusinessAnnualSubmission(array $data): array
     {
+
         // dump any empty values
         foreach ($data as $key => $value) {
             if ($value === "") {
@@ -199,6 +200,8 @@ class AnnualSubmissionHelper
         }
 
         $property_type = $_SESSION['type_of_business'] === "uk-property" ? "uk" : "foreign";
+
+
 
         if (isset($data['rentARoomClaimed']) && $data['rentARoomClaimed'] == "false") {
             unset($data['jointlyLet']);
@@ -209,18 +212,29 @@ class AnnualSubmissionHelper
         } else {
             $annual_data = SubmissionsHelper::buildArrays($data, "foreign-property", "annual");
 
+
+            // these are saved to identify the country/property if there are errors
             if (isset($data['country_code'])) {
                 $annual_data['countryCode'] = $data['country_code'];
+            } elseif (isset($data['hmrc_property_id'])) {
+                $annual_data['propertyId'] = $data['hmrc_property_id'];
             }
         }
 
 
+
         $country_code = $annual_data['countryCode'] ?? null;
+        $property_id = $annual_data['propertyId'] ?? null;
         $adjustments = $annual_data['adjustments'] ?? [];
         $rentaroom = $annual_data['rentARoom'] ?? [];
         $allowances = $annual_data['allowances'] ?? [];
         $sba = $annual_data['structuredBuildingAllowance'] ?? [];
         $esba = $annual_data['enhancedStructuredBuildingAllowance'] ?? [];
+
+        // delete any foreign property data for this country/property from the session before saving (to clear errors user has submitted)
+        unset($_SESSION['annual_submission'][$_SESSION['business_id']][$country_code]);
+        unset($_SESSION['annual_submission'][$_SESSION['business_id']][$property_id]);
+
 
         // add data to session
         if (!empty($adjustments)) {
@@ -234,6 +248,8 @@ class AnnualSubmissionHelper
 
             if ($property_type === "foreign" && $country_code) {
                 $_SESSION['annual_submission'][$_SESSION['business_id']][$country_code]['adjustments'] = $adjustments;
+            } elseif ($property_type === "foreign" && $property_id) {
+                $_SESSION['annual_submission'][$_SESSION['business_id']][$property_id]['adjustments'] = $adjustments;
             } else {
                 $_SESSION['annual_submission'][$_SESSION['business_id']]['adjustments'] = $adjustments;
             }
@@ -252,6 +268,8 @@ class AnnualSubmissionHelper
 
             if ($property_type === "foreign" && $country_code) {
                 $_SESSION['annual_submission'][$_SESSION['business_id']][$country_code]['allowances'] = $allowances;
+            } elseif ($property_type === "foreign" && $property_id) {
+                $_SESSION['annual_submission'][$_SESSION['business_id']][$property_id]['allowances'] = $allowances;
             } else {
                 $_SESSION['annual_submission'][$_SESSION['business_id']]['allowances'] = $allowances;
             }
@@ -269,6 +287,8 @@ class AnnualSubmissionHelper
 
             if ($property_type === "foreign" && $country_code) {
                 $_SESSION['annual_submission'][$_SESSION['business_id']][$country_code]['sba'] = $sba;
+            } elseif ($property_type === "foreign" && $property_id) {
+                $_SESSION['annual_submission'][$_SESSION['business_id']][$property_id]['sba'] = $sba;
             } else {
                 $_SESSION['annual_submission'][$_SESSION['business_id']]['sba'] = $sba;
             }
@@ -289,10 +309,18 @@ class AnnualSubmissionHelper
 
         // validation
         $errors = [];
+        $tax_year = $_SESSION['tax_year'];
 
-        if ($property_type === "foreign" && empty($country_code)) {
-            $errors[] = "Country Code is required";
+        if ($tax_year === "2025-26") {
+            if ($property_type === "foreign" && empty($country_code)) {
+                $errors[] = "Country Code is required";
+            }
+        } else {
+            if ($property_type === "foreign" && empty($property_id)) {
+                $errors[] = "A property must be selected";
+            }
         }
+
 
         // adjustments
         if ($property_type === "uk") {
@@ -371,10 +399,15 @@ class AnnualSubmissionHelper
             }
         }
 
-        // save the current country code so I can display the right country's data with errors
-        if (!empty($errors)) {
-            $_SESSION['annual_submission'][$_SESSION['business_id']]['countryCode'] = $country_code ?? '';
+        // save the current country or property code so I can display the right data with errors
+        if (!empty($errors) && $property_type === "foreign") {
+            if ($tax_year === "2025-26") {
+                $_SESSION['annual_submission'][$_SESSION['business_id']]['countryCode'] = $country_code ?? '';
+            } else {
+                $_SESSION['annual_submission'][$_SESSION['business_id']]['propertyId'] = $property_id ?? '';
+            }
         }
+
 
         return $errors;
     }
@@ -389,7 +422,6 @@ class AnnualSubmissionHelper
         $final_data = [];
 
         $type = $_SESSION['type_of_business'];
-
 
         if ($type === "uk-property") {
 
@@ -430,15 +462,20 @@ class AnnualSubmissionHelper
 
             $foreign_data = [];
 
-            foreach ($submission as $countryCode => $data) {
+            foreach ($submission as $key => $data) {
                 $adjustments = $data['adjustments'] ?? [];
                 $allowances = $data['allowances'] ?? [];
                 $sba = $data['sba'] ?? [];
 
-                $country_block = ['countryCode' => $countryCode];
+                if ($_SESSION['tax_year'] === "2025-26") {
+                    $key_block = ['countryCode' => $key];
+                } else {
+                    $key_block = ['propertyId' => $key];
+                }
+
 
                 if (!empty($adjustments)) {
-                    $country_block['adjustments'] = $adjustments;
+                    $key_block['adjustments'] = $adjustments;
                 }
 
                 if (!empty($sba)) {
@@ -448,10 +485,10 @@ class AnnualSubmissionHelper
                 }
 
                 if (!empty($allowances)) {
-                    $country_block['allowances'] = $allowances;
+                    $key_block['allowances'] = $allowances;
                 }
 
-                $foreign_data[] = $country_block;
+                $foreign_data[] = $key_block;
             }
 
             $final_data = [

@@ -11,7 +11,7 @@ class ApiCapitalGains extends ApiCalls
 {
     public function retrieveAllCgtResidentialPropertyDisposalsAndOverrides(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -49,9 +49,13 @@ class ApiCapitalGains extends ApiCalls
         }
     }
 
+    // NON REPORTED DISPOSALS
+
+    public function retrieveCgtResidentialPropertyDisposals() {}
+
     public function createAndAmendCgtResidentialPropertyDisposals(string $nino, string $tax_year, array $customer_added_disposals): array
     {
-        $url = $this->base_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}";
 
         $payload = json_encode($customer_added_disposals);
 
@@ -86,7 +90,7 @@ class ApiCapitalGains extends ApiCalls
 
     public function deleteCgtResidentialPropertyDisposals(string $nino, string $tax_year)
     {
-        $url = $this->base_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -123,9 +127,11 @@ class ApiCapitalGains extends ApiCalls
 
     // REPORTED DISPOSALS
 
+    public function retrieveReportAndPayCapitalGainsTaxOnResidentialPropertyOverrides() {}
+
     public function createAndAmendReportAndPayCapitalGainsTaxOnResidentialPropertyOverrides(string $nino, string $tax_year, array $overrides): array
     {
-        $url = $this->base_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}/ppd";
+        $url = $this->test_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}/ppd";
 
         $payload = json_encode($overrides);
 
@@ -160,7 +166,7 @@ class ApiCapitalGains extends ApiCalls
 
     public function deleteReportAndPayCapitalGainsTaxOnResidentialPropertyOverrides(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}/ppd";
+        $url = $this->test_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}/ppd";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -199,7 +205,7 @@ class ApiCapitalGains extends ApiCalls
 
     public function retrieveOtherCapitalGainsAndDisposals(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/disposals-income/other-gains/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/disposals-income/other-gains/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -239,7 +245,7 @@ class ApiCapitalGains extends ApiCalls
 
     public function createAndAmendOtherCapitalGainsAndDisposals($nino, $tax_year, $other_capital_gains)
     {
-        $url = $this->base_url . "/individuals/disposals-income/other-gains/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/disposals-income/other-gains/{$nino}/{$tax_year}";
 
         $payload = json_encode($other_capital_gains);
 
@@ -274,7 +280,7 @@ class ApiCapitalGains extends ApiCalls
 
     public function deleteOtherCapitalGainsAndDisposals(string $nino, string $tax_year)
     {
-        $url = $this->base_url . "/individuals/disposals-income/other-gains/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/disposals-income/other-gains/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 

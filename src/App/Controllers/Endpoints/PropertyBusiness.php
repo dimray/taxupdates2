@@ -99,6 +99,7 @@ class PropertyBusiness extends Controller
             $rentaroom_profit = (($rentaroom['rentsReceived'] ?? 0) - ($rentaroom['amountClaimed'] ?? 0));
             $profit = $total_income + $rentaroom_profit - $total_expenses;
 
+
             return $this->view(
                 "Endpoints/PropertyBusiness/show-cumulative-summary.php",
                 compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "income", "expenses", "rentaroom", "rentaroom_profit", "residential_finance", "total_income", "total_expenses", "profit", "supporting_agent")
@@ -133,12 +134,12 @@ class PropertyBusiness extends Controller
             // get total income, total expenses, profit
             $totals = [];
 
-            foreach ($foreign_property_data as $key => $country_data) {
+            foreach ($foreign_property_data as $data) {
 
-                $total_income = array_sum($country_data['income']);
-                $total_expenses = array_sum($country_data['expenses']);
+                $total_income = array_sum($data['income']);
+                $total_expenses = array_sum($data['expenses']);
 
-                $totals[$country_data['countryCode']] = [
+                $totals[$data['countryCode']] = [
                     'total_income' => $total_income,
                     'total_expenses' => $total_expenses,
                     'profit' => $total_income - $total_expenses
@@ -156,9 +157,11 @@ class PropertyBusiness extends Controller
                 }
             }
 
+            $country_or_property = $_SESSION['tax_year'] === "2025-26" ? "country" : "property";
+
             return $this->view(
                 "Endpoints/PropertyBusiness/show-cumulative-summary.php",
-                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "foreign_property_data", "totals", "consolidated_expenses", "non_consolidated_expenses", "supporting_agent")
+                compact("empty_data", "location", "heading", "hide_tax_year", "business_details", "foreign_property_data", "totals", "consolidated_expenses", "non_consolidated_expenses", "supporting_agent", "country_or_property")
             );
         }
     }
@@ -287,6 +290,10 @@ class PropertyBusiness extends Controller
 
     public function createAnnualSubmission()
     {
+        // ************FOR TESTING
+        // $_SESSION['tax_year'] = "2026-27";
+        // ************DELETE FOR PRODUCTION
+
         $type_of_business = $_SESSION['type_of_business'];
 
         if ($type_of_business === "uk-property") {
@@ -332,18 +339,48 @@ class PropertyBusiness extends Controller
             if (empty($errors)) {
                 // this clears only the country code, not the annual submission data
                 unset($_SESSION['annual_submission'][$_SESSION['business_id']]['countryCode']);
+                unset($_SESSION['annual_submission'][$_SESSION['business_id']]['propertyId']);
             }
-            // country code is saved by AnnualSubmissionHelper if there are errors
-            $country_code = $_SESSION['annual_submission'][$_SESSION['business_id']]['countryCode'] ?? '';
 
-            // get countries from the submission
-            $country_data = $_SESSION['annual_submission'][$_SESSION['business_id']][$country_code] ?? [];
+            $input_data = [];
+            $country_code = '';
+            $hmrc_property_id = '';
+            $country_codes = [];
+            $foreign_properties = [];
 
-            $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
+
+            if ($_SESSION['tax_year'] === "2025-26") {
+
+                // country code is saved by AnnualSubmissionHelper in case there are errors
+                $country_code = $_SESSION['annual_submission'][$_SESSION['business_id']]['countryCode'] ?? '';
+
+                // this is the data for that country code, to display if there is an error
+                if (!empty($country_code)) {
+                    $input_data = $_SESSION['annual_submission'][$_SESSION['business_id']][$country_code];
+                }
+
+                // get country codes for user to select from
+                $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
+            } else {
+
+                // get the specific property from AnnualSubmissionHelper if returning here with an error
+                $hmrc_property_id = $_SESSION['annual_submission'][$_SESSION['business_id']]['propertyId'] ?? '';
+                // get property data to display on an error
+                if (!empty($hmrc_property_id)) {
+                    $input_data = $_SESSION['annual_submission'][$_SESSION['business_id']][$hmrc_property_id];
+                }
+
+                // get properties from the PropertyHelper api call
+                $nino = Helper::getNino();
+                $business_id = $_SESSION['business_id'];
+                $tax_year = $_SESSION['tax_year'];
+                $foreign_properties = $this->foreignPropertyHelper->getForeignProperties($nino, $business_id, $tax_year);
+            }
+
 
             return $this->view(
                 "Endpoints/PropertyBusiness/create-annual-submission-foreign.php",
-                compact("heading", "business_details", "errors", "country_data", "country_code", "country_codes")
+                compact("heading", "business_details", "errors", "input_data", "country_code", "hmrc_property_id", "country_codes", "foreign_properties")
             );
         }
     }
@@ -351,6 +388,7 @@ class PropertyBusiness extends Controller
     public function processAnnualSubmission()
     {
         $data = $this->request->post ?? [];
+
 
         if (empty($data)) {
             return $this->redirect("/property-business/create-annual-submission");
@@ -371,9 +409,15 @@ class PropertyBusiness extends Controller
             return $this->redirect("/property-business/create-annual-submission");
         }
 
-        // add more countries
+
+
+        // add more countries or properties
         if ($type_of_business === "foreign-property") {
-            return $this->redirect("/property-business/add-country");
+            if ($_SESSION['tax_year'] === "2025-26") {
+                return $this->redirect("/property-business/add-country");
+            } else {
+                return $this->redirect("/property-business/add-property");
+            }
         }
 
         return $this->redirect("/property-business/approve-annual-submission");
@@ -384,13 +428,14 @@ class PropertyBusiness extends Controller
         $business_details = Helper::setBusinessDetails();
 
         if ($_SESSION['type_of_business'] !== 'foreign-property' || empty($_SESSION['annual_submission'][$_SESSION['business_id']])) {
-            return $this->redirect("/uploads/create-cumulative-upload");
+            return $this->redirect("/business-details/list-all-businesses?year_end=true");
         }
 
         $heading = "Annual Submission";
 
         $country_codes = require ROOT_PATH . "config/mappings/country-codes.php";
         $session_country_codes = array_keys($_SESSION['annual_submission'][$_SESSION['business_id']]);
+
         $country_names = [];
 
         foreach ($session_country_codes as $code) {
@@ -404,6 +449,34 @@ class PropertyBusiness extends Controller
         }
 
         return $this->view("Endpoints/PropertyBusiness/add-country-annual-submission.php", compact("heading", "business_details", "country_names"));
+    }
+
+    public function addProperty()
+    {
+
+        $business_details = Helper::setBusinessDetails();
+
+        if ($_SESSION['type_of_business'] !== 'foreign-property' || empty($_SESSION['annual_submission'][$_SESSION['business_id']])) {
+            return $this->redirect("/business-details/list-all-businesses?year_end=true");
+        }
+
+        $heading = "Annual Submission";
+
+        $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
+
+        $foreign_properties = $this->foreignPropertyHelper->getForeignProperties($nino, $business_id, $tax_year);
+        $selected_properties = [];
+        $session_property_ids = array_keys($_SESSION['annual_submission'][$_SESSION['business_id']]);
+
+        foreach ($foreign_properties as $property) {
+            if (in_array($property['propertyId'], $session_property_ids)) {
+                $selected_properties[] = $property;
+            }
+        }
+
+        return $this->view("Endpoints/PropertyBusiness/add-property-annual-submission.php", compact("heading", "business_details", "selected_properties", "foreign_properties"));
     }
 
     public function approveAnnualSubmission()
@@ -435,9 +508,28 @@ class PropertyBusiness extends Controller
 
         if ($type_of_business === "foreign-property") {
 
+
+
+            $country_or_property = "property";
+            if ($_SESSION['tax_year'] === "2025-26") {
+                $country_or_property = "country";
+            }
+
+            $foreign_properties = [];
+            if ($_SESSION['tax_year'] !== "2025-26") {
+                $nino = Helper::getNino();
+                $business_id = $_SESSION['business_id'];
+                $tax_year = $_SESSION['tax_year'];
+                $foreign_properties = $this->foreignPropertyHelper->getForeignProperties($nino, $business_id, $tax_year);
+            }
+
+            // these were to identify the country or property selected if displaying data again on error
+            unset($_SESSION['annual_submission'][$_SESSION['business_id']]['countryCode']);
+            unset($_SESSION['annual_submission'][$_SESSION['business_id']]['propertyId']);
+
             $foreign_property_data = $_SESSION['annual_submission'][$_SESSION['business_id']];
 
-            return $this->view("Endpoints/PropertyBusiness/approve-annual-submission-foreign.php", compact("heading", "hide_tax_year", "business_details", "foreign_property_data"));
+            return $this->view("Endpoints/PropertyBusiness/approve-annual-submission-foreign.php", compact("heading", "hide_tax_year", "business_details", "foreign_property_data", "country_or_property", "foreign_properties"));
         }
     }
 
@@ -759,9 +851,11 @@ class PropertyBusiness extends Controller
         $heading = "Foreign Properties";
 
         $nino = Helper::getNino();
+        $business_id = $_SESSION['business_id'];
+        $tax_year = $_SESSION['tax_year'];
 
         // helper makes the api call because i also need them in the submit cumulative update view
-        $properties = $this->foreignPropertyHelper->getForeignProperties($nino);
+        $properties = $this->foreignPropertyHelper->getForeignProperties($nino, $business_id, $tax_year);
 
         $hide_tax_year = true;
 

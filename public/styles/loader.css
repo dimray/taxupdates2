@@ -34,17 +34,6 @@
   visibility: visible;
 }
 
-/* Spinner */
-/* .spinner {
-  border: 4px solid var(--loader-bg);
-  border-top: 4px solid var(--loader-border);
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-  margin: 0 auto 10px;
-  animation: spin 1s linear infinite;
-} */
-
 /* Text under spinner */
 .loader-text {
   font-size: 0.9rem;
@@ -87,7 +76,7 @@
     transform: translateY(0);
   }
   7.5% {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
   }
 }
 
@@ -99,7 +88,7 @@
     transform: translateY(0);
   }
   17.5% {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
   }
 }
 
@@ -111,7 +100,7 @@
     transform: translateY(0);
   }
   27.5% {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
   }
 }
 
@@ -123,7 +112,7 @@
     transform: translateY(0);
   }
   37.5% {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
   }
 }
 

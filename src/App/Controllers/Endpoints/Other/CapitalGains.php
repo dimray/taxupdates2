@@ -45,6 +45,8 @@ class CapitalGains extends Controller
     }
 
     // CUSTOMER ADDED
+    public function retrieveCustomerAddedResidentialPropertyDisposals() {}
+
     public function createAmendCustomerAddedResidentialPropertyDisposals()
     {
         $heading = "Customer Added Residential Property Disposals";
@@ -119,6 +121,7 @@ class CapitalGains extends Controller
     }
 
     // REAL TIME RETURNS
+    public function retrieveCgtOnResidentialPropertyOverrides() {}
     public function createAmendCgtOnResidentialPropertyOverrides()
     {
         $heading = "Override Reported Residential Property Disposals";

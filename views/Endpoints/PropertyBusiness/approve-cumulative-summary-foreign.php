@@ -5,9 +5,12 @@
 
 <form class="hmrc-submission" action="<?= '/property-business/submit-cumulative-period-summary' ?>" method="GET">
 
+    <div class="spacer-10"></div>
     <?php include ROOT_PATH . "views/shared/submission-declaration.php" ?>
 
     <?php include ROOT_PATH . "views/shared/errors.php" ?>
+
+    <div class="spacer-10"></div>
 
     <button class="form-button" type="submit">Submit</button>
 
