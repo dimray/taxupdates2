@@ -12,7 +12,7 @@ class ApiCisDeductions extends ApiCalls
 
     public function retrieveCisDeductionsForSubcontractor(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/deductions/cis/{$nino}/current-position/{$tax_year}/all";
+        $url = $this->test_url . "/individuals/deductions/cis/{$nino}/current-position/{$tax_year}/all";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -56,7 +56,7 @@ class ApiCisDeductions extends ApiCalls
 
     public function createCisDeductionsForSubcontractor(string $nino, array $deductions): array
     {
-        $url = $this->base_url . "/individuals/deductions/cis/{$nino}/amendments";
+        $url = $this->test_url . "/individuals/deductions/cis/{$nino}/amendments";
 
 
         $payload = json_encode($deductions);
@@ -94,7 +94,7 @@ class ApiCisDeductions extends ApiCalls
 
     public function amendCisDeductionsForSubcontractor(string $nino, string $submission_id, array $period_data): array
     {
-        $url = $this->base_url . "/individuals/deductions/cis/{$nino}/amendments/{$submission_id}";
+        $url = $this->test_url . "/individuals/deductions/cis/{$nino}/amendments/{$submission_id}";
 
         $payload = json_encode(['periodData' => $period_data]);
 
@@ -130,7 +130,7 @@ class ApiCisDeductions extends ApiCalls
 
     public function deleteCisDeductionsForSubcontractor(string $nino, string $tax_year, string $submission_id): array
     {
-        $url = $this->base_url . "/individuals/deductions/cis/{$nino}/amendments/{$submission_id}/{$tax_year}";
+        $url = $this->test_url . "/individuals/deductions/cis/{$nino}/amendments/{$submission_id}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 

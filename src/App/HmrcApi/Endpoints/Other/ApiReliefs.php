@@ -14,7 +14,7 @@ class ApiReliefs extends ApiCalls
 
     public function retrieveReliefInvestments(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/reliefs/investment/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/investment/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -52,7 +52,7 @@ class ApiReliefs extends ApiCalls
 
     public function createAndAmendReliefInvestments(string $nino, string $tax_year, array $investment_reliefs)
     {
-        $url = $this->base_url . "/individuals/reliefs/investment/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/investment/{$nino}/{$tax_year}";
 
         $payload = json_encode($investment_reliefs);
 
@@ -87,7 +87,7 @@ class ApiReliefs extends ApiCalls
 
     public function deleteReliefInvestments(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/reliefs/investment/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/investment/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -126,7 +126,7 @@ class ApiReliefs extends ApiCalls
 
     public function retrieveOtherReliefs(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/reliefs/other/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/other/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -166,7 +166,7 @@ class ApiReliefs extends ApiCalls
 
     public function createAndAmendOtherReliefs(string $nino, string $tax_year, array $other_reliefs): array
     {
-        $url = $this->base_url . "/individuals/reliefs/other/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/other/{$nino}/{$tax_year}";
 
         $payload = json_encode($other_reliefs);
 
@@ -201,7 +201,7 @@ class ApiReliefs extends ApiCalls
 
     public function deleteOtherReliefs(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/reliefs/other/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/other/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -240,7 +240,7 @@ class ApiReliefs extends ApiCalls
 
     public function retrieveForeignReliefs(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/reliefs/foreign/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/foreign/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -281,7 +281,7 @@ class ApiReliefs extends ApiCalls
     public function createAndAmendForeignReliefs(string $nino, string $tax_year, array $foreign_reliefs): array
     {
 
-        $url = $this->base_url . "/individuals/reliefs/foreign/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/foreign/{$nino}/{$tax_year}";
 
         $payload = json_encode($foreign_reliefs);
 
@@ -317,7 +317,7 @@ class ApiReliefs extends ApiCalls
     public function deleteForeignReliefs(string $nino, string $tax_year): array
     {
 
-        $url = $this->base_url . "/individuals/reliefs/foreign/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/foreign/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -355,7 +355,7 @@ class ApiReliefs extends ApiCalls
     // PENSIONS
     public function retrievePensionsReliefs(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/reliefs/pensions/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/pensions/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -396,7 +396,7 @@ class ApiReliefs extends ApiCalls
     public function createAndAmendPensionsReliefs(string $nino, string $tax_year, array $pensions_reliefs): array
     {
 
-        $url = $this->base_url . "/individuals/reliefs/pensions/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/pensions/{$nino}/{$tax_year}";
 
         $payload = json_encode($pensions_reliefs);
 
@@ -431,7 +431,7 @@ class ApiReliefs extends ApiCalls
 
     public function deletePensionsReliefs(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/reliefs/pensions/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/pensions/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -470,7 +470,7 @@ class ApiReliefs extends ApiCalls
 
     public function retrieveCharitableGivingTaxRelief(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/reliefs/charitable-giving/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/charitable-giving/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -510,7 +510,7 @@ class ApiReliefs extends ApiCalls
 
     public function createAndAmendCharitableGivingTaxRelief(string $nino, string $tax_year, array $charitable_giving): array
     {
-        $url = $this->base_url . "/individuals/reliefs/charitable-giving/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/charitable-giving/{$nino}/{$tax_year}";
 
         $payload = json_encode($charitable_giving);
 
@@ -545,7 +545,7 @@ class ApiReliefs extends ApiCalls
 
     public function deleteCharitableGivingTaxRelief(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/reliefs/charitable-giving/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/reliefs/charitable-giving/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 

@@ -13,7 +13,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function listEmployments(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/employments-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/employments-income/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -50,7 +50,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function addCustomEmployment(string $nino, string $tax_year, string $employer_name, string $start_date, bool $occupational_pension): array
     {
-        $url = $this->base_url . "/individuals/employments-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/employments-income/{$nino}/{$tax_year}";
 
         $payload = json_encode([
             "employerName" => $employer_name,
@@ -92,7 +92,7 @@ class ApiEmploymentsIncome extends ApiCalls
     public function retrieveAnEmployment(string $nino, string $tax_year, string $employment_id)
     {
 
-        $url = $this->base_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}";
+        $url = $this->test_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -130,7 +130,7 @@ class ApiEmploymentsIncome extends ApiCalls
     public function deleteCustomEmployment(string $nino, string $tax_year, string $employment_id): array
     {
 
-        $url = $this->base_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}";
+        $url = $this->test_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -162,7 +162,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function ignoreEmployment(string $nino, string $tax_year, string $employment_id): array
     {
-        $url = $this->base_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}/ignore";
+        $url = $this->test_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}/ignore";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -195,7 +195,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function unignoreEmployment(string $nino, string $tax_year, string $employment_id): array
     {
-        $url = $this->base_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}/ignore";
+        $url = $this->test_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}/ignore";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -228,7 +228,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function retrieveAnEmploymentAndItsFinancialDetails(string $nino, string $tax_year, string $employment_id)
     {
-        $url = $this->base_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}/financial-details";
+        $url = $this->test_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}/financial-details";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -269,7 +269,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function createAndAmendEmploymentFinancialDetails(string $nino, string $tax_year, string $employment_id, array $employment): array
     {
-        $url = $this->base_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}/financial-details";
+        $url = $this->test_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}/financial-details";
 
         $payload = json_encode([
             "employment" => $employment
@@ -307,7 +307,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function deleteEmploymentFinancialDetails(string $nino, string $tax_year, string $employment_id): array
     {
-        $url = $this->base_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}/financial-details";
+        $url = $this->test_url . "/individuals/employments-income/{$nino}/{$tax_year}/{$employment_id}/financial-details";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -344,7 +344,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function retrieveNonPayeEmploymentIncome(string $nino, string $tax_year)
     {
-        $url = $this->base_url . "/individuals/employments-income/non-paye/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/employments-income/non-paye/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -380,7 +380,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function createAndAmendNonPayeEmploymentIncome(string $nino, string $tax_year, float $tips)
     {
-        $url = $this->base_url . "/individuals/employments-income/non-paye/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/employments-income/non-paye/{$nino}/{$tax_year}";
 
         $payload = json_encode([
             "tips" => $tips
@@ -417,7 +417,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function deleteNonPayeEmploymentIncome(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/employments-income/non-paye/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/employments-income/non-paye/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -451,7 +451,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function retrieveOtherEmploymentIncome(string $nino, string $tax_year)
     {
-        $url = $this->base_url . "/individuals/employments-income/other/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/employments-income/other/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -492,7 +492,7 @@ class ApiEmploymentsIncome extends ApiCalls
 
     public function createAndAmendOtherEmploymentIncome(string $nino, string $tax_year, array $payload_data): array
     {
-        $url = $this->base_url . "/individuals/employments-income/other/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/employments-income/other/{$nino}/{$tax_year}";
 
         $payload = json_encode($payload_data);
 
@@ -529,7 +529,7 @@ class ApiEmploymentsIncome extends ApiCalls
     public function deleteOtherEmploymentIncome(string $nino, string $tax_year)
     {
 
-        $url = $this->base_url . "/individuals/employments-income/other/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/employments-income/other/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 

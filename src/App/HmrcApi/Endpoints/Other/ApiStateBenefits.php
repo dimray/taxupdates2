@@ -11,7 +11,7 @@ class ApiStateBenefits extends ApiCalls
 {
     public function createStateBenefit(string $nino, string $tax_year, array $state_benefit): array
     {
-        $url = $this->base_url . "/individuals/state-benefits/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/state-benefits/{$nino}/{$tax_year}";
 
         $payload = json_encode($state_benefit);
 
@@ -45,7 +45,7 @@ class ApiStateBenefits extends ApiCalls
 
     public function listStateBenefits(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/state-benefits/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/state-benefits/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -85,7 +85,7 @@ class ApiStateBenefits extends ApiCalls
 
     public function deleteStateBenefit(string $nino, string $tax_year, string $benefit_id): array
     {
-        $url = $this->base_url . "/individuals/state-benefits/{$nino}/{$tax_year}/{$benefit_id}";
+        $url = $this->test_url . "/individuals/state-benefits/{$nino}/{$tax_year}/{$benefit_id}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -117,7 +117,7 @@ class ApiStateBenefits extends ApiCalls
 
     public function amendStateBenefitAmounts(string $nino, string $tax_year, string $benefit_id, array $amounts): array
     {
-        $url = $this->base_url . "/individuals/state-benefits/{$nino}/{$tax_year}/{$benefit_id}/amounts";
+        $url = $this->test_url . "/individuals/state-benefits/{$nino}/{$tax_year}/{$benefit_id}/amounts";
 
         $payload = json_encode($amounts);
 
@@ -152,7 +152,7 @@ class ApiStateBenefits extends ApiCalls
 
     public function ignoreStateBenefit(string $nino, string $tax_year, string $benefit_id): array
     {
-        $url = $this->base_url . "/individuals/state-benefits/{$nino}/{$tax_year}/{$benefit_id}/ignore";
+        $url = $this->test_url . "/individuals/state-benefits/{$nino}/{$tax_year}/{$benefit_id}/ignore";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -185,7 +185,7 @@ class ApiStateBenefits extends ApiCalls
 
     public function unignoreStateBenefit(string $nino, string $tax_year, string $benefit_id): array
     {
-        $url = $this->base_url . "/individuals/state-benefits/{$nino}/{$tax_year}/{$benefit_id}/unignore";
+        $url = $this->test_url . "/individuals/state-benefits/{$nino}/{$tax_year}/{$benefit_id}/unignore";
 
         $access_token  = $_SESSION['access_token'];
 

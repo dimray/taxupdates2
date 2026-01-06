@@ -12,7 +12,7 @@ class ApiPensionsIncome extends ApiCalls
 
     public function retrievePensionsIncome(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/pensions-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/pensions-income/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -52,7 +52,7 @@ class ApiPensionsIncome extends ApiCalls
 
     public function createAndAmendPensionsIncome(string $nino, string $tax_year, array $pensions_income): array
     {
-        $url = $this->base_url . "/individuals/pensions-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/pensions-income/{$nino}/{$tax_year}";
 
         $payload = json_encode($pensions_income);
 
@@ -87,7 +87,7 @@ class ApiPensionsIncome extends ApiCalls
 
     public function deletePensionsIncome(string $nino, string $tax_year)
     {
-        $url = $this->base_url . "/individuals/pensions-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/pensions-income/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 

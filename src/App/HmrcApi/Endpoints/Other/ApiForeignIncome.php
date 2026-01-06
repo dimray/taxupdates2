@@ -12,7 +12,7 @@ class ApiForeignIncome extends ApiCalls
 
     public function retrieveForeignIncome(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/foreign-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/foreign-income/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -53,7 +53,7 @@ class ApiForeignIncome extends ApiCalls
 
     public function createAndAmendForeignIncome(string $nino, string $tax_year, array $foreign_income): array
     {
-        $url = $this->base_url . "/individuals/foreign-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/foreign-income/{$nino}/{$tax_year}";
 
         $payload = json_encode($foreign_income);
 
@@ -88,7 +88,7 @@ class ApiForeignIncome extends ApiCalls
 
     public function deleteForeignIncome(string $nino, string $tax_year)
     {
-        $url = $this->base_url . "/individuals/foreign-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/foreign-income/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 

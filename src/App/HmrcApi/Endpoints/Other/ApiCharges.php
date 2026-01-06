@@ -11,7 +11,7 @@ class ApiCharges extends ApiCalls
 {
     public function retrievePensionCharges(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/charges/pensions/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/charges/pensions/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -51,7 +51,7 @@ class ApiCharges extends ApiCalls
 
     public function createAndAmendPensionCharges(string $nino, string $tax_year, array $pension_charges): array
     {
-        $url = $this->base_url . "/individuals/charges/pensions/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/charges/pensions/{$nino}/{$tax_year}";
 
         $payload = json_encode($pension_charges);
 
@@ -86,7 +86,7 @@ class ApiCharges extends ApiCalls
 
     public function deletePensionCharges(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/charges/pensions/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/charges/pensions/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -123,7 +123,7 @@ class ApiCharges extends ApiCalls
 
     public function retrieveHighIncomeChildBenefitChargeSubmission(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/charges/high-income-child-benefit/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/charges/high-income-child-benefit/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -163,7 +163,7 @@ class ApiCharges extends ApiCalls
 
     public function createOrAmendHighIncomeChildBenefitChargeSubmission(string $nino, string $tax_year, array $pension_charges): array
     {
-        $url = $this->base_url . "/individuals/charges/high-income-child-benefit/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/charges/high-income-child-benefit/{$nino}/{$tax_year}";
 
         $payload = json_encode($pension_charges);
 
@@ -198,7 +198,7 @@ class ApiCharges extends ApiCalls
 
     public function deleteHighIncomeChildBenefitChargeSubmission(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/charges/high-income-child-benefit/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/charges/high-income-child-benefit/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 

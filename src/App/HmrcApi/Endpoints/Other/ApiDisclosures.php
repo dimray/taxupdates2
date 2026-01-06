@@ -12,7 +12,7 @@ class ApiDisclosures extends ApiCalls
 
     public function createMarriageAllowance(string $nino, array $marriage_allowance): array
     {
-        $url = $this->base_url . "/individuals/disclosures/marriage-allowance/{$nino}";
+        $url = $this->test_url . "/individuals/disclosures/marriage-allowance/{$nino}";
 
         $payload = json_encode($marriage_allowance);
 
@@ -48,7 +48,7 @@ class ApiDisclosures extends ApiCalls
     public function retrieveDisclosures(string $nino, string $tax_year): array
     {
 
-        $url = $this->base_url . "/individuals/disclosures/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/disclosures/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -88,7 +88,7 @@ class ApiDisclosures extends ApiCalls
 
     public function createAndAmendDisclosures(string $nino, string $tax_year, array $disclosures): array
     {
-        $url = $this->base_url . "/individuals/disclosures/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/disclosures/{$nino}/{$tax_year}";
 
         $payload = json_encode($disclosures);
 
@@ -123,7 +123,7 @@ class ApiDisclosures extends ApiCalls
 
     public function deleteDisclosures(string $nino, string $tax_year)
     {
-        $url = $this->base_url . "/individuals/disclosures/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/disclosures/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 

@@ -12,7 +12,7 @@ class ApiInsuranceIncome extends ApiCalls
 
     public function retrieveInsurancePoliciesIncome(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/insurance-policies-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/insurance-policies-income/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -52,7 +52,7 @@ class ApiInsuranceIncome extends ApiCalls
 
     public function createAndAmendInsurancePoliciesIncome(string $nino, string $tax_year, array $insurance_income): array
     {
-        $url = $this->base_url . "/individuals/insurance-policies-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/insurance-policies-income/{$nino}/{$tax_year}";
 
         $payload = json_encode($insurance_income);
 
@@ -87,7 +87,7 @@ class ApiInsuranceIncome extends ApiCalls
 
     public function deleteInsurancePoliciesIncome(string $nino, string $tax_year)
     {
-        $url = $this->base_url . "/individuals/insurance-policies-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/insurance-policies-income/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 

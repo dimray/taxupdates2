@@ -11,7 +11,7 @@ class ApiExpenses extends ApiCalls
 {
     public function retrieveEmploymentExpenses(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/expenses/employments/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/expenses/employments/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -52,7 +52,7 @@ class ApiExpenses extends ApiCalls
     public function createAndAmendEmploymentExpenses(string $nino, string $tax_year, array $employment_expenses): array
     {
 
-        $url = $this->base_url . "/individuals/expenses/employments/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/expenses/employments/{$nino}/{$tax_year}";
 
         $payload = json_encode(['expenses' => $employment_expenses]);
 
@@ -87,7 +87,7 @@ class ApiExpenses extends ApiCalls
 
     public function deleteEmploymentExpenses(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/expenses/employments/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/expenses/employments/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -124,7 +124,7 @@ class ApiExpenses extends ApiCalls
 
     public function ignoreEmploymentExpenses(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/expenses/employments/{$nino}/{$tax_year}/ignore";
+        $url = $this->test_url . "/individuals/expenses/employments/{$nino}/{$tax_year}/ignore";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -159,7 +159,7 @@ class ApiExpenses extends ApiCalls
 
     public function retrieveOtherExpenses(string $nino, string $tax_year)
     {
-        $url = $this->base_url . "/individuals/expenses/other/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/expenses/other/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -199,7 +199,7 @@ class ApiExpenses extends ApiCalls
 
     public function createAndAmendOtherExpenses(string $nino, string $tax_year, array $other_expenses)
     {
-        $url = $this->base_url . "/individuals/expenses/other/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/expenses/other/{$nino}/{$tax_year}";
 
         $payload = json_encode($other_expenses);
 
@@ -234,7 +234,7 @@ class ApiExpenses extends ApiCalls
 
     public function deleteOtherExpenses(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/expenses/other/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/expenses/other/{$nino}/{$tax_year}";
 
         $access_token  = $this->tokenStorage->retrieveSavedAccessToken();
 

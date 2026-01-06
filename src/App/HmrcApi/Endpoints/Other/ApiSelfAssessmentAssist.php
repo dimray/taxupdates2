@@ -12,7 +12,7 @@ class ApiSelfAssessmentAssist extends ApiCalls
 
     public function produceAHmrcSelfAssessmentAssistReport(string $nino, string $tax_year, string $calculation_id): array
     {
-        $url = $this->base_url . "/individuals/self-assessment/assist/reports/{$nino}/{$tax_year}/{$calculation_id}";
+        $url = $this->test_url . "/individuals/self-assessment/assist/reports/{$nino}/{$tax_year}/{$calculation_id}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -48,7 +48,7 @@ class ApiSelfAssessmentAssist extends ApiCalls
     public function acknowledgeAHmrcSelfAssessmentAssistReport(string $nino, string $report_id, string $correlation_id): array
     {
 
-        $url = $this->base_url . "/individuals/self-assessment/assist/reports/acknowledge/{$nino}/{$report_id}/{$correlation_id}";
+        $url = $this->test_url . "/individuals/self-assessment/assist/reports/acknowledge/{$nino}/{$report_id}/{$correlation_id}";
 
 
         $access_token  = $_SESSION['access_token'];

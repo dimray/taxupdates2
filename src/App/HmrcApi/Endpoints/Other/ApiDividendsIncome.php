@@ -13,7 +13,7 @@ class ApiDividendsIncome extends ApiCalls
 
     public function retrieveDividendsIncome(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/dividends-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/dividends-income/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -54,7 +54,7 @@ class ApiDividendsIncome extends ApiCalls
     public function createAndAmendDividendsIncome(string $nino, string $tax_year, array $payload_data): array
     {
 
-        $url = $this->base_url . "/individuals/dividends-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/dividends-income/{$nino}/{$tax_year}";
 
         $payload = json_encode($payload_data);
 
@@ -89,7 +89,7 @@ class ApiDividendsIncome extends ApiCalls
 
     public function deleteDividendsIncome(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/dividends-income/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/dividends-income/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -128,7 +128,7 @@ class ApiDividendsIncome extends ApiCalls
 
     public function retrieveUkDividendsAnnualSummary(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/dividends-income/uk/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/dividends-income/uk/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -170,7 +170,7 @@ class ApiDividendsIncome extends ApiCalls
 
     public function createAndAmendUkDividendsIncomeAnnualSummary(string $nino, string $tax_year, array $dividends): array
     {
-        $url = $this->base_url . "/individuals/dividends-income/uk/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/dividends-income/uk/{$nino}/{$tax_year}";
 
         $payload = json_encode($dividends);
 
@@ -205,7 +205,7 @@ class ApiDividendsIncome extends ApiCalls
 
     public function deleteUkDividendsIncomeAnnualSummary(string $nino, string $tax_year): array
     {
-        $url = $this->base_url . "/individuals/dividends-income/uk/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/dividends-income/uk/{$nino}/{$tax_year}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -246,7 +246,7 @@ class ApiDividendsIncome extends ApiCalls
     public function retrieveAdditionalDirectorshipAndDividendInformation(string $nino, string $tax_year, string $employment_id): array
     {
 
-        $url = $this->base_url . "/individuals/dividends-income/directorship/{$nino}/{$tax_year}/{$employment_id}";
+        $url = $this->test_url . "/individuals/dividends-income/directorship/{$nino}/{$tax_year}/{$employment_id}";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -289,7 +289,7 @@ class ApiDividendsIncome extends ApiCalls
     public function createOrAmendAdditionalDirectorshipAndDividendInformation(string $nino, string $tax_year, string $employment_id, array $director_info)
     {
 
-        $url = $this->base_url . "/individuals/dividends-income/directorship/{$nino}/{$tax_year}/{$employment_id}";
+        $url = $this->test_url . "/individuals/dividends-income/directorship/{$nino}/{$tax_year}/{$employment_id}";
 
         $payload = json_encode($director_info);
 
@@ -324,7 +324,7 @@ class ApiDividendsIncome extends ApiCalls
 
     public function deleteAdditionalDirectorshipAndDividendInformation(string $nino, string $tax_year, string $employment_id): array
     {
-        $url = $this->base_url . "/individuals/dividends-income/directorship/{$nino}/{$tax_year}/{$employment_id}";
+        $url = $this->test_url . "/individuals/dividends-income/directorship/{$nino}/{$tax_year}/{$employment_id}";
 
         $access_token  = $_SESSION['access_token'];
 
