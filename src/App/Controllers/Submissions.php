@@ -86,7 +86,6 @@ class Submissions extends Controller
 
         $data = json_decode($submission['submission_payload'], true);
 
-        $type = $submission['submission_type'] ?? "";
         $tax_year = $_SESSION['tax_year'];
 
         $heading = $this->submission_types[$submission['submission_type']] . "-" . $tax_year .  ".csv" ?? "Submission-" . $tax_year . ".csv";

@@ -22,7 +22,7 @@ class ApiSavings extends ApiCalls
 
         // test scenario headers
         $test_headers = [
-            // 'Gov-Test-Scenario: STATEFUL'
+            'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);
@@ -66,7 +66,7 @@ class ApiSavings extends ApiCalls
         ];
 
         $test_headers = [
-            // 'Gov-Test-Scenario: STATEFUL'
+            'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);
@@ -104,7 +104,7 @@ class ApiSavings extends ApiCalls
         ];
 
         $test_headers = [
-            // 'Gov-Test-Scenario: STATEFUL'
+            'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);
@@ -137,7 +137,7 @@ class ApiSavings extends ApiCalls
 
         // test scenario headers
         $test_headers = [
-            // 'Gov-Test-Scenario: STATEFUL'
+            'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);
@@ -179,7 +179,7 @@ class ApiSavings extends ApiCalls
         ];
 
         $test_headers = [
-            // 'Gov-Test-Scenario: STATEFUL'
+            'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);
@@ -214,7 +214,7 @@ class ApiSavings extends ApiCalls
 
         // test scenario headers
         $test_headers = [
-            // 'Gov-Test-Scenario: STATEFUL'
+            'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);
@@ -257,7 +257,7 @@ class ApiSavings extends ApiCalls
         ];
 
         $test_headers = [
-            // 'Gov-Test-Scenario: STATEFUL'
+            'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);
@@ -290,7 +290,7 @@ class ApiSavings extends ApiCalls
         ];
 
         $test_headers = [
-            // 'Gov-Test-Scenario: STATEFUL'
+            'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);

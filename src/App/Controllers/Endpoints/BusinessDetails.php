@@ -14,6 +14,8 @@ class BusinessDetails extends Controller
 {
     public function __construct(private ApiBusinessDetails $apiBusinessDetails) {}
 
+    // there is a response in support relating to Periods Of Account endpoints
+
     public function listAllBusinesses()
     {
         Helper::clearUpSession();

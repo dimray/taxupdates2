@@ -359,6 +359,7 @@ class IndividualCalculations extends Controller
         return [];
     }
 
+    // when doing this check TaxYear - it has this in an array
     private function getLatestTaxCalculation(array $calculations): ?array
     {
         if (empty($calculations)) {

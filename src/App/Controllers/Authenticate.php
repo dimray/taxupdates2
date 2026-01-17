@@ -12,6 +12,7 @@ class Authenticate extends Controller
 {
     public function __construct(private ApiAuthenticate $apiAuthenticate) {}
 
+    // in taxUpdates3 this function is now in home page
     public function new()
     {
         $heading = "Authenticate With HMRC";

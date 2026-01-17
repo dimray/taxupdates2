@@ -9,7 +9,6 @@ class ExportHelper
 
     // filename is the name of the exported file
     // headers is the headings in the csv
-
     public static function generateCsvString(array $data, array $headers = ['Category', 'Amount']): string
     {
         // Check if the data is a flat array of key-value pairs.

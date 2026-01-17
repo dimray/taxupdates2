@@ -7,50 +7,15 @@ namespace App\HmrcApi\Endpoints\Other;
 use App\HmrcApi\ApiCalls;
 use App\HmrcApi\ApiErrors;
 
-class ApiDisclosures extends ApiCalls
+class ApiDeductions extends ApiCalls
 {
 
-    public function createMarriageAllowance(string $nino, array $marriage_allowance): array
-    {
-        $url = $this->test_url . "/individuals/disclosures/marriage-allowance/{$nino}";
-
-        $payload = json_encode($marriage_allowance);
-
-        $access_token  = $_SESSION['access_token'];
-
-        $headers = [
-            "Accept: application/vnd.hmrc.2.0+json",
-            "Content-Type: application/json",
-            "Authorization: Bearer {$access_token}"
-        ];
-
-        $test_headers = [
-            'Gov-Test-Scenario: STATEFUL'
-        ];
-
-        $headers = array_merge($headers, $test_headers);
-
-        $response_array = $this->sendPostRequest($url, $payload, $headers);
-
-        $response_code = $response_array['response_code'] ?? 0;
-        $response = $response_array['response'] ?? [];
-        $response_headers = $response_array['headers'] ?? [];
-
-        if ($response_code === 201) {
-            return [
-                'type' => 'success'
-            ];
-        } else {
-            return ApiErrors::dealWithError($response_code, $response);
-        }
-    }
-
-    public function retrieveDisclosures(string $nino, string $tax_year): array
+    public function retrieveDeductions(string $nino, string $tax_year): array
     {
 
-        $url = $this->test_url . "/individuals/disclosures/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/deductions/other/{$nino}/{$tax_year}";
 
-        $access_token  = $_SESSION['access_token'];
+        $access_token  = $this->tokenStorage->retrieveSavedAccessToken();
 
         $headers = [
             "Accept: application/vnd.hmrc.2.0+json",
@@ -59,6 +24,7 @@ class ApiDisclosures extends ApiCalls
 
         // test scenario headers
         $test_headers = [
+
             'Gov-Test-Scenario: STATEFUL'
         ];
 
@@ -86,13 +52,14 @@ class ApiDisclosures extends ApiCalls
         }
     }
 
-    public function createAndAmendDisclosures(string $nino, string $tax_year, array $disclosures): array
+    public function createAndAmendDeductions(string $nino, string $tax_year, array $deductions): array
     {
-        $url = $this->test_url . "/individuals/disclosures/{$nino}/{$tax_year}";
 
-        $payload = json_encode($disclosures);
+        $url = $this->test_url . "/individuals/deductions/other/{$nino}/{$tax_year}";
 
-        $access_token  = $_SESSION['access_token'];
+        $payload = json_encode($deductions);
+
+        $access_token  = $this->tokenStorage->retrieveSavedAccessToken();
 
         $headers = [
             "Accept: application/vnd.hmrc.2.0+json",
@@ -121,11 +88,12 @@ class ApiDisclosures extends ApiCalls
         }
     }
 
-    public function deleteDisclosures(string $nino, string $tax_year)
+    public function deleteDeductions(string $nino, string $tax_year)
     {
-        $url = $this->test_url . "/individuals/disclosures/{$nino}/{$tax_year}";
 
-        $access_token  = $_SESSION['access_token'];
+        $url = $this->test_url . "/individuals/deductions/other/{$nino}/{$tax_year}";
+
+        $access_token  = $this->tokenStorage->retrieveSavedAccessToken();
 
         $headers = [
             "Accept: application/vnd.hmrc.2.0+json",
