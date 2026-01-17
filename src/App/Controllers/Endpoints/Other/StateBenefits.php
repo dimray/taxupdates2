@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers\Endpoints\Other;
 
-use app\HmrcApi\Endpoints\Other\ApiStateBenefits;
+use App\HmrcApi\Endpoints\Other\ApiStateBenefits;
 use App\Helpers\Helper;
 use App\Flash;
 use Framework\Controller;
