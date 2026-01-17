@@ -438,7 +438,7 @@ class EmploymentsIncome extends Controller
 
         if (!empty($this->errors)) {
             $_SESSION['employment_income']['tips'] = $tips;
-            return $this->redirect("/employments/create-amend-non-paye-employment-income");
+            return $this->redirect("/employments-income/create-amend-non-paye-employment-income");
         }
 
         $response = $this->apiEmploymentsIncome->createAndAmendNonPayeEmploymentIncome($nino, $tax_year, $tips);

@@ -4,7 +4,7 @@
 
 use App\Helpers\TaxYearHelper;
 
-$input_first_tax_year = $first_tax_year ?? '2025-26'; // default fallback
+$input_first_tax_year = $first_tax_year ?? '2024-25'; // default fallback
 $min_first_tax_year = TaxYearHelper::getCurrentTaxYear(-4);
 
 // Extract start years as integers
