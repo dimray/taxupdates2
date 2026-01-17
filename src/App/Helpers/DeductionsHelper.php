@@ -96,7 +96,7 @@ class DeductionsHelper extends Controller
     private function removeEmptySections(array $data): array
     {
         foreach ($data as $key => $entry) {
-            if (is_array($entry) && Helpers::recursiveArrayEmpty($entry)) {
+            if (is_array($entry) && Helper::recursiveArrayEmpty($entry)) {
                 unset($data[$key]);
             }
 
