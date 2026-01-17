@@ -11,7 +11,7 @@ class ApiCapitalGains extends ApiCalls
 {
     public function retrieveAllCgtResidentialPropertyDisposalsAndOverrides(string $nino, string $tax_year): array
     {
-        $url = $this->test_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}";
+        $url = $this->test_url . "/individuals/disposals-income/residential-property/{$nino}/{$tax_year}?source=hmrc-held";
 
         $access_token  = $_SESSION['access_token'];
 
@@ -22,7 +22,7 @@ class ApiCapitalGains extends ApiCalls
 
         // test scenario headers
         $test_headers = [
-            'Gov-Test-Scenario: STATEFUL'
+            // 'Gov-Test-Scenario: STATEFUL'
         ];
 
         $headers = array_merge($headers, $test_headers);
